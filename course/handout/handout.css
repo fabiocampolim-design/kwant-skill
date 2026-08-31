@@ -1,0 +1,16 @@
+@page { size: A4; margin: 16mm 15mm; }
+body { font: 10.5pt/1.45 "Segoe UI", system-ui, sans-serif; color: #1c2128; max-width: 900px; margin: 1.5rem auto; padding: 0 1rem; background: #fff; }
+h1 { font-size: 15pt; margin: 18pt 0 6pt 0; color: #0d419d; border-bottom: 2px solid #d0d7de; padding-bottom: 3pt; }
+h1.title { font-size: 20pt; border: none; color: #1c2128; }
+p.subtitle { color: #57606a; font-size: 11pt; margin-top: -8pt; }
+h2 { font-size: 12pt; margin: 12pt 0 4pt 0; }
+p { margin: 5pt 0; }
+table { width: 100%; border-collapse: collapse; margin: 6pt 0; font-size: 9.3pt; }
+th { text-align: left; color: #57606a; font-weight: 600; padding: 3pt 6pt; border-bottom: 1.5px solid #d0d7de; }
+td { padding: 3pt 6pt; border-bottom: 1px solid #eaeef2; vertical-align: top; }
+code { font-family: Consolas, "Cascadia Code", monospace; font-size: 8.8pt; background: #f6f8fa; padding: 0 3pt; border-radius: 3pt; }
+ul { margin: 4pt 0 4pt 16pt; }
+li { margin: 2.5pt 0; }
+a { color: #0d419d; text-decoration: none; }
+#TOC { font-size: 9.3pt; column-count: 2; }
+@media print { #TOC { display: none; } }

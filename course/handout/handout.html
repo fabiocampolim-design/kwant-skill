@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc 3.10.2" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>Quantum transport with Kwant — companion handout</title>
+  <style>
+
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: 1.5em;}
+div.column{flex: auto;}
+@media screen {
+div.columns{gap: min(4vw, 1.5em);}
+div.column{overflow-x: auto;}
+}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+
+ul.task-list[class]{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+font-size: inherit;
+width: 0.8em;
+margin: 0 0.8em 0.2em -1.6em;
+vertical-align: middle;
+}
+.display.math{display: block; text-align: center; margin: 0.5rem auto;}
+</style>
+  <style type="text/css">@page { size: A4; margin: 16mm 15mm; }
+body { font: 10.5pt/1.45 "Segoe UI", system-ui, sans-serif; color: #1c2128; max-width: 900px; margin: 1.5rem auto; padding: 0 1rem; background: #fff; }
+h1 { font-size: 15pt; margin: 18pt 0 6pt 0; color: #0d419d; border-bottom: 2px solid #d0d7de; padding-bottom: 3pt; }
+h1.title { font-size: 20pt; border: none; color: #1c2128; }
+p.subtitle { color: #57606a; font-size: 11pt; margin-top: -8pt; }
+h2 { font-size: 12pt; margin: 12pt 0 4pt 0; }
+p { margin: 5pt 0; }
+table { width: 100%; border-collapse: collapse; margin: 6pt 0; font-size: 9.3pt; }
+th { text-align: left; color: #57606a; font-weight: 600; padding: 3pt 6pt; border-bottom: 1.5px solid #d0d7de; }
+td { padding: 3pt 6pt; border-bottom: 1px solid #eaeef2; vertical-align: top; }
+code { font-family: Consolas, "Cascadia Code", monospace; font-size: 8.8pt; background: #f6f8fa; padding: 0 3pt; border-radius: 3pt; }
+ul { margin: 4pt 0 4pt 16pt; }
+li { margin: 2.5pt 0; }
+a { color: #0d419d; text-decoration: none; }
+#TOC { font-size: 9.3pt; column-count: 2; }
+@media print { #TOC { display: none; } }
+</style>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">Quantum transport with Kwant — companion handout</h1>
+<p class="subtitle">For the undergraduate course built on <em>Kwant —
+Theory and Practice</em></p>
+</header>
+<nav id="TOC" role="doc-toc">
+<ul>
+<li><a href="#what-the-course-is" id="toc-what-the-course-is">1. What
+the course is</a></li>
+<li><a href="#the-reference-card" id="toc-the-reference-card">2. The
+reference card</a></li>
+<li><a href="#key-equations" id="toc-key-equations">3. Key
+equations</a></li>
+<li><a href="#the-models-of-part-ii" id="toc-the-models-of-part-ii">4.
+The models of Part II</a></li>
+<li><a href="#pitfalls-each-is-checked-in-the-notebook" id="toc-pitfalls-each-is-checked-in-the-notebook">5. Pitfalls (each is
+checked in the notebook)</a></li>
+<li><a href="#running-it" id="toc-running-it">6. Running it</a></li>
+<li><a href="#reading" id="toc-reading">7. Reading</a></li>
+</ul>
+</nav>
+<h1 id="what-the-course-is">1. What the course is</h1>
+<p>An undergraduate course on quantum transport in ten stops, taught
+from one executed Jupyter notebook
+(<code>Kwant_Theory_and_Practice.ipynb</code>, Kwant 1.5). Every figure
+on the slides is a numbered figure of that notebook; every equation on
+the slides is computed in it; the exercises at the end of each part are
+solved and asserted in <code>Kwant_Exercises_Solutions.ipynb</code>. The
+deck is a 2-D grid — sections left to right, depth top to bottom, plain
+language first and the mathematics last — so a lecturer can stop each
+section at the audience’s level.</p>
+<table>
+<colgroup>
+<col style="width: 25%" />
+<col style="width: 25%" />
+<col style="width: 25%" />
+<col style="width: 25%" />
+</colgroup>
+<thead>
+<tr>
+<th>Stop</th>
+<th>Physics</th>
+<th>Kwant</th>
+<th>Notebook sections</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1 Lattice</td>
+<td>Schrödinger → tight binding</td>
+<td><code>Builder</code>, lattices, hoppings</td>
+<td>1–2</td>
+</tr>
+<tr>
+<td>2 Leads</td>
+<td>Landauer–Büttiker, Fisher–Lee</td>
+<td><code>attach_lead</code>, <code>smatrix</code></td>
+<td>3–4, 7</td>
+</tr>
+<tr>
+<td>3 Shapes</td>
+<td>resonances, billiards, parameters</td>
+<td>shape and value functions</td>
+<td>5</td>
+</tr>
+<tr>
+<td>4 Spin · graphene · SC</td>
+<td>Rashba, Dirac cones, Andreev</td>
+<td>matrix values, honeycomb, BdG</td>
+<td>6, 8–10</td>
+</tr>
+<tr>
+<td>5 Magnetic fields</td>
+<td>Peierls, Landau levels, Hofstadter</td>
+<td>phase hoppings, <code>wraparound</code></td>
+<td>14</td>
+</tr>
+<tr>
+<td>6 Toolbox</td>
+<td>KPM, continuum, solvers, pitfalls</td>
+<td><code>kpm</code>, <code>continuum</code>, MUMPS</td>
+<td>11–13, 15–16</td>
+</tr>
+<tr>
+<td>7 Topology in 1D</td>
+<td>SSH, Kitaev, Majorana wire, pump</td>
+<td>invariants from the system</td>
+<td>17–20</td>
+</tr>
+<tr>
+<td>8 Topology in 2D/3D</td>
+<td>Haldane, Kane–Mele, p+ip, BBH, Weyl, 3D TI</td>
+<td>Berry curvature on a torus</td>
+<td>21–26</td>
+</tr>
+<tr>
+<td>9 Close</td>
+<td>run it, exercises, reading</td>
+<td>Run All</td>
+<td>27</td>
+</tr>
+</tbody>
+</table>
+<h1 id="the-reference-card">2. The reference card</h1>
+<table>
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 33%" />
+<col style="width: 33%" />
+</colgroup>
+<thead>
+<tr>
+<th>Object</th>
+<th>What it is</th>
+<th>Typical line</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>Lattice</code></td>
+<td>geometry: unit vectors + basis</td>
+<td><code>kwant.lattice.square(a=1, norbs=1)</code></td>
+</tr>
+<tr>
+<td><code>Site</code></td>
+<td>a lattice plus integer coordinates</td>
+<td><code>lat(3, 4)</code></td>
+</tr>
+<tr>
+<td><code>Builder</code></td>
+<td>the Hamiltonian as a mapping</td>
+<td><code>syst[lat(0, 0)] = 4*t</code>;
+<code>syst[lat.neighbors()] = -t</code></td>
+</tr>
+<tr>
+<td><code>HoppingKind</code></td>
+<td>a family of bonds by displacement</td>
+<td><code>kwant.builder.HoppingKind((1, 0), lat)</code></td>
+</tr>
+<tr>
+<td>lead</td>
+<td>a Builder with a <code>TranslationalSymmetry</code></td>
+<td><code>syst.attach_lead(lead)</code></td>
+</tr>
+<tr>
+<td>finalized system</td>
+<td>immutable, solvable</td>
+<td><code>fsyst = syst.finalized()</code></td>
+</tr>
+<tr>
+<td>scattering matrix</td>
+<td><code>S</code> at one energy</td>
+<td><code>sm = kwant.smatrix(fsyst, E, params=...)</code></td>
+</tr>
+<tr>
+<td>conductance</td>
+<td>transmission 0 → 1</td>
+<td><code>sm.transmission(1, 0)</code> (units of e²/h)</td>
+</tr>
+<tr>
+<td>wavefunction</td>
+<td>scattering states from lead 0</td>
+<td><code>kwant.wave_function(fsyst, E)(0)</code></td>
+</tr>
+<tr>
+<td>observables</td>
+<td>density / current operators</td>
+<td><code>kwant.operator.Density(fsyst, σ)</code></td>
+</tr>
+<tr>
+<td>bands</td>
+<td>lead dispersion</td>
+<td><code>kwant.physics.Bands(fsyst.leads[0])</code></td>
+</tr>
+<tr>
+<td>spectral density</td>
+<td>KPM</td>
+<td><code>kwant.kpm.SpectralDensity(fsyst)</code></td>
+</tr>
+<tr>
+<td>continuum model</td>
+<td>symbolic → lattice</td>
+<td><code>kwant.continuum.discretize(hamiltonian, grid=a)</code></td>
+</tr>
+<tr>
+<td>periodic system</td>
+<td>symmetry → momentum parameter</td>
+<td><code>kwant.wraparound.wraparound(syst)</code></td>
+</tr>
+</tbody>
+</table>
+<p>Value rule: a value on a site or bond is a number, a matrix (spin,
+BdG), or a function whose first argument(s) are the site(s) and whose
+other named arguments are passed at solve time through
+<code>params=</code>.</p>
+<h1 id="key-equations">3. Key equations</h1>
+<p><strong>Discretisation (2D, spacing a).</strong> Hopping <span class="math inline"><em>t</em> = ℏ<sup>2</sup>/(2<em>m</em><em>a</em><sup>2</sup>)</span>,
+on-site <span class="math inline"><em>ε</em><sub><em>i</em></sub> = 4<em>t</em> + <em>V</em>(<strong>r</strong><sub><em>i</em></sub>)</span>;
+<span class="math inline"><em>E</em>(<strong>k</strong>) = 4<em>t</em> − 2<em>t</em>(cos <em>k</em><sub><em>x</em></sub><em>a</em> + cos <em>k</em><sub><em>y</em></sub><em>a</em>) ≈ ℏ<sup>2</sup><em>k</em><sup>2</sup>/2<em>m</em></span>.</p>
+<p><strong>Landauer–Büttiker.</strong> <span class="math inline">$G =
+\dfrac{e^2}{h}\sum_n T_n = \dfrac{e^2}{h}\,\mathrm{Tr}\,(t^\dagger
+t)$</span>; unitarity <span class="math inline"><em>S</em><sup>†</sup><em>S</em> = 1</span>; sum
+rule <span class="math inline">∑<sub><em>n</em></sub>(<em>T</em><sub><em>n</em></sub> + <em>R</em><sub><em>n</em></sub>) = <em>N</em></span>.</p>
+<p><strong>Fisher–Lee.</strong> <span class="math inline"><em>S</em> = −1 + <em>i</em> <em>Γ</em><sup>1/2</sup><em>G</em><sup><em>r</em></sup>(<em>E</em>) <em>Γ</em><sup>1/2</sup></span>,
+with <span class="math inline"><em>G</em><sup><em>r</em></sup> = (<em>E</em> − <em>H</em> − <em>Σ</em>)<sup>−1</sup></span>,
+<span class="math inline"><em>Σ</em> = ∑<sub>leads</sub><em>V</em><sup>†</sup><em>g</em> <em>V</em></span>,
+<span class="math inline"><em>Γ</em> = <em>i</em>(<em>Σ</em> − <em>Σ</em><sup>†</sup>)</span>.</p>
+<p><strong>Bogoliubov–de Gennes.</strong> <span class="math inline">$H_{\mathrm{BdG}} = \begin{pmatrix} H-\mu &amp;
+\Delta \\ \Delta^* &amp; -(H-\mu)^* \end{pmatrix}$</span>, <span class="math inline"><em>P</em><em>H</em><sub>BdG</sub><em>P</em><sup>−1</sup> = −<em>H</em><sub>BdG</sub></span>;
+sub-gap conductance <span class="math inline">$G = \frac{e^2}{h}\,[N -
+R_{ee} + R_{he}]$</span>, perfect Andreev reflection <span class="math inline"><em>G</em> = 2<em>N</em><em>e</em><sup>2</sup>/<em>h</em></span>.</p>
+<p><strong>Peierls substitution.</strong> <span class="math inline">$t_{ij} \to
+t_{ij}\exp\!\big(\tfrac{ie}{\hbar}\int_j^i \mathbf A\cdot d\mathbf
+l\big)$</span>; the product of the phases around a plaquette is <span class="math inline"><em>e</em><sup>2<em>π</em><em>i</em><em>Φ</em>/<em>Φ</em><sub>0</sub></sup></span>,
+<span class="math inline"><em>Φ</em><sub>0</sub> = <em>h</em>/<em>e</em></span>.
+Harper: <span class="math inline">−<em>t</em>[<em>ψ</em><sub><em>y</em> + 1</sub> + <em>ψ</em><sub><em>y</em> − 1</sub>] − 2<em>t</em>cos (<em>k</em><sub><em>x</em></sub><em>a</em> − 2<em>π</em><em>α</em><em>y</em>)<em>ψ</em><sub><em>y</em></sub> = <em>E</em><em>ψ</em><sub><em>y</em></sub></span>.</p>
+<p><strong>KPM.</strong> <span class="math inline">$\rho(E) =
+\dfrac{1}{\pi\sqrt{1-E^2}}\Big[g_0\mu_0 + 2\sum_{n\ge1} g_n \mu_n
+T_n(E)\Big]$</span>, <span class="math inline"><em>μ</em><sub><em>n</em></sub> = Tr <em>T</em><sub><em>n</em></sub>(<em>H</em>)</span>
+(stochastic trace, Jackson kernel <span class="math inline"><em>g</em><sub><em>n</em></sub></span>).</p>
+<p><strong>SSH.</strong> <span class="math inline"><em>H</em>(<em>k</em>) = <strong>d</strong>(<em>k</em>) ⋅ <strong>σ</strong></span>,
+<span class="math inline"><strong>d</strong> = (<em>t</em><sub>1</sub> + <em>t</em><sub>2</sub>cos <em>k</em>, <em>t</em><sub>2</sub>sin <em>k</em>, 0)</span>;
+winding <span class="math inline">$\nu = \frac{1}{2\pi i}\oint dk\,
+\partial_k \log(d_x + i d_y)$</span>; Zak phase <span class="math inline"><em>γ</em> = <em>π</em><em>ν</em></span>; zero modes
+at the ends iff <span class="math inline"><em>t</em><sub>1</sub> &lt; <em>t</em><sub>2</sub></span>.</p>
+<p><strong>Kitaev.</strong> <span class="math inline"><em>c</em><sub><em>j</em></sub> = (<em>γ</em><sub><em>j</em>, 1</sub> + <em>i</em><em>γ</em><sub><em>j</em>, 2</sub>)/2</span>;
+<span class="math inline">(−1)<sup><em>ν</em></sup> = sgn Pf[<em>A</em>(0)] ⋅ sgn Pf[<em>A</em>(<em>π</em>)]</span>;
+topological iff <span class="math inline">|<em>μ</em>| &lt; 2<em>t</em></span>. Majorana
+nanowire: gap closes at <span class="math inline">$B_c = \sqrt{\Delta^2
++ \mu^2}$</span>; zero-bias peak <span class="math inline">2<em>e</em><sup>2</sup>/<em>h</em></span>.</p>
+<p><strong>Chern number (Fukui–Hatsugai–Suzuki).</strong> <span class="math inline"><em>U</em><sub><em>i</em></sub>(<strong>k</strong>) = ⟨<em>u</em><sub><strong>k</strong></sub>|<em>u</em><sub><strong>k</strong> + <em>δ</em><sub><em>i</em></sub></sub>⟩/|⋅|</span>,
+<span class="math inline"><em>F</em>(<strong>k</strong>) = arg [<em>U</em><sub><em>x</em></sub>(<strong>k</strong>) <em>U</em><sub><em>y</em></sub>(<strong>k</strong> + <em>δ</em><sub><em>x</em></sub>) <em>U</em><sub><em>x</em></sub>(<strong>k</strong> + <em>δ</em><sub><em>y</em></sub>)<sup>−1</sup> <em>U</em><sub><em>y</em></sub>(<strong>k</strong>)<sup>−1</sup>]</span>,
+<span class="math inline">$C = \frac{1}{2\pi}\sum_{\mathbf k} F(\mathbf
+k) \in \mathbb Z$</span>; <span class="math inline"><em>σ</em><sub><em>x</em><em>y</em></sub> = (<em>e</em><sup>2</sup>/<em>h</em>)∑<sub>occ</sub><em>C</em><sub><em>n</em></sub></span>.</p>
+<p><strong>Fu–Kane.</strong> <span class="math inline">(−1)<sup><em>ν</em><sub>0</sub></sup> = ∏<sub>TRIM</sub>∏<sub>occ</sub><em>ξ</em></span>
+(parity eigenvalues at the time-reversal-invariant momenta).</p>
+<h1 id="the-models-of-part-ii">4. The models of Part II</h1>
+<table>
+<colgroup>
+<col style="width: 20%" />
+<col style="width: 20%" />
+<col style="width: 20%" />
+<col style="width: 20%" />
+<col style="width: 20%" />
+</colgroup>
+<thead>
+<tr>
+<th>Model</th>
+<th>Lattice</th>
+<th>Invariant</th>
+<th>Boundary state</th>
+<th>Phase condition (notebook)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>SSH</td>
+<td>chain, 2 sites/cell</td>
+<td>winding number ℤ (chiral)</td>
+<td>end zero modes</td>
+<td><span class="math inline"><em>t</em><sub>1</sub> &lt; <em>t</em><sub>2</sub></span></td>
+</tr>
+<tr>
+<td>Kitaev chain</td>
+<td>chain, p-wave BdG</td>
+<td>ℤ₂ (Pfaffian)</td>
+<td>Majorana end modes, ZBP 2e²/h</td>
+<td><span class="math inline">|<em>μ</em>| &lt; 2<em>t</em></span></td>
+</tr>
+<tr>
+<td>Majorana nanowire</td>
+<td>chain, Rashba + Zeeman + s-wave</td>
+<td>ℤ₂</td>
+<td>Majorana end modes</td>
+<td><span class="math inline">$B &gt; \sqrt{\Delta^2+\mu^2}$</span></td>
+</tr>
+<tr>
+<td>Rice–Mele pump</td>
+<td>chain in (k, t)</td>
+<td>Chern number ℤ</td>
+<td>edge-state ladder, one charge per cycle</td>
+<td>cycle encloses (0, 0)</td>
+</tr>
+<tr>
+<td>Haldane</td>
+<td>honeycomb, complex NNN</td>
+<td>Chern number ℤ</td>
+<td>chiral edge mode, G = e²/h</td>
+<td><span class="math inline">$\lvert M\rvert &lt; 3\sqrt3\, t_2
+\sin\phi$</span></td>
+</tr>
+<tr>
+<td>Kane–Mele</td>
+<td>honeycomb, spinful</td>
+<td>ℤ₂ (spin Chern mod 2)</td>
+<td>helical edge pair, G = 2e²/h</td>
+<td><span class="math inline">|<em>M</em>| &lt; <em>M</em><sub><em>c</em></sub></span></td>
+</tr>
+<tr>
+<td>p+ip</td>
+<td>square, spinless BdG</td>
+<td>BdG Chern ℤ</td>
+<td>chiral Majorana edge</td>
+<td><span class="math inline"><em>μ</em> ∈ (−4<em>t</em>, 0) ∪ (0, 4<em>t</em>)</span></td>
+</tr>
+<tr>
+<td>BBH quadrupole</td>
+<td>square, 4 sites/cell, π flux</td>
+<td>nested Wilson loop, q = ½</td>
+<td>four corner zero modes</td>
+<td><span class="math inline"><em>γ</em> &lt; <em>λ</em></span></td>
+</tr>
+<tr>
+<td>Weyl semimetal</td>
+<td>cubic, 2 bands</td>
+<td>sliced Chern numbers</td>
+<td>Fermi arcs</td>
+<td>between the nodes</td>
+</tr>
+<tr>
+<td>3D TI</td>
+<td>cubic, 4 bands</td>
+<td>Fu–Kane ℤ₂</td>
+<td>single surface Dirac cone, G = 2e²/h</td>
+<td><span class="math inline"><em>ν</em><sub>0</sub> = 1</span> (m₀ =
+2)</td>
+</tr>
+</tbody>
+</table>
+<h1 id="pitfalls-each-is-checked-in-the-notebook">5. Pitfalls (each is
+checked in the notebook)</h1>
+<ul>
+<li><strong>MUMPS is not re-entrant</strong>: never call
+<code>kwant.smatrix</code> from threads with MUMPS installed — the
+kernel dies without a traceback. Use processes, a serial loop, or
+<code>kwant.solvers.sparse</code> (SuperLU) in threads.</li>
+<li><strong>numpy ≥ 2.5</strong> breaks
+<code>kwant.physics.magnetic_gauge</code> in Kwant 1.5.0; pin
+<code>numpy&lt;2.5</code> (the installer does) or avoid the helper.</li>
+<li><strong>Energies inside a gap</strong>: <code>num_propagating</code>
+is zero, <code>S</code> is empty.</li>
+<li><strong>Degenerate BdG pairs</strong> come with run-dependent signs;
+compare <span class="math inline">|<em>E</em>|</span>.</li>
+<li><strong><code>site_color</code> callables</strong> receive a
+<code>Site</code> for a Builder but an index for a finalized
+system.</li>
+<li><strong>Always assert an identity</strong>: unitarity, the sum rule,
+particle–hole symmetry, current conservation, an integer invariant.</li>
+</ul>
+<h1 id="running-it">6. Running it</h1>
+<p>Windows: <code>.\install_kwant_windows.ps1</code>, then
+<code>python verify_kwant.py</code> (ends “physically correct”).
+Elsewhere:
+<code>conda create -n kwant -c conda-forge kwant &quot;numpy&lt;2.5&quot; scipy matplotlib sympy python-mumps ipykernel jupyterlab</code>,
+then register the kernel <code>kwant</code>. Open the notebook with the
+kernel <em>Python (kwant)</em> and <strong>Run All</strong> (about 4½
+minutes with MUMPS; the solutions notebook about 2).
+<code>python -m pytest tests</code> checks counts, licence texts and
+documentation; <code>python course/build_course.py</code> rebuilds this
+handout, the deck and the lecturer notes from the executed notebook.</p>
+<h1 id="reading">7. Reading</h1>
+<p>Groth, Wimmer, Akhmerov, Waintal, <em>New J. Phys.</em>
+<strong>16</strong>, 063065 (2014) — Kwant. Datta, <em>Electronic
+Transport in Mesoscopic Systems</em> (1995). Nazarov &amp; Blanter,
+<em>Quantum Transport</em> (2009). Asbóth, Oroszlány, Pályi, <em>A Short
+Course on Topological Insulators</em> (Springer 2016; arXiv:1509.02295).
+topocondmat.org (TU Delft). Bernevig &amp; Hughes, <em>Topological
+Insulators and Topological Superconductors</em> (2013). The notebook’s
+section 27 lists the paper behind every model.</p>
+<p><em>Apache License 2.0 — see <code>LICENSE</code> and
+<code>NOTICE</code> in the repository. This course is independent of,
+and not endorsed by, the Kwant authors, TU Delft or the authors of the
+works cited.</em></p>
+</body>
+</html>

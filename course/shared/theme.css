@@ -1,0 +1,115 @@
+/* ==========================================================================
+   Quantum Transport with Kwant — deck theme (dark, projector-friendly).
+   All colours flow from these tokens; slide markup never hardcodes a colour.
+   The deck is one linear sequence: reveal's own arrows, progress bar and
+   slide counter are the only navigation.
+   ========================================================================== */
+:root {
+  --bg: #0d1117;
+  --bg-deep: #010409;
+  --panel: #161b22;
+  --panel-edge: #30363d;
+  --ink: #e6edf3;
+  --muted: #8b949e;
+  --faint: #484f58;
+
+  --acc-e: #58a6ff;   /* electron / leads · blue   */
+  --acc-h: #f778ba;   /* hole / superconductor · pink */
+  --acc-t: #3fb950;   /* topology · green */
+  --acc-hot: #ffa657; /* highlights */
+  --acc-warn: #d29922;
+
+  --font-sans: "Segoe UI", system-ui, -apple-system, sans-serif;
+  --font-mono: "Cascadia Code", Consolas, monospace;
+  --font-serif: Georgia, "Times New Roman", serif;
+}
+
+/* ---- reveal overrides ---- */
+.reveal-viewport { background: radial-gradient(ellipse at 50% -20%, #131a26 0%, var(--bg) 55%, var(--bg-deep) 100%); }
+.reveal { font-family: var(--font-sans); font-size: 34px; color: var(--ink); }
+.reveal .slides section { text-align: left; padding: 36px 64px; box-sizing: border-box; }
+.reveal h1, .reveal h2, .reveal h3 { font-family: var(--font-sans); color: var(--ink); text-transform: none; letter-spacing: -0.01em; }
+.reveal h1 { font-size: 2.3em; font-weight: 650; }
+.reveal h2 { font-size: 1.45em; font-weight: 600; margin-bottom: 0.35em; }
+.reveal h3 { font-size: 1.05em; font-weight: 600; color: var(--muted); }
+.reveal p, .reveal li { line-height: 1.4; }
+.reveal ul { margin-left: 0.7em; }
+.reveal li { margin: 0.32em 0; font-size: 0.86em; }
+.reveal strong { color: var(--acc-hot); font-weight: 600; }
+.reveal em { color: var(--acc-e); font-style: normal; }
+.reveal code { font-family: var(--font-mono); background: var(--panel); padding: 0.05em 0.3em; border-radius: 6px; font-size: 0.85em; }
+.reveal pre { width: 100%; margin: 0; box-shadow: none; font-size: 0.62em; line-height: 1.35;
+              background: var(--bg-deep); border: 1px solid var(--panel-edge); border-radius: 12px; }
+.reveal pre code { display: block; padding: 18px 22px; background: transparent; max-height: 760px; overflow: auto; white-space: pre; }
+.reveal a { color: var(--acc-e); }
+.reveal .progress { color: var(--acc-e); height: 4px; }
+.reveal .controls { color: var(--faint); }
+.reveal .lead { font-size: 0.9em; color: var(--muted); margin-bottom: 0.5em; }
+
+/* restore sub/sup (reveal's reset flattens vertical-align) */
+.reveal sup { vertical-align: super; font-size: 0.7em; }
+.reveal sub { vertical-align: sub; font-size: 0.7em; }
+
+/* math set by hand — italic serif variables, roman functions */
+.math { font-family: var(--font-serif); font-style: italic; }
+.math b { font-style: normal; font-weight: 600; }
+.math sup, .math sub { font-size: 0.65em; }
+
+/* ---- layouts ---- */
+.hero-wrap { display: flex; flex-direction: column; justify-content: center; min-height: 940px; }
+.hero-sub { font-size: 1.05em; color: var(--muted); font-weight: 300; max-width: 1500px; }
+.kicker { font-size: 0.6em; text-transform: uppercase; letter-spacing: 0.25em; color: var(--acc-e); font-weight: 600; }
+
+.grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; align-items: start; }
+.stack { display: flex; flex-direction: column; gap: 18px; }
+.stack .figs { justify-content: center; }
+.stack .figs figure { max-width: 1100px; }
+.figs { display: flex; gap: 22px; align-items: flex-start; }
+.figs figure { flex: 1 1 0; margin: 0; background: #fff; border-radius: 12px; padding: 10px 12px 8px 12px; }
+.figs figure img { display: block; width: 100%; height: auto; max-height: 600px; object-fit: contain; }
+.figs figcaption { font-size: 0.42em; color: #57606a; text-align: left; line-height: 1.35; margin-top: 6px; }
+.figs figcaption b { color: #1c2128; }
+.figs figcaption .math { font-style: italic; }
+.figs figcaption .fig-meta { color: #8b949e; }
+.grid-2 .figs { max-height: 860px; }
+.grid-2 .figs figure img { max-height: 640px; }
+
+/* full-width figure pages (one per remaining notebook figure) */
+.figs-wide { justify-content: center; margin-top: 10px; }
+.figs-wide figure { flex: 0 1 auto; width: min(1280px, 100%); }
+.figs-wide figure img { width: 100%; max-height: 780px; object-fit: contain; margin: 0 auto; }
+.figs-wide figcaption { font-size: 0.52em; }
+
+.math-block { display: flex; flex-direction: column; gap: 18px; margin: 20px 0 10px 0; }
+.eq-row { display: grid; grid-template-columns: 420px 1fr; gap: 24px; align-items: baseline;
+          background: var(--panel); border: 1px solid var(--panel-edge); border-radius: 12px; padding: 14px 24px; }
+.eq-label { font-size: 0.7em; color: var(--muted); }
+.eq { font-size: 1.05em; }
+.after-math li { font-size: 0.72em; }
+
+.course-table { width: 100%; border-collapse: collapse; font-size: 0.68em; margin-top: 10px; }
+.course-table th { text-align: left; color: var(--muted); font-weight: 600; padding: 10px 16px; border-bottom: 2px solid var(--panel-edge); }
+.course-table td { padding: 10px 16px; border-top: 1px solid var(--panel-edge); vertical-align: top; line-height: 1.35; }
+
+/* the section name, top right of every content slide */
+.sec-label { position: absolute; top: 30px; right: 64px; font-size: 0.5em; color: var(--faint);
+             text-transform: uppercase; letter-spacing: 0.22em; font-weight: 600; }
+
+/* part openers (one before each section): label, summary, level-coloured agenda */
+.part-wrap h1 { font-size: 3em; }
+.part-wrap .hero-sub { margin-top: 0.4em; }
+.agenda { list-style: none; margin: 1.2em 0 0 0.2em; columns: 2; column-gap: 70px; max-width: 1600px; }
+.agenda li { font-size: 0.55em; color: var(--muted); margin: 0.35em 0; padding-left: 1.2em;
+             position: relative; break-inside: avoid; }
+.agenda li::before { content: "●"; position: absolute; left: 0; font-size: 0.75em; top: 0.22em; }
+.agenda .ag-text::before { color: var(--faint); }
+.agenda .ag-fig::before { color: var(--acc-t); }
+.agenda .ag-code::before { color: var(--acc-e); }
+.agenda .ag-math::before { color: var(--acc-h); }
+
+/* reveal's own chrome, restyled */
+.reveal .controls { color: var(--acc-e); bottom: 28px; right: 20px; }
+.reveal .progress { background: var(--panel); color: var(--acc-e); height: 5px; }
+.reveal .slide-number { background: transparent; color: var(--muted); font-size: 22px;
+                        font-family: var(--font-sans); right: 130px; bottom: 40px; }
+.reveal .slide-number a, .reveal .slide-number span { text-decoration: none; color: var(--muted); }

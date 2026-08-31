@@ -1,0 +1,51 @@
+From 40fab5a8644c044f03d662087bd149434c24350d Mon Sep 17 00:00:00 2001
+From: Fabio Campolim <250239356+fabiocampolim-design@users.noreply.github.com>
+Date: Sat, 29 Aug 2026 17:33:21 -0300
+Subject: [PATCH 4/4] plotter: do not reset the global warning filters after 3D
+ plots
+
+plot() and spectrum() suppressed matplotlib's "mouse rotation disabled"
+warning by adding a filter and then calling warnings.resetwarnings(),
+which deletes *every* filter in the process, including any the user set
+up (a Jupyter notebook that silences a deprecation warning in its first
+cell loses that filter on the first 3D plot).  Scope the suppression with
+warnings.catch_warnings() instead, which restores the caller's filters.
+---
+ src/kwant/plotter.py | 14 +++++++-------
+ 1 file changed, 7 insertions(+), 7 deletions(-)
+
+diff --git a/src/kwant/plotter.py b/src/kwant/plotter.py
+index 01414be..ed97748 100644
+--- a/src/kwant/plotter.py
++++ b/src/kwant/plotter.py
+@@ -1458,9 +1458,9 @@ def _plot_matplotlib(sys, num_lead_cells, unit,
+             ax.set_xmargin(0.05)
+             ax.set_ymargin(0.05)
+         else:
+-            warnings.filterwarnings('ignore', message=r'.*rotation.*')
+-            ax = fig.add_subplot(1, 1, 1, projection='3d')
+-            warnings.resetwarnings()
++            with warnings.catch_warnings():
++                warnings.filterwarnings('ignore', message=r'.*rotation.*')
++                ax = fig.add_subplot(1, 1, 1, projection='3d')
+     else:
+         fig = None
+ 
+@@ -2138,10 +2138,10 @@ def _spectrum_matplotlib(syst, x, y=None, params=None, mask=None, file=None,
+         if planar:
+             ax = fig.add_subplot(1, 1, 1)
+         else:
+-            warnings.filterwarnings('ignore',
+-                                    message=r'.*mouse rotation disabled.*')
+-            ax = fig.add_subplot(1, 1, 1, projection='3d')
+-            warnings.resetwarnings()
++            with warnings.catch_warnings():
++                warnings.filterwarnings('ignore',
++                                        message=r'.*mouse rotation disabled.*')
++                ax = fig.add_subplot(1, 1, 1, projection='3d')
+         ax.set_xlabel(keys[0])
+         if planar:
+             ax.set_ylabel('Energy')
+-- 
+2.55.0.windows.4
+

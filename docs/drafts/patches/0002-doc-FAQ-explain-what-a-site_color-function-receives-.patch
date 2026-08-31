@@ -1,0 +1,45 @@
+From cef3839b357885e7381c092b49669ff9094eedf7 Mon Sep 17 00:00:00 2001
+From: Fabio Campolim <250239356+fabiocampolim-design@users.noreply.github.com>
+Date: Fri, 28 Aug 2026 22:15:46 -0300
+Subject: [PATCH 2/4] doc: FAQ: explain what a site_color function receives for
+ a finalized system
+
+The FAQ entry on coloring sublattices shows a site_color callable that
+takes a Site, which is what kwant.plot passes when plotting a Builder.
+For a finalized system the same callable is passed the integer site
+index instead, so the example silently breaks (site.family raises
+AttributeError on an int) as soon as a user plots the finalized system
+they actually compute with.  Say so, and show the one-line adapter.
+---
+ doc/source/tutorial/faq.rst | 15 +++++++++++++++
+ 1 file changed, 15 insertions(+)
+
+diff --git a/doc/source/tutorial/faq.rst b/doc/source/tutorial/faq.rst
+index 975b9dd..8332b8f 100644
+--- a/doc/source/tutorial/faq.rst
++++ b/doc/source/tutorial/faq.rst
+@@ -237,6 +237,21 @@ As we can see below, we create a new plotting function that assigns a color for
+     ## Plot the system.
+     plot_system(syst)
+ 
++Note that the ``site_color`` function receives a different argument depending
++on what is being plotted: for a `~kwant.builder.Builder` it is called with
++`~kwant.builder.Site` objects, as above, but for a finalized system it is
++called with the *integer index* of the site.  A function written for a
++builder can be reused for a finalized system by looking the site up first:
++
++.. jupyter-execute::
++
++    fsyst = syst.finalized()
++
++    def family_color_finalized(i):
++        return family_color(fsyst.sites[i])
++
++    kwant.plot(fsyst, site_lw=0.1, site_color=family_color_finalized);
++
+ 
+ How to create many similar hoppings in one go?
+ ==============================================
+-- 
+2.55.0.windows.4
+

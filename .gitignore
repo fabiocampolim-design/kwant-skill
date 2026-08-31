@@ -1,0 +1,24 @@
+.ipynb_checkpoints/
+__pycache__/
+*.pyc
+.remember/
+
+# Local study material -- never redistributed
+mirror/
+papers/
+upstream/
+
+# Working snapshots -- never ship
+*.bak
+dev/backup/
+
+# Run artefacts of verify_kwant.py / test_thread_safety.py
+logs/
+*_summary.json
+.pytest_cache/
+
+# Editor config is per-machine
+.vscode/
+
+# Unpublished working material -- never tracked
+private/

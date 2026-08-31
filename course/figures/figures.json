@@ -1,0 +1,410 @@
+[
+ {
+  "n": 1,
+  "cell": 6,
+  "section": "2. The object model",
+  "caption": "A 5x5 square-lattice Builder with only horizontal bonds, added via the explicit HoppingKind (1,0)."
+ },
+ {
+  "n": 2,
+  "cell": 6,
+  "section": "2. The object model",
+  "caption": "The same sites with every nearest-neighbour bond, added with lat.neighbors()."
+ },
+ {
+  "n": 3,
+  "cell": 6,
+  "section": "2. The object model",
+  "caption": "lat.neighbors(2) adds the diagonal second-neighbour bonds on top."
+ },
+ {
+  "n": 4,
+  "cell": 8,
+  "section": "3. First transport calculation — a quantum wire",
+  "caption": "The canonical two-terminal geometry: a W=10, L=30 wire (blue) with semi-infinite leads (red) attached on both sides; faded sites indicate the leads continuing to infinity."
+ },
+ {
+  "n": 5,
+  "cell": 9,
+  "section": "3. First transport calculation — a quantum wire",
+  "caption": "Two-terminal conductance of the clean wire: quantised steps of $e^2/h$, one per transverse subband, as first measured by van Wees et al., PRL 60, 848 (1988)."
+ },
+ {
+  "n": 6,
+  "cell": 13,
+  "section": "4. Theory — Scattering theory: Landauer–Büttiker and Fisher–Lee",
+  "caption": "Probability density of the lowest scattering mode incoming from the left lead at E=0.6: a standing-wave pattern across the width (fixed by the transverse mode) modulated along the wire."
+ },
+ {
+  "n": 7,
+  "cell": 15,
+  "section": "5. Shapes, spatially varying values, and runtime parameters",
+  "caption": "Transmission through a square well in the wire: Fabry-Perot-like resonances from quasi-bound well states, sweeping down in energy as the well deepens."
+ },
+ {
+  "n": 8,
+  "cell": 16,
+  "section": "5. Shapes, spatially varying values, and runtime parameters",
+  "caption": "A stadium-shaped dot cut from the square lattice by a shape function - the classic quantum-chaos billiard geometry."
+ },
+ {
+  "n": 9,
+  "cell": 16,
+  "section": "5. Shapes, spatially varying values, and runtime parameters",
+  "caption": "An eigenstate of the closed stadium high in the spectrum. The stadium billiard is classically chaotic, and its quantum eigenstates are speckled random-wave patterns - with some, like this one, showing enhanced weight along short unstable periodic orbits (Heller scars, PRL 53, 1515 (1984))."
+ },
+ {
+  "n": 10,
+  "cell": 18,
+  "section": "6. Spin — matrix-valued on-site and hopping terms",
+  "caption": "Geometry of the Rashba wire: a W=10 strip with spinful sites (2 orbitals each) and leads on both sides; the spin structure lives in the hopping matrices, not in the layout."
+ },
+ {
+  "n": 11,
+  "cell": 18,
+  "section": "6. Spin — matrix-valued on-site and hopping terms",
+  "caption": "Conductance of the Rashba + Zeeman wire: the non-monotonic plateau structure signals the helical gap, where spin-momentum locking removes one of the two channels."
+ },
+ {
+  "n": 12,
+  "cell": 20,
+  "section": "7. Band structure and closed systems",
+  "caption": "Subbands $E_n(k)$ of the $W=10$ lead: every band minimum opens one more conductance channel - the staircase of the previous figure, read off the band structure."
+ },
+ {
+  "n": 13,
+  "cell": 21,
+  "section": "7. Band structure and closed systems",
+  "caption": "Spectrum of a closed disc vs magnetic field: levels condense into degenerate Landau levels (a Fock-Darwin-like fan)."
+ },
+ {
+  "n": 14,
+  "cell": 23,
+  "section": "8. Beyond square lattices — graphene",
+  "caption": "Circular graphene dot with a smooth p-n junction, sites coloured by sublattice, and two leads attached at 120 degrees."
+ },
+ {
+  "n": 15,
+  "cell": 24,
+  "section": "8. Beyond square lattices — graphene",
+  "caption": "Subbands of the graphene nanoribbon lead: bulk Dirac cones folded into 1D bands."
+ },
+ {
+  "n": 16,
+  "cell": 24,
+  "section": "8. Beyond square lattices — graphene",
+  "caption": "Transmission across the p-n junction: suppressed near the Dirac point, where only Klein tunnelling at near-normal incidence survives."
+ },
+ {
+  "n": 17,
+  "cell": 26,
+  "section": "9. Superconductivity — BdG, Andreev reflection, and discrete symmetries",
+  "caption": "Layout of the N-S junction: normal region (orange), tunnel barrier (red) and superconducting region (blue). The left lead is a normal metal, the right one is superconducting."
+ },
+ {
+  "n": 18,
+  "cell": 26,
+  "section": "9. Superconductivity — BdG, Andreev reflection, and discrete symmetries",
+  "caption": "Sub-gap conductance of the N-S junction for increasing barrier strength: the Blonder-Tinkham-Klapwijk crossover from Andreev doubling to tunnel suppression."
+ },
+ {
+  "n": 19,
+  "cell": 29,
+  "section": "10. Local observables — density and current operators",
+  "caption": "Local observables of a scattering state in the Rashba wire: charge density, spin density, charge current and spin current, computed with kwant.operator."
+ },
+ {
+  "n": 20,
+  "cell": 32,
+  "section": "11. Visualisation",
+  "caption": "Styling callables: honeycomb flake with sublattices in black/white and intra-sublattice bonds thinned."
+ },
+ {
+  "n": 21,
+  "cell": 32,
+  "section": "11. Visualisation",
+  "caption": "The same flake with site size proportional to an eigenstate weight."
+ },
+ {
+  "n": 22,
+  "cell": 32,
+  "section": "11. Visualisation",
+  "caption": "kwant.plotter.map interpolates the same eigenstate onto a continuous heat map."
+ },
+ {
+  "n": 23,
+  "cell": 33,
+  "section": "11. Visualisation",
+  "caption": "The same plotting call renders 3D: a zincblende cuboid with its two sublattices in red and green."
+ },
+ {
+  "n": 24,
+  "cell": 35,
+  "section": "12. The Kernel Polynomial Method — spectral densities without diagonalisation",
+  "caption": "KPM density of states of a graphene flake: van Hove peaks at $|E|=t$ and the linear pseudogap at the Dirac point."
+ },
+ {
+  "n": 25,
+  "cell": 36,
+  "section": "12. The Kernel Polynomial Method — spectral densities without diagonalisation",
+  "caption": "Sublattice-resolved local DOS with staggered potential $m=0.1$: the two sublattices become spectrally inequivalent at the gap edges."
+ },
+ {
+  "n": 26,
+  "cell": 39,
+  "section": "13. `kwant.continuum` — symbolic Hamiltonians, discretised automatically",
+  "caption": "BHZ ribbon band structure: a Kramers pair of helical edge states crossing the inverted bulk gap - the quantum spin Hall effect."
+ },
+ {
+  "n": 27,
+  "cell": 40,
+  "section": "13. `kwant.continuum` — symbolic Hamiltonians, discretised automatically",
+  "caption": "The BHZ edge states are localised at the ribbon edges (left) and spin-polarised (right): opposite spins counter-propagate on the same edge."
+ },
+ {
+  "n": 28,
+  "cell": 41,
+  "section": "13. `kwant.continuum` — symbolic Hamiltonians, discretised automatically",
+  "caption": "Continuum BHZ dispersion evaluated with kwant.continuum.lambdify: the lattice model reproduces it faithfully near $k=0$."
+ },
+ {
+  "n": 29,
+  "cell": 43,
+  "section": "14. Magnetic fields — Peierls substitution and Landau levels",
+  "caption": "Wire bands with Peierls phases (solid) against exact continuum Landau levels (dashed): flat bulk Landau levels plus dispersing quantum Hall edge states."
+ },
+ {
+  "n": 30,
+  "cell": 44,
+  "section": "14. Magnetic fields — Peierls substitution and Landau levels",
+  "caption": "The Hofstadter butterfly: the spectrum of the square lattice vs magnetic flux per plaquette. At rational flux p/q the band splits into q magnetic subbands; the gap structure repeats itself on every scale. The Landau-level fan of the previous figure is the sliver of this picture near phi = 0."
+ },
+ {
+  "n": 31,
+  "cell": 44,
+  "section": "14. Magnetic fields — Peierls substitution and Landau levels",
+  "caption": "The Hofstadter butterfly in 3D: the density of states as a landscape over (flux, energy), computed at fixed denominator q = 89. The wings of the butterfly appear as ridges of finite DOS and the nested hierarchy of gaps as canyons of exactly zero DOS; each canyon is a quantum Hall phase labelled by its own Chern number."
+ },
+ {
+  "n": 32,
+  "cell": 44,
+  "section": "14. Magnetic fields — Peierls substitution and Landau levels",
+  "caption": "The coloured Hofstadter butterfly in 3D: the band spectrum lies flat in grey at C = 0, and every spectral gap is lifted to a height equal to its Chern number (colour), obtained from the Diophantine equation r = qs + pt rather than from any Berry-curvature integral. The gaps organise into integer terraces - the two large C = +1 and C = -1 sheets are the elementary quantum Hall phases, and the whole staircase is the 3D version of the Osadchy-Avron coloured butterfly (top view = their diagram). Gaps with |C| > 5 are omitted for clarity."
+ },
+ {
+  "n": 33,
+  "cell": 45,
+  "section": "14. Magnetic fields — Peierls substitution and Landau levels",
+  "caption": "BHZ spectrum vs magnetic field: the Landau fan whose level crossing marks the quantum spin Hall to quantum Hall transition."
+ },
+ {
+  "n": 34,
+  "cell": 47,
+  "section": "15. Solvers, performance and scaling",
+  "caption": "Wall-clock time per scattering solve vs number of sites: close-to-linear scaling of the sparse solver for quasi-1D systems."
+ },
+ {
+  "n": 35,
+  "cell": 53,
+  "section": "17. The SSH chain — the simplest topological insulator",
+  "caption": "The SSH chain: two sites per cell (A blue, B orange), with intra-cell hopping $t_1$ and inter-cell hopping $t_2$ (bond thickness = strength). The two patterns are indistinguishable deep in the bulk, yet globally distinct: only the lower one leaves weakly bound sites at open ends - the real-space origin of the zero modes."
+ },
+ {
+  "n": 36,
+  "cell": 54,
+  "section": "17. The SSH chain — the simplest topological insulator",
+  "caption": "Spectrum of an $L=40$ SSH chain vs dimerisation: a doublet pinned to zero energy exists exactly for $t_1<t_2$; the bulk gap closes at $t_1=t_2$."
+ },
+ {
+  "n": 37,
+  "cell": 54,
+  "section": "17. The SSH chain — the simplest topological insulator",
+  "caption": "Probability density of the two zero modes: exponentially localised at the ends, each living on a single sublattice."
+ },
+ {
+  "n": 38,
+  "cell": 55,
+  "section": "17. The SSH chain — the simplest topological insulator",
+  "caption": "Transmission through a short SSH chain with weak leads (log scale): in-gap transport happens only in the topological phase, by resonant tunnelling through the hybridised edge doublet."
+ },
+ {
+  "n": 39,
+  "cell": 57,
+  "section": "18. The Kitaev chain — Majorana zero modes",
+  "caption": "The Kitaev chain in Majorana language: each fermionic site (dotted box) splits into two Majorana operators $\\gamma_A$ (red) and $\\gamma_B$ (blue). Trivial pairing couples the two Majoranas of the same site; topological pairing couples them across neighbouring sites - and then one Majorana at each end pairs with nothing, at exactly zero energy."
+ },
+ {
+  "n": 40,
+  "cell": 58,
+  "section": "18. The Kitaev chain — Majorana zero modes",
+  "caption": "BdG spectrum of a finite Kitaev chain vs chemical potential: Majorana zero modes span the whole topological window $|\\mu|<2t$."
+ },
+ {
+  "n": 41,
+  "cell": 58,
+  "section": "18. The Kitaev chain — Majorana zero modes",
+  "caption": "Density of the near-zero state: one fermion split into two Majorana halves at opposite ends."
+ },
+ {
+  "n": 42,
+  "cell": 59,
+  "section": "18. The Kitaev chain — Majorana zero modes",
+  "caption": "Andreev conductance vs bias: the Majorana end mode pins a zero-bias peak at exactly $2e^2/h$, for any barrier strength; the trivial phase stays dark below the gap."
+ },
+ {
+  "n": 43,
+  "cell": 61,
+  "section": "19. The Majorana nanowire — Kitaev physics in a real device",
+  "caption": "The Majorana nanowire device: a semiconductor wire with Rashba coupling $\\alpha$ lies on an s-wave superconductor that proximity-induces $\\Delta$; a magnetic field B points along the wire, and a normal lead probes the end through a tunnel barrier. This is exactly the geometry of the simulated conductance map below and of the 2012 Delft experiment."
+ },
+ {
+  "n": 44,
+  "cell": 62,
+  "section": "19. The Majorana nanowire — Kitaev physics in a real device",
+  "caption": "Bulk gap of the Oreg-Lutchyn wire vs Zeeman field: it closes exactly at $B_c=\\sqrt{\\Delta^2+\\mu^2}$ and reopens topologically."
+ },
+ {
+  "n": 45,
+  "cell": 62,
+  "section": "19. The Majorana nanowire — Kitaev physics in a real device",
+  "caption": "Simulated tunnelling map $G(V,B)$: the zero-bias peak emerges beyond $B_c$; the speckle near the transition is real finite-size subgap structure."
+ },
+ {
+  "n": 46,
+  "cell": 62,
+  "section": "19. The Majorana nanowire — Kitaev physics in a real device",
+  "caption": "The Majorana pair of the nanowire in real space: the lowest BdG eigenstate of a closed 120-site wire at B = 1.8 B_c is exponentially localized at the two ends and exponentially close to zero energy - the object whose tunnelling signature is the quantized zero-bias peak above."
+ },
+ {
+  "n": 47,
+  "cell": 64,
+  "section": "20. The Thouless pump — a Chern number in (k, t)",
+  "caption": "The pump cycle (white) in the Rice-Mele parameter plane, drawn over the bulk gap: the only gapless point is $(\\delta,\\Delta)=(0,0)$ (star). A cycle encircling this diabolical point pumps exactly one charge per period; one that does not encircle it pumps none. The Chern number computed next is precisely this winding number."
+ },
+ {
+  "n": 48,
+  "cell": 65,
+  "section": "20. The Thouless pump — a Chern number in (k, t)",
+  "caption": "Rice-Mele pump over one cycle: edge states ladder across the bulk gap (left) while the bulk polarization winds by exactly one quantum (right) - two faces of the same Chern number."
+ },
+ {
+  "n": 49,
+  "cell": 67,
+  "section": "21. The Haldane model — a Chern insulator without Landau levels",
+  "caption": "The Haldane model on the honeycomb lattice (A blue, B red): real NN hopping plus complex second-neighbour hoppings $t_2 e^{\\pm i\\phi}$, with the phase acquired along the arrowed (chiral) direction. This mimics a staggered magnetic flux with zero net flux per plaquette - time reversal is broken without any Landau levels. The Kane-Mele model of the next section uses the same lattice, with opposite chirality for opposite spins."
+ },
+ {
+  "n": 50,
+  "cell": 68,
+  "section": "21. The Haldane model — a Chern insulator without Landau levels",
+  "caption": "Haldane phase diagram from the FHS Chern number: lobes with $C=\\pm1$ bounded by $|M|=3\\sqrt{3}t_2\\sin\\phi$ (dashed); grey cells are gap closings, where C is undefined."
+ },
+ {
+  "n": 51,
+  "cell": 69,
+  "section": "21. The Haldane model — a Chern insulator without Landau levels",
+  "caption": "Berry curvature of the lower Haldane band over the Brillouin-zone torus (reduced coordinates; the two bumps sit at the Dirac points K and Kprime). In the topological phase (left) both valleys carry curvature of the same sign and the surface integrates to exactly 2pi - Chern number 1. In the trivial phase (right) the staggered mass has re-inverted one valley: a tall negative spike at Kprime (whose gap is small, hence the large curvature) exactly cancels the broad positive lobe at K, and the integral vanishes. The Chern number is nothing but the signed volume under this surface."
+ },
+ {
+  "n": 52,
+  "cell": 70,
+  "section": "21. The Haldane model — a Chern insulator without Landau levels",
+  "caption": "Haldane zigzag ribbon: one chiral edge mode per edge crosses the bulk gap (shaded band)."
+ },
+ {
+  "n": 53,
+  "cell": 72,
+  "section": "22. The Kane–Mele model — Z₂ and the quantum spin Hall effect",
+  "caption": "Kane-Mele ribbon without (left) and with (right) Rashba coupling: the helical crossing survives because it is protected by time reversal, not by spin conservation."
+ },
+ {
+  "n": 54,
+  "cell": 72,
+  "section": "22. The Kane–Mele model — Z₂ and the quantum spin Hall effect",
+  "caption": "Total scattering density injected from the left lead at E = 0.1, inside the Kane-Mele gap: all the current flows in two bright stripes along the top and bottom edges while the bulk stays dark - the quantum spin Hall edge channels seen in real space."
+ },
+ {
+  "n": 55,
+  "cell": 74,
+  "section": "23. The p+ip superconductor — chiral Majorana edges",
+  "caption": "The p+ip pairing on the square lattice: the pair potential is real on horizontal bonds and imaginary on vertical ones, so its phase winds by $2\\pi$ around the Fermi surface - the lattice version of $\\Delta(k)\\propto k_x + i k_y$. This winding is what makes the BdG bands carry a Chern number."
+ },
+ {
+  "n": 56,
+  "cell": 75,
+  "section": "23. The p+ip superconductor — chiral Majorana edges",
+  "caption": "BdG Chern number of the p+ip superconductor vs $\\mu$: $C=\\pm1$ in the weak-pairing phases, transitions at $\\mu=-4t,0,+4t$."
+ },
+ {
+  "n": 57,
+  "cell": 75,
+  "section": "23. The p+ip superconductor — chiral Majorana edges",
+  "caption": "Strip spectra: a single chiral Majorana branch crosses the gap in the topological phase (left); the trivial phase is fully gapped (right)."
+ },
+ {
+  "n": 58,
+  "cell": 75,
+  "section": "23. The p+ip superconductor — chiral Majorana edges",
+  "caption": "Density of the lowest BdG state of a finite p+ip sample: the chiral Majorana mode circulates the whole boundary."
+ },
+ {
+  "n": 59,
+  "cell": 77,
+  "section": "24. The BBH quadrupole — higher-order topology",
+  "caption": "The BBH lattice: four sites per unit cell with weak intra-cell bonds $\\gamma$ (thin) and strong inter-cell bonds $\\lambda$ (thick). One bond of every square carries a minus sign (red dashed), threading a $\\pi$ flux through each plaquette; this flux gaps the would-be edge bands, so for $\\gamma<\\lambda$ the protected zero modes are pushed all the way to the corners."
+ },
+ {
+  "n": 60,
+  "cell": 78,
+  "section": "24. The BBH quadrupole — higher-order topology",
+  "caption": "Wannier bands $\\nu_\\pm(k_x)$ of the BBH model: gapped in the topological phase (colour), collapsed in the trivial one (dashed) - the input of the nested Wilson loop."
+ },
+ {
+  "n": 61,
+  "cell": 78,
+  "section": "24. The BBH quadrupole — higher-order topology",
+  "caption": "A finite BBH flake: four zero-energy states inside the gap (left, red) whose density sits on the four corners (right)."
+ },
+ {
+  "n": 62,
+  "cell": 80,
+  "section": "25. Weyl semimetals — Fermi arcs from sliced Chern numbers",
+  "caption": "Chern number of the 2D slices $H(k_x,k_y;k_z)$: it jumps by the chirality $\\pm1$ at each Weyl node - the nodes are monopoles of Berry curvature."
+ },
+ {
+  "n": 63,
+  "cell": 80,
+  "section": "25. Weyl semimetals — Fermi arcs from sliced Chern numbers",
+  "caption": "Zero-energy surface map of a Weyl slab: the Fermi arc connects the surface projections of the two Weyl nodes (stars)."
+ },
+ {
+  "n": 64,
+  "cell": 80,
+  "section": "25. Weyl semimetals — Fermi arcs from sliced Chern numbers",
+  "caption": "The Weyl slab dispersion in 3D: the two bands nearest E=0 over the surface Brillouin zone. The sheets touch at the projections of the two Weyl nodes (stars) - the remnants of the bulk cones - and, unlike the point-touching Dirac cone of the 3D TI, they stay glued together along a whole line segment between them (cyan): the Fermi arc. The arc is the stack of chiral edge modes of all the C=1 slices found above."
+ },
+ {
+  "n": 65,
+  "cell": 80,
+  "section": "25. Weyl semimetals — Fermi arcs from sliced Chern numbers",
+  "caption": "Geometry of the Weyl transport bar: an 8x8x6 cubic-lattice block (blue) with semi-infinite leads (red) along z, the direction joining the two Weyl nodes."
+ },
+ {
+  "n": 66,
+  "cell": 82,
+  "section": "26. The 3D topological insulator — a Dirac cone on every surface",
+  "caption": "Slab spectrum of the 3D TI model coloured by surface weight: a single surface Dirac cone spans the inverted gap (left); the trivial phase shows only gapped bulk bands (right)."
+ },
+ {
+  "n": 67,
+  "cell": 82,
+  "section": "26. The 3D topological insulator — a Dirac cone on every surface",
+  "caption": "The protected surface state of the strong TI as a 3D dispersion: the two slab bands nearest E=0 form a single Dirac cone centred at the surface Gamma point, with velocity set by the SOC strength. Away from the node the sheets bend over as they merge into the bulk bands. A single cone like this cannot exist in any standalone 2D lattice (fermion doubling) - it lives only on the boundary of a 3D topological bulk."
+ },
+ {
+  "n": 68,
+  "cell": 82,
+  "section": "26. The 3D topological insulator — a Dirac cone on every surface",
+  "caption": "Geometry of the 3D TI transport bar: 6x6 cross-section, 8 cells long, leads along z. In the topological phase every facet of this bar carries a piece of the protected surface state, so the bar conducts even though its bulk is insulating."
+ }
+]

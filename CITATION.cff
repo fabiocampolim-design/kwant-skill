@@ -1,0 +1,24 @@
+cff-version: 1.2.0
+message: "If this notebook course helped your work, please cite it."
+title: "Kwant - Theory and Practice: an executed notebook course on quantum transport with Kwant 1.5"
+type: software
+version: "1.2.0"
+date-released: "2026-08-31"
+repository-code: "https://github.com/fabiocampolim-design/kwant-theory-and-practice"
+license: Apache-2.0
+authors:
+  - family-names: Campolim
+    given-names: Fabio
+keywords:
+  - Kwant
+  - quantum transport
+  - tight-binding
+  - topological insulators
+  - Majorana
+  - Jupyter
+abstract: >-
+  A self-contained, fully executed Jupyter course on quantum transport with
+  Kwant 1.5: theory next to runnable code for the core API, ten topological
+  models (SSH, Kitaev, Majorana nanowire, Thouless pump, Haldane, Kane-Mele,
+  p+ip, BBH, Weyl, 3D TI), with a solutions notebook for its 25 exercises, a Windows
+  installer and installation-verification scripts.

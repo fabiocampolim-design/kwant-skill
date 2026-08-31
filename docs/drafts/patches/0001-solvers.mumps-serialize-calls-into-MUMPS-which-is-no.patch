@@ -1,0 +1,172 @@
+From 5786f3c5eddd6e73a9253afe2572e70a9573d8f4 Mon Sep 17 00:00:00 2001
+From: Fabio Campolim <250239356+fabiocampolim-design@users.noreply.github.com>
+Date: Fri, 28 Aug 2026 22:15:06 -0300
+Subject: [PATCH 1/4] solvers.mumps: serialize calls into MUMPS, which is not
+ re-entrant
+
+Calling kwant.smatrix (or greens_function, ldos, wave_function) from
+several threads at once crashes the interpreter with a segmentation
+fault whenever the MUMPS solver is selected: MUMPS keeps library-global
+state, so concurrent factorizations or solves corrupt it even when every
+thread uses its own MUMPSContext.  Kwant releases the GIL around the
+heavy numerical work, so a plain ThreadPoolExecutor.map(kwant.smatrix,
+energies) is exactly the pattern that triggers it, and there is no
+Python exception to catch.
+
+Guard the two entry points into MUMPS (Context.factor and Context.solve)
+with one module-level lock.  Threads still overlap in the GIL-free parts
+of assembling the linear system; the solves run one at a time, which is
+the only correct behaviour available without an MPI build.  Document the
+constraint on the solver's reference page and in the whatsnew, and add a
+test that runs a threaded energy sweep against a serial one.
+
+Reproduced with kwant 1.5.0, python-mumps 0.0.6, numpy 2.5.1 on Windows
+(Python 3.13): 4 threads x 64 energies on a 30x10 square-lattice wire
+segfault within the first few solves without the lock and give results
+identical to the serial sweep with it.
+---
+ doc/source/pre/whatsnew/unreleased.rst       |  9 ++++++
+ doc/source/reference/kwant.solvers.mumps.rst |  9 ++++++
+ src/kwant/solvers/mumps.py                   | 21 +++++++++++--
+ src/kwant/solvers/tests/test_solvers.py      | 31 ++++++++++++++++++++
+ 4 files changed, 67 insertions(+), 3 deletions(-)
+
+diff --git a/doc/source/pre/whatsnew/unreleased.rst b/doc/source/pre/whatsnew/unreleased.rst
+index 7235789..ad797f1 100644
+--- a/doc/source/pre/whatsnew/unreleased.rst
++++ b/doc/source/pre/whatsnew/unreleased.rst
+@@ -20,3 +20,12 @@ versions of several dependencies.
+ Kwant used to provide a partial wrapper for the MUMPS library.  This wrapper has been
+ removed in favor of using the more general `python-mumps
+ <https://pypi.org/project/python-mumps/>`_ wrapper.
++
++Thread safety of the MUMPS solver
++---------------------------------
++MUMPS is not re-entrant, and calling ``kwant.smatrix`` (or any other function
++of `kwant.solvers.mumps`) from several threads at once used to crash the whole
++Python process with a segmentation fault.  Calls into MUMPS are now serialized
++behind a lock, so threaded code no longer crashes; note that the linear solves
++themselves still execute one at a time, and that separate processes remain the
++way to use several cores for independent calculations.
+diff --git a/doc/source/reference/kwant.solvers.mumps.rst b/doc/source/reference/kwant.solvers.mumps.rst
+index 83d9b05..bc9c28d 100644
+--- a/doc/source/reference/kwant.solvers.mumps.rst
++++ b/doc/source/reference/kwant.solvers.mumps.rst
+@@ -10,6 +10,15 @@ solution of large problems.  Furthermore, it offers a choice of several
+ orderings of the input matrix some of which can speed up a calculation
+ significantly.
+ 
++MUMPS itself is not re-entrant.  Kwant serializes all calls into the MUMPS
++library behind a lock, so it is safe to call ``smatrix`` and friends from
++several Python threads at once -- but the linear solves then run one at a
++time, and threads only overlap in the remaining parts of the computation.  To
++use several cores for independent calculations (for example a sweep over
++energies or parameters) run them in separate *processes*, e.g. with
++``concurrent.futures.ProcessPoolExecutor``.  The :mod:`kwant.solvers.sparse`
++solver, in contrast, may be used from several threads concurrently.
++
+ Compared with the :mod:`default solver <kwant.solvers.default>`, this module
+ adds several options that may be used to fine-tune performance.  Otherwise the
+ interface is identical.  These options can be set and queried with the
+diff --git a/src/kwant/solvers/mumps.py b/src/kwant/solvers/mumps.py
+index d77217a..b03a8aa 100644
+--- a/src/kwant/solvers/mumps.py
++++ b/src/kwant/solvers/mumps.py
+@@ -9,6 +9,8 @@
+ __all__ = ['smatrix', 'ldos', 'wave_function', 'greens_function', 'options',
+            'Solver']
+ 
++import threading
++
+ import numpy as np
+ import mumps
+ 
+@@ -18,6 +20,16 @@ MUMPSContext = mumps.Context
+ # TODO: remove this with the next release of python-mumps
+ orderings = mumps.mumps.orderings
+ 
++# MUMPS is not re-entrant: concurrent calls into the library from several
++# threads corrupt its internal (library-global) state and abort the whole
++# process with a segmentation fault, even when every thread uses its own
++# ``MUMPSContext``.  Since Kwant releases the GIL around the heavy numerical
++# work, a plain ``ThreadPoolExecutor.map(kwant.smatrix, ...)`` is exactly the
++# pattern that triggers it.  All calls into MUMPS are therefore serialized
++# behind this one lock; threads still overlap in the (GIL-free) parts of
++# building the linear system.  For true parallelism use several processes.
++_mumps_lock = threading.Lock()
++
+ 
+ class Solver(common.SparseSolver):
+     """Sparse Solver class based on the sparse direct solver MUMPS."""
+@@ -105,8 +117,9 @@ class Solver(common.SparseSolver):
+         return old_opts
+ 
+     def _factorized(self, a):
+-        inst = MUMPSContext()
+-        inst.factor(a, ordering=self.ordering)
++        with _mumps_lock:
++            inst = MUMPSContext()
++            inst.factor(a, ordering=self.ordering)
+         return inst
+ 
+     def _solve_linear_sys(self, factorized_a, b, kept_vars):
+@@ -121,7 +134,9 @@ class Solver(common.SparseSolver):
+ 
+             if not self.sparse_rhs:
+                 tmprhs = tmprhs.toarray()
+-            sols.append(solve(tmprhs)[kept_vars, :])
++            with _mumps_lock:
++                sol = solve(tmprhs)
++            sols.append(sol[kept_vars, :])
+ 
+         return np.concatenate(sols, axis=1)
+ 
+diff --git a/src/kwant/solvers/tests/test_solvers.py b/src/kwant/solvers/tests/test_solvers.py
+index 1f142cf..67c37d9 100644
+--- a/src/kwant/solvers/tests/test_solvers.py
++++ b/src/kwant/solvers/tests/test_solvers.py
+@@ -7,6 +7,7 @@
+ # https://kwant-project.org/authors.
+ 
+ import itertools
++from concurrent.futures import ThreadPoolExecutor
+ from math import cos, sin
+ import numpy as np
+ import pytest
+@@ -657,3 +658,33 @@ def test_arg_passing(wave_function, ldos, smatrix):
+     np.testing.assert_array_equal(
+         smatrix(fsyst, args=args).data,
+         smatrix(fsyst, params=params).data)
++
++
++@pytest.mark.skipif(no_mumps, reason="MUMPS not installed")
++def test_mumps_threaded_smatrix():
++    # MUMPS is not re-entrant.  Before kwant.solvers.mumps serialized its
++    # calls into the library, running smatrix from several threads at once
++    # segfaulted the interpreter (no Python exception, so nothing to catch).
++    # This test therefore only passes if the lock is effective; if it ever
++    # crashes the test process, the lock has been lost.
++    lat = kwant.lattice.square(norbs=1)
++    syst = kwant.Builder()
++    syst[(lat(x, y) for x in range(30) for y in range(10))] = 4
++    syst[lat.neighbors()] = -1
++    lead = kwant.Builder(kwant.TranslationalSymmetry((-1, 0)))
++    lead[(lat(0, y) for y in range(10))] = 4
++    lead[lat.neighbors()] = -1
++    syst.attach_lead(lead)
++    syst.attach_lead(lead.reversed())
++    fsyst = syst.finalized()
++
++    energies = np.linspace(0.01, 1.0, 32)
++    smatrix = kwant.solvers.mumps.smatrix
++
++    def transmission(energy):
++        return smatrix(fsyst, energy).transmission(1, 0)
++
++    serial = [transmission(e) for e in energies]
++    with ThreadPoolExecutor(max_workers=8) as pool:
++        threaded = list(pool.map(transmission, energies))
++    assert_almost_equal(threaded, serial)
+-- 
+2.55.0.windows.4
+

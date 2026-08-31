@@ -1,0 +1,694 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc 3.10.2" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>Kwant - Theory and Practice - User Manual</title>
+  <style>
+
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: 1.5em;}
+div.column{flex: auto;}
+@media screen {
+div.columns{gap: min(4vw, 1.5em);}
+div.column{overflow-x: auto;}
+}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+
+ul.task-list[class]{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+font-size: inherit;
+width: 0.8em;
+margin: 0 0.8em 0.2em -1.6em;
+vertical-align: middle;
+}
+.display.math{display: block; text-align: center; margin: 0.5rem auto;}
+</style>
+  <style type="text/css">body{font:15px/1.55 system-ui,-apple-system,Segoe UI,Roboto,sans-serif;max-width:860px;margin:2rem auto;padding:0 1rem;color:#1b1b1b;background:#fff}h1{font-size:1.6rem;border-bottom:1px solid #999;padding-bottom:.2rem;margin-top:2rem}h2{font-size:1.25rem;margin-top:1.6rem}table{border-collapse:collapse;width:100%;font-size:.9rem}th,td{border:1px solid #bbb;padding:.3rem .5rem;text-align:left;vertical-align:top}th{background:#f3f3f3}pre,code{font-family:ui-monospace,Consolas,monospace;font-size:.86rem}pre{background:#f6f6f6;padding:.6rem;overflow-x:auto}@media(prefers-color-scheme:dark){body{color:#e6e6e6;background:#151515}th{background:#222}pre{background:#222}}</style>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">Kwant - Theory and Practice - User Manual</h1>
+</header>
+<nav id="TOC" role="doc-toc">
+<ul>
+<li><a href="#what-it-is" id="toc-what-it-is">1. What it is</a></li>
+<li><a href="#installation" id="toc-installation">2. Installation</a>
+<ul>
+<li><a href="#windows-one-command" id="toc-windows-one-command">2.1
+Windows (one command)</a></li>
+<li><a href="#linux-macos-or-an-existing-conda" id="toc-linux-macos-or-an-existing-conda">2.2 Linux, macOS, or an
+existing conda</a></li>
+<li><a href="#why-numpy2.5" id="toc-why-numpy2.5">2.3 Why
+<code>numpy&lt;2.5</code></a></li>
+<li><a href="#verify" id="toc-verify">2.4 Verify</a></li>
+</ul></li>
+<li><a href="#running-the-notebooks" id="toc-running-the-notebooks">3.
+Running the notebooks</a></li>
+<li><a href="#map-of-the-course" id="toc-map-of-the-course">4. Map of
+the course</a>
+<ul>
+<li><a href="#part-i-kwant-and-transport-theory" id="toc-part-i-kwant-and-transport-theory">Part I — Kwant and transport
+theory</a></li>
+<li><a href="#part-ii-topological-matter" id="toc-part-ii-topological-matter">Part II — Topological
+matter</a></li>
+</ul></li>
+<li><a href="#exercises-and-solutions" id="toc-exercises-and-solutions">5. Exercises and solutions</a></li>
+<li><a href="#the-support-scripts" id="toc-the-support-scripts">6. The
+support scripts</a>
+<ul>
+<li><a href="#verify_kwant.py" id="toc-verify_kwant.py">6.1
+<code>verify_kwant.py</code></a></li>
+<li><a href="#test_thread_safety.py" id="toc-test_thread_safety.py">6.2
+<code>test_thread_safety.py</code></a></li>
+</ul></li>
+<li><a href="#logs-and-audit" id="toc-logs-and-audit">7. Logs and
+audit</a></li>
+<li><a href="#tests" id="toc-tests">8. Tests</a></li>
+<li><a href="#editing-and-re-executing" id="toc-editing-and-re-executing">9. Editing and re-executing</a></li>
+<li><a href="#the-dev-directory" id="toc-the-dev-directory">10. The
+<code>dev/</code> directory</a></li>
+<li><a href="#parallelism-read-before-you-parallelise" id="toc-parallelism-read-before-you-parallelise">11. Parallelism — read
+before you parallelise</a></li>
+<li><a href="#upstream-findings" id="toc-upstream-findings">12. Upstream
+findings</a></li>
+<li><a href="#the-course" id="toc-the-course">12.1 The course</a></li>
+<li><a href="#workflows" id="toc-workflows">13. Workflows</a></li>
+<li><a href="#features-and-limitations" id="toc-features-and-limitations">14. Features and limitations</a>
+<ul>
+<li><a href="#features" id="toc-features">14.1 Features</a></li>
+<li><a href="#known-limitations" id="toc-known-limitations">14.2 Known
+limitations</a></li>
+</ul></li>
+<li><a href="#licence-and-attribution" id="toc-licence-and-attribution">15. Licence and attribution</a></li>
+</ul>
+</nav>
+<h1 id="what-it-is">1. What it is</h1>
+<p><em>Kwant — Theory and Practice</em> is a course on quantum transport
+in one executed Jupyter notebook, built against <a href="https://kwant-project.org">Kwant</a> 1.5. Each of its 26 sections
+states a piece of theory, builds the corresponding tight-binding system
+with Kwant, computes what the theory predicts, and compares the two in
+the same cell. A companion notebook works every one of the 25 exercises
+with assertions.</p>
+<table>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr>
+<th>File</th>
+<th>Content</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>Kwant_Theory_and_Practice.ipynb</code></td>
+<td>86 cells (53 code, 33 markdown), 68 figures, 25 exercises</td>
+</tr>
+<tr>
+<td><code>Kwant_Exercises_Solutions.ipynb</code></td>
+<td>51 cells (24 code, 27 markdown), 18 figures, 31 assertions</td>
+</tr>
+<tr>
+<td><code>install_kwant_windows.ps1</code>, <code>.bat</code></td>
+<td>Windows installer</td>
+</tr>
+<tr>
+<td><code>verify_kwant.py</code></td>
+<td>installation check with physics identities</td>
+</tr>
+<tr>
+<td><code>test_thread_safety.py</code></td>
+<td>regression test for the MUMPS thread crash</td>
+</tr>
+<tr>
+<td><code>tests/</code></td>
+<td>pytest suite</td>
+</tr>
+<tr>
+<td><code>dev/</code></td>
+<td>standalone scripts the notebooks were built from</td>
+</tr>
+<tr>
+<td><code>course/</code></td>
+<td>the undergraduate course: slides
+(<code>course/deck/index.html</code>), a PDF of the deck, handout,
+lecturer notes</td>
+</tr>
+<tr>
+<td><code>scripts/</code></td>
+<td>weekly upstream watch (<code>watch_upstream.py</code>) and its
+scheduler entry</td>
+</tr>
+</tbody>
+</table>
+<p>Section 14 lists every feature and every known limitation in one
+place.</p>
+<h1 id="installation">2. Installation</h1>
+<h2 id="windows-one-command">2.1 Windows (one command)</h2>
+<p>Double-click <code>install_kwant_windows.bat</code>, or from
+PowerShell:</p>
+<pre><code>powershell -ExecutionPolicy Bypass -File .\install_kwant_windows.ps1 [-EnvName kwant] [-PythonVer 3.13] [-Force] [-SkipInit]</code></pre>
+<table>
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 33%" />
+<col style="width: 33%" />
+</colgroup>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Default</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>-EnvName</code></td>
+<td><code>kwant</code></td>
+<td>conda environment to create; also the Jupyter kernel name</td>
+</tr>
+<tr>
+<td><code>-PythonVer</code></td>
+<td><code>3.13</code></td>
+<td>Python version (conda-forge has Kwant 1.5.0 builds for
+3.11–3.13)</td>
+</tr>
+<tr>
+<td><code>-Force</code></td>
+<td>off</td>
+<td>remove and recreate the environment if it exists</td>
+</tr>
+<tr>
+<td><code>-SkipInit</code></td>
+<td>off</td>
+<td>do not run <code>conda init</code> for PowerShell and cmd.exe</td>
+</tr>
+</tbody>
+</table>
+<p>What it does, in order: finds conda (or downloads and silently
+installs Miniforge3 from GitHub); creates the environment from
+conda-forge with <code>kwant</code>, <code>numpy&lt;2.5</code>,
+<code>scipy</code>, <code>matplotlib</code>, <code>ipykernel</code>,
+<code>jupyterlab</code>; installs the optional extras best-effort
+(<code>python-mumps</code>, <code>sympy</code>, <code>qsymm</code>,
+<code>plotly</code>, <code>ipympl</code>) so one unavailable package
+cannot fail the install; registers a Jupyter kernel named
+<strong><code>kwant</code></strong> (“Python (kwant)”), which is the
+name both notebooks are pinned to; runs <code>conda init</code>; runs a
+real transport calculation to verify. It needs network access and about
+2 GB of disk; it does not touch any other environment.</p>
+<h2 id="linux-macos-or-an-existing-conda">2.2 Linux, macOS, or an
+existing conda</h2>
+<pre><code>conda create -n kwant -c conda-forge kwant &quot;numpy&lt;2.5&quot; scipy matplotlib sympy python-mumps ipykernel jupyterlab
+conda activate kwant
+python -m ipykernel install --user --name kwant --display-name &quot;Python (kwant)&quot;
+python verify_kwant.py</code></pre>
+<p><code>pip install kwant</code> is not recommended: Kwant has compiled
+extensions and needs MUMPS for acceptable speed; conda-forge ships
+both.</p>
+<h2 id="why-numpy2.5">2.3 Why <code>numpy&lt;2.5</code></h2>
+<p>numpy 2.5.0 (June 2026) removed the 2-vector form of
+<code>np.cross</code>, which the released Kwant 1.5.0 still uses in
+<code>kwant.physics.magnetic_gauge</code>. On numpy ≥ 2.5 that function
+raises
+<code>ValueError: Both input arrays must be (arrays of) 3-dimensional vectors</code>
+for every 2-D system. The fix has been on Kwant’s main branch since
+January 2025 but is in no release. The notebooks do not call
+<code>magnetic_gauge</code> (they use explicit Peierls phases), so they
+run on any numpy 2.x; the pin only protects users who want that
+function. <code>verify_kwant.py</code> reports the breakage as a
+warning. Remove the pin once a Kwant release carries the fix.</p>
+<h2 id="verify">2.4 Verify</h2>
+<pre><code>python verify_kwant.py</code></pre>
+<p>runs seven groups of checks: core imports and versions; optional
+components (MUMPS, <code>kwant.continuum</code>/sympy,
+<code>kwant.qsymm</code>, plotly); conductance quantisation of a clean
+wire at four energies (T must equal the number of propagating modes to
+1e-6); exact identities (S-matrix unitarity to 1e-9, the sum rule T + R
+= N, wave-function count, the density and current operators,
+<code>magnetic_gauge</code>); sparse diagonalisation of a closed dot;
+the lead band structure; and symbolic discretisation with
+<code>kwant.continuum</code>. It ends with a one-line result and the
+interpreter path to select in your editor.</p>
+<h1 id="running-the-notebooks">3. Running the notebooks</h1>
+<ul>
+<li>Open <code>Kwant_Theory_and_Practice.ipynb</code> in JupyterLab or
+VS Code and choose the kernel <strong>Python (kwant)</strong>. If your
+kernel has another name, select it once; Jupyter remembers the choice
+per notebook.</li>
+<li>Use <strong>Run All</strong> (or <em>Restart kernel and run all
+cells</em>). Figure numbers come from a global counter defined in cell
+2, so they are only sequential under a full run; re-running a single
+cell advances the counter (harmless).</li>
+<li>Timings on a laptop with MUMPS: main notebook about 4½ minutes (280
+s), solutions about 2 minutes (132 s), measured 2026-08-31 on the
+shipped 86- and 51-cell notebooks. Without MUMPS (SciPy’s SuperLU)
+expect 3–5× longer.</li>
+<li>Cell 1 prints the versions in use and which sparse solver is active,
+and mutes three library warnings (see 14.2).</li>
+<li>The notebooks are self-contained: no data files, no downloads, no
+imports between them.</li>
+</ul>
+<h1 id="map-of-the-course">4. Map of the course</h1>
+<h2 id="part-i-kwant-and-transport-theory">Part I — Kwant and transport
+theory</h2>
+<table>
+<colgroup>
+<col style="width: 25%" />
+<col style="width: 25%" />
+<col style="width: 25%" />
+<col style="width: 25%" />
+</colgroup>
+<thead>
+<tr>
+<th>§</th>
+<th>Title</th>
+<th>Theory</th>
+<th>Kwant</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>From the Schrödinger equation to a tight-binding lattice</td>
+<td>finite differences, the tight-binding limit</td>
+<td>—</td>
+</tr>
+<tr>
+<td>2</td>
+<td>The object model</td>
+<td>graphs, sites, symmetries</td>
+<td><code>Builder</code>, <code>lattice</code>,
+<code>HoppingKind</code>, <code>finalized()</code></td>
+</tr>
+<tr>
+<td>3</td>
+<td>First transport calculation — a quantum wire</td>
+<td>conductance quantisation</td>
+<td><code>smatrix</code>, <code>attach_lead</code></td>
+</tr>
+<tr>
+<td>4</td>
+<td>Scattering theory: Landauer–Büttiker and Fisher–Lee</td>
+<td>derived, then unitarity and sum rule checked</td>
+<td><code>SMatrix</code></td>
+</tr>
+<tr>
+<td>5</td>
+<td>Shapes, spatially varying values, runtime parameters</td>
+<td>quantum-well resonances</td>
+<td><code>shape</code>, value functions, <code>params</code></td>
+</tr>
+<tr>
+<td>6</td>
+<td>Spin</td>
+<td>Rashba, Zeeman</td>
+<td><code>norbs</code>, matrix values</td>
+</tr>
+<tr>
+<td>7</td>
+<td>Band structure and closed systems</td>
+<td>Bloch theorem, Fock–Darwin</td>
+<td><code>physics.Bands</code>, <code>hamiltonian_submatrix</code></td>
+</tr>
+<tr>
+<td>8</td>
+<td>Beyond square lattices — graphene</td>
+<td>Dirac cones, Klein tunnelling</td>
+<td><code>lattice.honeycomb</code>, sublattices</td>
+</tr>
+<tr>
+<td>9</td>
+<td>Superconductivity</td>
+<td>BdG, Andreev reflection, discrete symmetries</td>
+<td>particle-hole in <code>Builder</code>,
+<code>conservation_law</code></td>
+</tr>
+<tr>
+<td>10</td>
+<td>Local observables</td>
+<td>density, current</td>
+<td><code>operator.Density</code>, <code>operator.Current</code></td>
+</tr>
+<tr>
+<td>11</td>
+<td>Visualisation</td>
+<td>—</td>
+<td><code>plot</code>, <code>plotter.map</code>,
+<code>plotter.current</code>, 3D</td>
+</tr>
+<tr>
+<td>12</td>
+<td>The kernel polynomial method</td>
+<td>Chebyshev expansion of the DOS</td>
+<td><code>kpm.SpectralDensity</code></td>
+</tr>
+<tr>
+<td>13</td>
+<td><code>kwant.continuum</code></td>
+<td>symbolic → discretised Hamiltonians</td>
+<td><code>discretize</code>, <code>lambdify</code></td>
+</tr>
+<tr>
+<td>14</td>
+<td>Magnetic fields</td>
+<td>Peierls substitution, Landau levels, Hofstadter butterfly</td>
+<td>value functions with phases, <code>discretize_landau</code></td>
+</tr>
+<tr>
+<td>15</td>
+<td>Solvers, performance and scaling</td>
+<td>sparse direct solvers; parallel sweeps</td>
+<td><code>solvers.mumps</code>, <code>solvers.sparse</code>, threads vs
+processes</td>
+</tr>
+<tr>
+<td>16</td>
+<td>Pitfalls</td>
+<td>the things that actually go wrong</td>
+<td>—</td>
+</tr>
+</tbody>
+</table>
+<h2 id="part-ii-topological-matter">Part II — Topological matter</h2>
+<table>
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 33%" />
+<col style="width: 33%" />
+</colgroup>
+<thead>
+<tr>
+<th>§</th>
+<th>Model</th>
+<th>Invariant computed</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>17</td>
+<td>SSH chain</td>
+<td>winding number; edge states</td>
+</tr>
+<tr>
+<td>18</td>
+<td>Kitaev chain</td>
+<td>Pfaffian Z₂; Majorana zero modes</td>
+</tr>
+<tr>
+<td>19</td>
+<td>Majorana nanowire</td>
+<td>topological phase diagram; zero-bias peak in transport</td>
+</tr>
+<tr>
+<td>20</td>
+<td>Thouless pump</td>
+<td>Chern number in (k, t); pumped charge</td>
+</tr>
+<tr>
+<td>21</td>
+<td>Haldane model</td>
+<td>Chern number (Fukui–Hatsugai–Suzuki); Berry curvature on the torus
+(3D)</td>
+</tr>
+<tr>
+<td>22</td>
+<td>Kane–Mele model</td>
+<td>Z₂; helical edge density</td>
+</tr>
+<tr>
+<td>23</td>
+<td>p+ip superconductor</td>
+<td>chiral Majorana edge; vortex modes</td>
+</tr>
+<tr>
+<td>24</td>
+<td>BBH quadrupole</td>
+<td>quadrupole moment; corner modes</td>
+</tr>
+<tr>
+<td>25</td>
+<td>Weyl semimetal</td>
+<td>sliced Chern numbers; Fermi arcs</td>
+</tr>
+<tr>
+<td>26</td>
+<td>3D topological insulator</td>
+<td>surface Dirac cone; layer-resolved spectrum</td>
+</tr>
+</tbody>
+</table>
+<p>Section 27 is a reference shelf; the final cell states sources,
+attribution and the licence.</p>
+<h1 id="exercises-and-solutions">5. Exercises and solutions</h1>
+<p>Exercises are collected at the end of each part (E1.1–E1.11,
+E2.1–E2.14). Each carries a difficulty mark — ◦ direct, • requires
+thought, ★ mini-project — and an origin flag: <em>from the Kwant
+tutorial</em>, <em>after topocondmat.org</em>, <em>after Asbóth</em>, or
+<em>original</em>. E1.11 and E2.14 are pencil-and-paper.</p>
+<p><code>Kwant_Exercises_Solutions.ipynb</code> has one section per
+exercise with the same tag, a worked solution, and at least one
+<code>assert</code> stating the expected physics (a quantised value, a
+decay law, a sign). The test suite checks that the two sets of tags
+match one to one.</p>
+<h1 id="the-support-scripts">6. The support scripts</h1>
+<h2 id="verify_kwant.py">6.1 <code>verify_kwant.py</code></h2>
+<pre><code>python verify_kwant.py [--outdir DIR] [--log-dir DIR] [--json] [--verbose | --quiet] [--version]</code></pre>
+<table>
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 33%" />
+<col style="width: 33%" />
+</colgroup>
+<thead>
+<tr>
+<th>Option</th>
+<th>Default</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>--outdir</code></td>
+<td><code>.</code></td>
+<td>where <code>verify_kwant_summary.json</code> and the
+<code>logs/</code> folder go</td>
+</tr>
+<tr>
+<td><code>--log-dir</code></td>
+<td><code>&lt;outdir&gt;/logs</code></td>
+<td>where the audit log goes</td>
+</tr>
+<tr>
+<td><code>--json</code></td>
+<td>off</td>
+<td>also print the summary JSON on stdout</td>
+</tr>
+<tr>
+<td><code>--verbose</code></td>
+<td>off</td>
+<td>show details (default solver name, tracebacks)</td>
+</tr>
+<tr>
+<td><code>--quiet</code></td>
+<td>off</td>
+<td>print only the one-line result</td>
+</tr>
+</tbody>
+</table>
+<p>Exit code 0: all checks passed (warnings allowed); 1: at least one
+failure; 2: Kwant could not be imported. The summary JSON has
+<code>kwant</code>, <code>numpy</code>, <code>scipy</code>,
+<code>optional</code> (<code>mumps</code>, <code>continuum</code>,
+<code>default_solver</code>), <code>ok</code>, <code>warnings</code>,
+<code>failures</code>, <code>log</code>, <code>exit_code</code>.</p>
+<h2 id="test_thread_safety.py">6.2
+<code>test_thread_safety.py</code></h2>
+<pre><code>python test_thread_safety.py [--workers 4] [--energies 64] [--tol 1e-12] [--no-canary]
+                             [--canary-timeout 300] [--outdir DIR] [--log-dir DIR] [--json] [--verbose | --quiet] [--version]</code></pre>
+<p>Check 1 runs an energy sweep with <code>kwant.solvers.sparse</code>
+in a thread pool and requires it to equal the serial sweep to
+<code>--tol</code>. Check 2 (the canary) runs the <em>crashing</em>
+pattern — <code>kwant.smatrix</code> with MUMPS in threads — in a child
+process and reports whether it crashed (expected) or survived (a future
+Kwant/python-mumps may make it safe). <code>--no-canary</code> skips
+check 2. Exit code 0 means check 1 passed. The summary JSON has
+<code>safe_path_maxdiff</code> and <code>canary</code>
+(<code>crashed</code>, <code>survived</code>, <code>skipped</code>, or
+<code>skipped: MUMPS not installed</code>).</p>
+<h1 id="logs-and-audit">7. Logs and audit</h1>
+<p>Every run of either script writes
+<code>&lt;outdir&gt;/logs/&lt;script&gt;_&lt;YYYYmmdd_HHMMSS&gt;.log</code>
+containing the exact command line, Python and platform, package
+versions, every message at every verbosity, and the exit code; and
+<code>&lt;outdir&gt;/&lt;script&gt;_summary.json</code>.
+<code>--log-dir</code> moves the log. Both are gitignored.</p>
+<h1 id="tests">8. Tests</h1>
+<pre><code>python -m pytest tests -q                                     # ~10 s
+KWANT_NB_EXECUTE=1 python -m pytest tests/test_execute_notebooks.py -q   # ~6 min</code></pre>
+<p><code>tests/test_notebooks.py</code> asserts, without a kernel: both
+notebooks pinned to kernel <code>kwant</code>; every code cell executed
+with no error output; cell, code-cell and figure counts (86/53/68 and
+51/24/18); 25 exercises matched one-to-one to solution sections; no
+personal paths or e-mail addresses in any cell or output; the
+attribution cell present. <code>tests/test_scripts.py</code> asserts the
+CLI contract of both scripts (every option in <code>--help</code> with
+its default, log and JSON written, <code>--log-dir</code>,
+<code>--quiet</code>). <code>tests/test_execute_notebooks.py</code>
+executes both notebooks from a cold kernel into a temporary directory
+and requires zero errors and the committed figure count; it runs only
+with <code>KWANT_NB_EXECUTE=1</code>. CI runs all three on Linux and
+Windows with conda-forge Kwant + MUMPS.</p>
+<h1 id="editing-and-re-executing">9. Editing and re-executing</h1>
+<p>Change source cells, never outputs. Then re-execute in place:</p>
+<pre><code>python -m jupyter nbconvert --to notebook --execute --inplace --ExecutePreprocessor.kernel_name=kwant Kwant_Theory_and_Practice.ipynb</code></pre>
+<p>and run the tests. If a count changed, update
+<code>tests/test_notebooks.py</code>, <code>README.md</code>,
+<code>CITATION.cff</code> and section 1 of this manual together.</p>
+<h1 id="the-dev-directory">10. The <code>dev/</code> directory</h1>
+<p>Standalone scripts from which the notebooks were assembled, kept as
+the runnable per-model reference: <code>dev18_ssh.py</code> …
+<code>dev27_ti3d.py</code> (Part II), <code>dev_butterfly3d.py</code>,
+the cell sources <code>cells_a–c.py</code> and
+<code>sol_part1-2.py</code>, and the thread-crash reproductions
+(<code>thread_repro.py</code>, <code>thread_scipy.py</code>,
+<code>thread_variants.py</code>, <code>proc_test.py</code>,
+<code>bench.py</code>). <code>dev/build-history/</code> holds the four
+one-shot scripts that wrote or patched the notebooks; they exit unless
+<code>KWANT_NB_REBUILD=1</code> is set, because re-running them would
+duplicate cells.</p>
+<h1 id="parallelism-read-before-you-parallelise">11. Parallelism — read
+before you parallelise</h1>
+<p><code>kwant.smatrix</code> releases the GIL, so a
+<code>ThreadPoolExecutor</code> looks like the obvious way to speed up
+an energy sweep. <strong>With MUMPS installed this segfaults the
+process</strong>: MUMPS is not re-entrant, and giving each thread its
+own solver instance does not help. Section 15 of the notebook
+demonstrates the two safe options — <code>kwant.solvers.sparse</code>
+(SuperLU) in threads, or one process per worker — and
+<code>test_thread_safety.py</code> guards the notebook against
+regressing. A patch that makes <code>kwant.solvers.mumps</code>
+thread-safe was prepared for the Kwant project
+(<code>docs/drafts/patches/0001-*.patch</code>).</p>
+<h1 id="upstream-findings">12. Upstream findings</h1>
+<p>Studying Kwant for this course produced findings for the Kwant
+project, documented in <code>docs/01-upstream-audit.md</code> with
+statuses in <code>docs/02-findings-backlog.md</code>: the MUMPS thread
+crash (unreported; patch prepared); the numpy ≥ 2.5 breakage of
+<code>magnetic_gauge</code> in the released 1.5.0; the
+<code>site_color</code> callable receiving a <code>Site</code> for a
+builder but an index for a finalized system (documentation gap); the
+meaning and periodicity of <code>wraparound</code> momenta
+(documentation gap); <code>kwant.plotter</code> resetting all warning
+filters after a 3D plot (patch prepared). Issue texts and patches are in
+<code>docs/drafts/</code>.</p>
+<h1 id="the-course">12.1 The course</h1>
+<p><code>course/deck/index.html</code> is a reveal.js deck (offline) of
+ten sections and 79 slides in <strong>one linear sequence</strong> —
+previous/next only, no build animations; inside each section the slides
+go from plain language to Kwant code to the mathematics, and a generated
+opener with a level-coloured agenda starts each section. <code>S</code>
+shows the speaker notes. All 68 figures of the main notebook appear,
+each under its full caption with its section and cell
+(<code>course/figures/figures.json</code> maps them). Fallbacks for any
+projector: <code>course/deck/slides.pdf</code> (landscape, one slide per
+page) and <code>course/deck/slides.html</code> (the same slides as one
+static page, no JavaScript). <code>course/handout/handout.pdf</code> is
+the A4 companion (reference card, key equations, the models table,
+pitfalls); <code>course/lecturer_notes.md</code> has every slide’s text
+and notes in order. Rebuild after changing the notebook or
+<code>course/deck/content_en.py</code> with
+<code>python course/build_course.py</code>;
+<code>tests/test_course.py</code> reads the committed files back.</p>
+<h1 id="workflows">13. Workflows</h1>
+<ul>
+<li><strong>Study</strong>: Run All, then read top to bottom; each
+section is self-contained except that Part II reuses two helpers:
+<code>chern_fhs</code> (defined in section 20) and
+<code>bloch_hamiltonian</code> (section 21).</li>
+<li><strong>Teach</strong>: the exercises at the end of each part are
+the assignment; the solutions notebook is the marking key (its
+assertions are the rubric).</li>
+<li><strong>Check a new Kwant or numpy release</strong>:
+<code>python verify_kwant.py</code>, then
+<code>KWANT_NB_EXECUTE=1 python -m pytest tests -q</code>.</li>
+</ul>
+<h1 id="features-and-limitations">14. Features and limitations</h1>
+<h2 id="features">14.1 Features</h2>
+<ul>
+<li>Executed, re-executable course: 86 cells, 68 figures, all from a
+cold run; the test suite re-executes and requires zero errors and the
+same figures.</li>
+<li>Theory derived next to the numerical check in every section of Part
+I.</li>
+<li>Ten topological models with their invariants computed from the Kwant
+system (winding, Pfaffian, FHS Chern, Z₂, sliced Chern,
+quadrupole).</li>
+<li>25 origin- and difficulty-flagged exercises; solutions notebook with
+31 assertions; tags matched one-to-one by the tests.</li>
+<li>~126 literature citations with years; 10 spot-checked against
+Crossref.</li>
+<li>Windows installer with self-verification; conda one-liner
+elsewhere.</li>
+<li><code>verify_kwant.py</code>: physics-identity installation check,
+CLI, log, JSON.</li>
+<li><code>test_thread_safety.py</code>: MUMPS thread-crash regression
+test, CLI, log, JSON.</li>
+<li>Test suite and CI (Linux, Windows) covering notebook invariants, CLI
+contract and cold-kernel execution.</li>
+<li>Apache-2.0 licence; attribution cell for the three sources used as
+models; <code>CITATION.cff</code>; <code>AGENTS.md</code> for AI
+agents.</li>
+</ul>
+<h2 id="known-limitations">14.2 Known limitations</h2>
+<ul>
+<li><strong>Pinned to Kwant 1.5</strong> (and <code>numpy&lt;2.5</code>
+for <code>magnetic_gauge</code>, see 2.3); API changes in a future Kwant
+release may require edits. <code>verify_kwant.py</code> is the first
+thing to run after upgrading.</li>
+<li><strong>Installer is Windows-only</strong>; other platforms use the
+conda lines in 2.2.</li>
+<li><strong>Figure numbering is a global counter</strong>: sequential
+only under Run All.</li>
+<li><strong>Three library warnings are muted</strong> in cell 1 (kwant
+1.5.0’s 3D plotter calling a matplotlib function deprecated in 3.10 —
+fixed upstream but unreleased; mpmath’s deprecated <code>bitcount</code>
+via sympy; kwant’s <code>plotter.map</code> overflow note for delta-like
+densities). They are muted by wrapping
+<code>warnings.showwarning</code>, not with <code>filterwarnings</code>,
+because <code>kwant.plotter</code> resets all warning filters on every
+3D plot (reported upstream). Only those three messages are muted;
+everything else shows.</li>
+<li><strong>Timings and eigensolver signs vary run to run</strong>:
+printed wall times differ; degenerate ±E BdG pairs are printed as
+|E|.</li>
+<li><strong>Tested on one machine</strong> by the author (Windows 10,
+Python 3.13, conda-forge Kwant 1.5.0 + python-mumps 0.0.6, numpy 2.5.1 —
+i.e. <em>above</em> the pin, with <code>magnetic_gauge</code> unusable
+and unused); the pinned <code>numpy&lt;2.5</code> configuration is the
+one CI installs on Linux, Windows and macOS, not the author’s
+laptop.</li>
+<li><strong>MUMPS threads</strong>: never call
+<code>kwant.smatrix</code> from threads with MUMPS installed (section 11
+of this manual).</li>
+<li><strong>Part II cross-cell dependency</strong>: sections 21–26 reuse
+<code>chern_fhs</code> from section 20 and sections 22–26 reuse
+<code>bloch_hamiltonian</code> from section 21; run Part II in
+order.</li>
+<li><strong>No plotly/interactive figures</strong>; 3D plots are static
+matplotlib.</li>
+</ul>
+<h1 id="licence-and-attribution">15. Licence and attribution</h1>
+<p>Apache License 2.0 (see <code>LICENSE</code>). The Kwant tutorial
+(BSD-2), topocondmat.org (CC BY-SA 4.0 text, BSD-3 code) and Asbóth,
+Oroszlány &amp; Pályi’s <em>A Short Course on Topological
+Insulators</em> served as models for some exercises and for the
+pedagogical route through Part II; each such exercise is flagged,
+nothing is reproduced verbatim, and the notebook’s final cell states
+this. Kwant is © the Kwant authors, BSD-2. Cite with
+<code>CITATION.cff</code>.</p>
+</body>
+</html>

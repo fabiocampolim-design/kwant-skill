@@ -1,0 +1,46 @@
+From 57a85c7e374b0f8ea40456c5b782a51304cb7093 Mon Sep 17 00:00:00 2001
+From: Fabio Campolim <250239356+fabiocampolim-design@users.noreply.github.com>
+Date: Fri, 28 Aug 2026 22:15:46 -0300
+Subject: [PATCH 3/4] wraparound: document the meaning and periodicity of the
+ momentum parameters
+
+The docstring never says what k_x, k_y, ... are.  They are the Bloch
+phases across the primitive vectors of the symmetry, so they are
+2*pi-periodic and the zone is always [-pi, pi]**d in these coordinates.
+Users who reparametrize them as Cartesian wave vectors (the natural thing
+to do for a non-rectangular lattice, and what plot_2d_bands does for
+plotting) get coordinates that are not periodic point by point; totals
+such as Chern numbers survive that, local densities such as the Berry
+curvature do not.  Spell this out in the Notes.
+---
+ src/kwant/wraparound.py | 14 ++++++++++++++
+ 1 file changed, 14 insertions(+)
+
+diff --git a/src/kwant/wraparound.py b/src/kwant/wraparound.py
+index 2be73bd..2263d1d 100644
+--- a/src/kwant/wraparound.py
++++ b/src/kwant/wraparound.py
+@@ -74,6 +74,20 @@ def wraparound(builder, keep=None, *, coordinate_names='xyz'):
+ 
+     Notes
+     -----
++    The momentum parameters are the Bloch *phases* across the primitive
++    vectors of the translational symmetry: a hopping by the symmetry element
++    ``n = (n_1, n_2, ...)`` is multiplied by ``exp(1j * (n_1 k_1 + n_2 k_2 +
++    ...))``.  Each ``k_i`` is therefore 2*pi-periodic by construction and the
++    Brillouin zone in these coordinates is always the cube ``[-pi, pi]**d``,
++    whatever the shape of the lattice.  Reparametrizing them in terms of
++    Cartesian wave vectors (multiplying by the reciprocal lattice vectors,
++    as `kwant.wraparound.plot_2d_bands` does for plotting) gives coordinates
++    that are in general *not* periodic point by point.  That is harmless for
++    quantities integrated over the whole zone, such as Chern numbers, but a
++    local quantity evaluated on such a grid, for example a Berry curvature
++    density, is wrong along the zone boundary: sample it in the native
++    ``k_i`` coordinates instead.
++
+     Wraparound is stop-gap functionality until Kwant 2.x which will include
+     support for higher-dimension translational symmetry in the low-level system
+     format. It will be deprecated in the 2.0 release of Kwant.
+-- 
+2.55.0.windows.4
+
