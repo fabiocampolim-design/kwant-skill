@@ -4,13 +4,13 @@
 """
 build_course.py -- build the undergraduate course from one content source.
 
-    python course/build_course.py [--outdir DIR] [--notebook FILE] [--log-dir DIR]
+    python course/build_course.py [--outdir DIR] [--chapters DIR] [--log-dir DIR]
                                   [--skip-handout] [--verbose | --quiet] [--version]
 
 Inputs
   course/deck/content_en.py        every slide: layout, text, figure, notes (the source of truth),
                                    plus PLACEMENT: where each remaining notebook figure gets its page
-  Kwant_Theory_and_Practice.ipynb  the executed notebook -- every course figure is one of its outputs
+  chapters/01_*.ipynb .. 12_*.ipynb  the executed chapter notebooks -- every course figure is one of their outputs
   course/handout/handout.md        the printable companion handout (Markdown)
 
 Outputs (under --outdir, default course/)
@@ -96,30 +96,40 @@ def caption_plain(text: str) -> str:
 
 
 # ---------------------------------------------------------------- figures
-def extract_figures(notebook: Path, outdir: Path) -> list[dict]:
-    """Write every image/png output of the notebook to outdir/fig-NN.png, numbered
-    in notebook order (the same numbers the notebook's captions carry), and return
-    the manifest: number, cell index, section heading, caption."""
-    nb = json.loads(notebook.read_text(encoding="utf-8"))
+def chapter_notebooks(chapters: Path) -> list[Path]:
+    """The twelve chapter notebooks, in course order (01_ ... 12_; the contents
+    and solutions notebooks are not part of the figure sequence)."""
+    return sorted(p for p in chapters.glob("[0-9][0-9]_*.ipynb") if not p.name.startswith("00_"))
+
+
+def extract_figures(chapters: Path, outdir: Path) -> list[dict]:
+    """Write every image/png output of the chapter notebooks to outdir/fig-NN.png,
+    numbered in course order (the same numbers the notebooks' captions carry --
+    the figure counter continues across chapters), and return the manifest:
+    number, notebook file, cell index in that notebook, section heading, caption."""
     outdir.mkdir(parents=True, exist_ok=True)
     for old in outdir.glob("fig-*.png"):
         old.unlink()
-    manifest, section, n = [], "", 0
-    for i, cell in enumerate(nb["cells"]):
-        src = "".join(cell["source"])
-        if cell["cell_type"] == "markdown":
-            m = re.search(r"^## (.+)$", src, re.M)
-            if m:
-                section = m.group(1).strip()
-            continue
-        captions = re.findall(r"show_fig\(\s*r?['\"](.*?)['\"]\s*\)", src, re.S)
-        pngs = [o["data"]["image/png"] for o in cell.get("outputs", []) if "image/png" in o.get("data", {})]
-        for j, png in enumerate(pngs):
-            n += 1
-            data = png if isinstance(png, str) else "".join(png)
-            (outdir / f"fig-{n:02d}.png").write_bytes(base64.b64decode(data))
-            cap = captions[j] if j < len(captions) else ""
-            manifest.append({"n": n, "cell": i, "section": section, "caption": cap.strip()})
+    manifest, n = [], 0
+    for notebook in chapter_notebooks(chapters):
+        nb = json.loads(notebook.read_text(encoding="utf-8"))
+        section = ""
+        for i, cell in enumerate(nb["cells"]):
+            src = "".join(cell["source"])
+            if cell["cell_type"] == "markdown":
+                m = re.search(r"^## (\d+\. .+)$", src, re.M)
+                if m:
+                    section = m.group(1).strip()
+                continue
+            captions = re.findall(r"show_fig\(\s*r?['\"](.*?)['\"]\s*\)", src, re.S)
+            pngs = [o["data"]["image/png"] for o in cell.get("outputs", []) if "image/png" in o.get("data", {})]
+            for j, png in enumerate(pngs):
+                n += 1
+                data = png if isinstance(png, str) else "".join(png)
+                (outdir / f"fig-{n:02d}.png").write_bytes(base64.b64decode(data))
+                cap = captions[j] if j < len(captions) else ""
+                manifest.append({"n": n, "notebook": notebook.name, "cell": i, "section": section,
+                                 "caption": cap.strip()})
     (outdir / "figures.json").write_text(json.dumps(manifest, indent=1, ensure_ascii=False) + "\n",
                                          encoding="utf-8")
     return manifest
@@ -170,16 +180,22 @@ def expand_deck(deck: dict, placement: dict[int, str], figures: dict[int, dict])
                 cap = figures.get(n, {}).get("caption", "")
                 slides.append({"id": f"figpage-{n:02d}", "layout": "figpage", "figure": n,
                                "title": f"Figure {n} · {_nb_section(figures, n)}",
-                               "notes": f"Figure {n} of the notebook (cell {figures.get(n, {}).get('cell', '?')}). "
+                               "notes": f"Figure {n} of the course ({_nb_where(figures, n)}). "
                                         f"{caption_plain(cap)}"})
         out["sections"].append({**sec, "slides": slides})
     return out, problems
 
 
+def _nb_where(figures: dict[int, dict], n: int) -> str:
+    """'<chapter notebook>, cell <i>' for a figure of the manifest."""
+    m = figures.get(n, {})
+    return f"{m.get('notebook', '?')}, cell {m.get('cell', '?')}"
+
+
 def fig_meta(figures: dict[int, dict], n: int) -> str:
     m = figures.get(n, {})
     sec = m.get("section", "").replace("`", "")
-    return f'§ {html.escape(sec)} · cell {m.get("cell", "?")}'
+    return f'§ {html.escape(sec)} · {html.escape(_nb_where(figures, n))}'
 
 
 def fig_block(ns: list[int], figures: dict[int, dict], wide: bool = False) -> str:
@@ -369,7 +385,7 @@ def render_notes(deck: dict, figures: dict[int, dict]) -> str:
             for b in slide.get("bullets", []):
                 lines.append(f"- {b}")
             for n in slide.get("figures", [slide["figure"]] if slide.get("figure") else []):
-                lines.append(f"- Figure {n} of the notebook (cell {figures[n]['cell']}): {caption_plain(figures[n]['caption'])}")
+                lines.append(f"- Figure {n} of the course ({_nb_where(figures, n)}): {caption_plain(figures[n]['caption'])}")
             for label, eq in slide.get("equations", []):
                 lines.append(f"- {label}: {eq}")
             if slide.get("code"):
@@ -565,8 +581,8 @@ def build_parser():
                                             "lecturer notes and handout from course/deck/content_en.py.",
                                 formatter_class=argparse.ArgumentDefaultsHelpFormatter)
     p.add_argument("--outdir", default=str(HERE), help="course directory to write into")
-    p.add_argument("--notebook", default=str(ROOT / "Kwant_Theory_and_Practice.ipynb"),
-                   help="executed notebook the figures are taken from")
+    p.add_argument("--chapters", default=str(ROOT / "chapters"),
+                   help="directory of the executed chapter notebooks the figures are taken from")
     p.add_argument("--log-dir", default=None, help="audit-log directory (default <outdir>/logs)")
     p.add_argument("--skip-handout", action="store_true",
                    help="skip the pandoc/xelatex artefacts (handout and slides.pdf)")
@@ -594,8 +610,9 @@ def main(argv=None) -> int:
         if not args.quiet and (not detail or args.verbose):
             print(msg)
 
-    manifest = extract_figures(Path(args.notebook), outdir / "figures")
-    say(f"figures: {len(manifest)} extracted from {Path(args.notebook).name}", detail=True)
+    manifest = extract_figures(Path(args.chapters), outdir / "figures")
+    say(f"figures: {len(manifest)} extracted from {len(chapter_notebooks(Path(args.chapters)))} chapter notebooks "
+        f"in {Path(args.chapters)}", detail=True)
     figures = {m["n"]: m for m in manifest}
     deck_src, placement = load_content(HERE / "deck" / "content_en.py")
     deck, problems = expand_deck(deck_src, placement, figures)

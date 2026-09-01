@@ -67,14 +67,16 @@ checked in the notebook)</a></li>
 </nav>
 <h1 id="what-the-course-is">1. What the course is</h1>
 <p>An undergraduate course on quantum transport in ten stops, taught
-from one executed Jupyter notebook
-(<code>Kwant_Theory_and_Practice.ipynb</code>, Kwant 1.5). Every figure
-on the slides is a numbered figure of that notebook; every equation on
-the slides is computed in it; the exercises at the end of each part are
-solved and asserted in <code>Kwant_Exercises_Solutions.ipynb</code>. The
-deck is a 2-D grid — sections left to right, depth top to bottom, plain
-language first and the mathematics last — so a lecturer can stop each
-section at the audience’s level.</p>
+from twelve executed Jupyter chapter notebooks
+(<code>chapters/01_…</code> to <code>12_…</code>, Kwant 1.5). Every
+figure on the slides is a numbered figure of the course (the numbering
+runs continuously through the chapters); every equation on the slides is
+computed in them; the exercises at the end of each part are solved and
+asserted in <code>chapters/S1_Solutions_Part_I.ipynb</code> and
+<code>S2_Solutions_Part_II.ipynb</code>. The deck is one linear sequence
+— inside each section plain language first, then the Kwant code, the
+mathematics last — so a lecturer can stop each section at the audience’s
+level.</p>
 <table>
 <colgroup>
 <col style="width: 25%" />
@@ -398,12 +400,14 @@ particle–hole symmetry, current conservation, an integer invariant.</li>
 <code>python verify_kwant.py</code> (ends “physically correct”).
 Elsewhere:
 <code>conda create -n kwant -c conda-forge kwant &quot;numpy&lt;2.5&quot; scipy matplotlib sympy python-mumps ipykernel jupyterlab</code>,
-then register the kernel <code>kwant</code>. Open the notebook with the
-kernel <em>Python (kwant)</em> and <strong>Run All</strong> (about 4½
-minutes with MUMPS; the solutions notebook about 2).
-<code>python -m pytest tests</code> checks counts, licence texts and
-documentation; <code>python course/build_course.py</code> rebuilds this
-handout, the deck and the lecturer notes from the executed notebook.</p>
+then register the kernel <code>kwant</code>. Open
+<code>chapters/00_Contents.ipynb</code>, then a chapter, with the kernel
+<em>Python (kwant)</em> and <strong>Run All</strong> (all twelve
+chapters take about 5 minutes with MUMPS; the two solutions notebooks
+about 2). <code>python -m pytest tests</code> checks counts, licence
+texts and documentation; <code>python course/build_course.py</code>
+rebuilds this handout, the deck and the lecturer notes from the executed
+chapters.</p>
 <h1 id="reading">7. Reading</h1>
 <p>Groth, Wimmer, Akhmerov, Waintal, <em>New J. Phys.</em>
 <strong>16</strong>, 063065 (2014) — Kwant. Datta, <em>Electronic
@@ -411,8 +415,8 @@ Transport in Mesoscopic Systems</em> (1995). Nazarov &amp; Blanter,
 <em>Quantum Transport</em> (2009). Asbóth, Oroszlány, Pályi, <em>A Short
 Course on Topological Insulators</em> (Springer 2016; arXiv:1509.02295).
 topocondmat.org (TU Delft). Bernevig &amp; Hughes, <em>Topological
-Insulators and Topological Superconductors</em> (2013). The notebook’s
-section 27 lists the paper behind every model.</p>
+Insulators and Topological Superconductors</em> (2013). Section 27
+(chapter 12) lists the paper behind every model.</p>
 <p><em>Apache License 2.0 — see <code>LICENSE</code> and
 <code>NOTICE</code> in the repository. This course is independent of,
 and not endorsed by, the Kwant authors, TU Delft or the authors of the

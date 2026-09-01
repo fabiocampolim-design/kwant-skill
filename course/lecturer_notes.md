@@ -35,7 +35,7 @@ The deck is one linear sequence: the sections below follow each other in order, 
 - A finer grid means a better approximation to the continuum — and more sites to solve for.
 - Real crystals are lattices: for graphene or a chain of atoms the model is not an approximation at all.
 - Everything else in the course — leads, spin, magnetic fields, superconductivity — is a choice of what sits on the sites and the bonds.
-- Figure 2 of the notebook (cell 6): The same sites with every nearest-neighbour bond, added with lat.neighbors().
+- Figure 2 of the course (01_Foundations.ipynb, cell 5): The same sites with every nearest-neighbour bond, added with lat.neighbors().
 
 **Notes.** The figure is the notebook's 5×5 square lattice with every nearest-neighbour bond drawn. Make the two readings explicit: (1) the grid is a numerical discretisation of a continuum; (2) the grid is a real crystal. Kwant does not care which. The bond picture is the mental model for the whole course: numbers on dots, numbers on lines. Q: "How fine must the grid be?" A: fine enough that the wavelength spans many sites — the next slide gives the number.
 
@@ -72,14 +72,14 @@ fsyst = syst.finalized()             # freeze -> sparse matrices
 **Notes.** Type it live if you can. The Builder is literally a mapping: site → on-site value, (site, site) → hopping. Stress the three kinds of value (number, matrix, function) — each later section is one of them. Finalisation is the moment the lazy description becomes numbers; leads get attached before it. Q: "What does norbs do?" A: the number of orbitals per site — 1 here, 2 for spin, 4 for spinful superconductors; Kwant needs it to interpret matrix values and to compute densities.
 
 ### Figure 1 · The object model
-- Figure 1 of the notebook (cell 6): A 5x5 square-lattice Builder with only horizontal bonds, added via the explicit HoppingKind (1,0).
+- Figure 1 of the course (01_Foundations.ipynb, cell 5): A 5x5 square-lattice Builder with only horizontal bonds, added via the explicit HoppingKind (1,0).
 
-**Notes.** Figure 1 of the notebook (cell 6). A 5x5 square-lattice Builder with only horizontal bonds, added via the explicit HoppingKind (1,0).
+**Notes.** Figure 1 of the course (01_Foundations.ipynb, cell 5). A 5x5 square-lattice Builder with only horizontal bonds, added via the explicit HoppingKind (1,0).
 
 ### Figure 3 · The object model
-- Figure 3 of the notebook (cell 6): lat.neighbors(2) adds the diagonal second-neighbour bonds on top.
+- Figure 3 of the course (01_Foundations.ipynb, cell 5): lat.neighbors(2) adds the diagonal second-neighbour bonds on top.
 
-**Notes.** Figure 3 of the notebook (cell 6). lat.neighbors(2) adds the diagonal second-neighbour bonds on top.
+**Notes.** Figure 3 of the course (01_Foundations.ipynb, cell 5). lat.neighbors(2) adds the diagonal second-neighbour bonds on top.
 
 ### The vocabulary you will use every day
 *Six objects; everything in the course is built from them.*
@@ -95,7 +95,7 @@ fsyst = syst.finalized()             # freeze -> sparse matrices
 - Leads are perfect waveguides: translationally invariant, so their states are Bloch waves with a band structure En(k).
 - At a given energy each lead carries a finite number N of propagating modes.
 - The device mixes them; the scattering matrix records the outcome.
-- Figure 4 of the notebook (cell 8): The canonical two-terminal geometry: a W=10, L=30 wire (blue) with semi-infinite leads (red) attached on both sides; faded sites indicate the leads continuing to infinity.
+- Figure 4 of the course (01_Foundations.ipynb, cell 7): The canonical two-terminal geometry: a W=10, L=30 wire (blue) with semi-infinite leads (red) attached on both sides; faded sites indicate the leads continuing to infinity.
 
 **Notes.** The figure is the notebook's W=10, L=30 wire, drawn by kwant.plot. Point at the lead unit cell being repeated. Introduce 'mode' as 'a transverse standing wave that also travels along the lead'. Q: "Where is the voltage?" A: in the reservoirs the leads end in — they fix the occupation of incoming modes; the leads themselves are ideal.
 
@@ -104,7 +104,7 @@ fsyst = syst.finalized()             # freeze -> sparse matrices
 - Step height e2/h for spinless electrons (2e2/h with spin) — a universal constant, no material parameter in it.
 - A clean wire transmits every open mode perfectly: G = (e2/h) · N(E).
 - First seen in a quantum point contact in 1988 (van Wees; Wharam); this figure is that experiment computed.
-- Figure 5 of the notebook (cell 9): Two-terminal conductance of the clean wire: quantised steps of e2/h, one per transverse subband, as first measured by van Wees et al., PRL 60, 848 (1988).
+- Figure 5 of the course (01_Foundations.ipynb, cell 8): Two-terminal conductance of the clean wire: quantised steps of e2/h, one per transverse subband, as first measured by van Wees et al., PRL 60, 848 (1988).
 
 **Notes.** This is the first result the audience should be able to reproduce from the notebook. Ask them to count the steps and compare with the subband minima on the band-structure slide two slides ahead. Emphasise the universality: the step is a ratio of fundamental constants. Q: "Why is it not infinite for a perfect conductor?" A: the contact resistance — connecting a lead with finitely many modes to a reservoir costs h/e² per mode, however perfect the wire.
 
@@ -124,8 +124,8 @@ fsyst = syst.finalized()             # freeze -> sparse matrices
 *The staircase is the lead's subband structure; a scattering state is one incoming mode plus everything it becomes.*
 - Each subband minimum En opens one channel: transverse quantisation in a strip of width W gives En ≈ 2t[1 − cos(nπ/(W+1))].
 - The scattering state is a standing wave across the wire and a travelling wave along it — with the density pattern of the mode it came from.
-- Figure 12 of the notebook (cell 20): Subbands En(k) of the W=10 lead: every band minimum opens one more conductance channel - the staircase of the previous figure, read off the band structure.
-- Figure 6 of the notebook (cell 13): Probability density of the lowest scattering mode incoming from the left lead at E=0.6: a standing-wave pattern across the width (fixed by the transverse mode) modulated along the wire.
+- Figure 12 of the course (02_Shapes_Spin_and_Bands.ipynb, cell 8): Subbands En(k) of the W=10 lead: every band minimum opens one more conductance channel - the staircase of the previous figure, read off the band structure.
+- Figure 6 of the course (01_Foundations.ipynb, cell 12): Probability density of the lowest scattering mode incoming from the left lead at E=0.6: a standing-wave pattern across the width (fixed by the transverse mode) modulated along the wire.
 
 **Notes.** Left: kwant.physics.Bands of the lead — compare each minimum with a step of the staircase. Right: kwant.wave_function at E = 0.6 for the lowest mode from the left; the density shows the transverse node structure. Q: "What happens at a band maximum?" A: modes close again — the staircase comes back down at the top of the band; on a lattice the band is finite.
 
@@ -159,7 +159,7 @@ assert abs(sm.transmission(0, 0) + G - sm.num_propagating(0)) < 1e-10
 - The well is a cavity; an electron bounces between its ends like light in a Fabry–Pérot etalon.
 - Constructive interference at the quasi-bound energies gives T → 1 peaks; in between, reflection.
 - In Kwant the potential is just a function of the site assigned as the on-site value.
-- Figure 7 of the notebook (cell 15): Transmission through a square well in the wire: Fabry-Perot-like resonances from quasi-bound well states, sweeping down in energy as the well deepens.
+- Figure 7 of the course (02_Shapes_Spin_and_Bands.ipynb, cell 3): Transmission through a square well in the wire: Fabry-Perot-like resonances from quasi-bound well states, sweeping down in energy as the well deepens.
 
 **Notes.** Connect to optics explicitly; students know Fabry–Pérot. The peak positions move with the well depth and length — a good exercise (the notebook has one). Q: "Why are the peaks not delta functions?" A: the states leak into the leads; the width is the inverse lifetime, ħ/τ.
 
@@ -168,8 +168,8 @@ assert abs(sm.transmission(0, 0) + G - sm.num_propagating(0)) < 1e-10
 - lat.shape(stadium, start) floods the lattice from a start site, keeping every site where the predicate is true.
 - Closed systems have no leads: diagonalise fsyst.hamiltonian_submatrix(sparse=True) with scipy.sparse.linalg.eigsh.
 - Chaotic billiards are the playground of random-matrix theory: level statistics, scarring, weak localisation.
-- Figure 8 of the notebook (cell 16): A stadium-shaped dot cut from the square lattice by a shape function - the classic quantum-chaos billiard geometry.
-- Figure 9 of the notebook (cell 16): An eigenstate of the closed stadium high in the spectrum. The stadium billiard is classically chaotic, and its quantum eigenstates are speckled random-wave patterns - with some, like this one, showing enhanced weight along short unstable periodic orbits (Heller scars, PRL 53, 1515 (1984)).
+- Figure 8 of the course (02_Shapes_Spin_and_Bands.ipynb, cell 4): A stadium-shaped dot cut from the square lattice by a shape function - the classic quantum-chaos billiard geometry.
+- Figure 9 of the course (02_Shapes_Spin_and_Bands.ipynb, cell 4): An eigenstate of the closed stadium high in the spectrum. The stadium billiard is classically chaotic, and its quantum eigenstates are speckled random-wave patterns - with some, like this one, showing enhanced weight along short unstable periodic orbits (Heller scars, PRL 53, 1515 (1984)).
 
 **Notes.** The stadium is two half-discs joined by a rectangle; the function is three lines. Show the eigenstate and ask what a classical billiard ball would do — the 'scar' is a quantum memory of an unstable periodic orbit. Q: "Why sparse?" A: the Hamiltonian has ~5 non-zeros per row; a dense matrix for 10⁴ sites would be 800 MB, the sparse one is a few MB.
 
@@ -202,8 +202,8 @@ for V0 in np.linspace(-1, 1, 41):
 - H = −t Σ (c†icj) − iα Σ c†i(σ×dij)z cj + B Σ c†iσzci
 - Rashba splits the subbands in k; Zeeman opens a helical gap at k = 0 where only one spin direction propagates each way.
 - The conductance staircase becomes non-monotonic: a plateau at an odd number of modes signals the helical gap.
-- Figure 10 of the notebook (cell 18): Geometry of the Rashba wire: a W=10 strip with spinful sites (2 orbitals each) and leads on both sides; the spin structure lives in the hopping matrices, not in the layout.
-- Figure 11 of the notebook (cell 18): Conductance of the Rashba + Zeeman wire: the non-monotonic plateau structure signals the helical gap, where spin-momentum locking removes one of the two channels.
+- Figure 10 of the course (02_Shapes_Spin_and_Bands.ipynb, cell 6): Geometry of the Rashba wire: a W=10 strip with spinful sites (2 orbitals each) and leads on both sides; the spin structure lives in the hopping matrices, not in the layout.
+- Figure 11 of the course (02_Shapes_Spin_and_Bands.ipynb, cell 6): Conductance of the Rashba + Zeeman wire: the non-monotonic plateau structure signals the helical gap, where spin-momentum locking removes one of the two channels.
 
 **Notes.** The hopping is a 2×2 matrix that depends on the bond direction — Kwant's HoppingKind gives you (1,0) and (0,1) separately, so the σ×d term is two lines. The helical gap is the ingredient of the Majorana nanowire in section 7; plant that now. Q: "Why does the plateau go down?" A: inside the helical gap one subband is missing at k = 0 — fewer modes at that energy than just above or below.
 
@@ -212,23 +212,23 @@ for V0 in np.linspace(-1, 1, 41):
 - kwant.lattice.honeycomb() has a two-site basis; lat.sublattices gives A and B.
 - A smooth potential step V(x) puts the Fermi level in the conduction band on one side and the valence band on the other.
 - Transmission is suppressed near the Dirac point and revives above it — the notebook's ribbon leads show the folded Dirac cones (fig. 15).
-- Figure 14 of the notebook (cell 23): Circular graphene dot with a smooth p-n junction, sites coloured by sublattice, and two leads attached at 120 degrees.
-- Figure 16 of the notebook (cell 24): Transmission across the p-n junction: suppressed near the Dirac point, where only Klein tunnelling at near-normal incidence survives.
+- Figure 14 of the course (03_Graphene_and_Superconductivity.ipynb, cell 3): Circular graphene dot with a smooth p-n junction, sites coloured by sublattice, and two leads attached at 120 degrees.
+- Figure 16 of the course (03_Graphene_and_Superconductivity.ipynb, cell 4): Transmission across the p-n junction: suppressed near the Dirac point, where only Klein tunnelling at near-normal incidence survives.
 
 **Notes.** The figure on the left is a circular flake with two leads attached at 120°, sites coloured by sublattice — a good demonstration that leads may point in any lattice direction. Klein tunnelling is the headline: the chirality of the Dirac electron forbids backscattering at normal incidence. Q: "Is graphene special for Kwant?" A: no — it is one more lattice; the physics is in the geometry.
 
 ### Figure 15 · Beyond square lattices — graphene
-- Figure 15 of the notebook (cell 24): Subbands of the graphene nanoribbon lead: bulk Dirac cones folded into 1D bands.
+- Figure 15 of the course (03_Graphene_and_Superconductivity.ipynb, cell 4): Subbands of the graphene nanoribbon lead: bulk Dirac cones folded into 1D bands.
 
-**Notes.** Figure 15 of the notebook (cell 24). Subbands of the graphene nanoribbon lead: bulk Dirac cones folded into 1D bands.
+**Notes.** Figure 15 of the course (03_Graphene_and_Superconductivity.ipynb, cell 4). Subbands of the graphene nanoribbon lead: bulk Dirac cones folded into 1D bands.
 
 ### Superconductors: double the space, get Andreev reflection
 *Bogoliubov–de Gennes doubles every site into electron and hole. An electron hitting a superconductor can bounce back as a hole.*
 - Below the gap Δ no quasiparticle can enter the superconductor: the only channels are normal reflection and Andreev reflection (electron → hole, a Cooper pair enters).
 - Perfect Andreev reflection doubles the conductance: G = 2e2/h per mode with no barrier.
 - A tunnel barrier crosses over to the normal-state result — the Blonder–Tinkham–Klapwijk curves.
-- Figure 17 of the notebook (cell 26): Layout of the N-S junction: normal region (orange), tunnel barrier (red) and superconducting region (blue). The left lead is a normal metal, the right one is superconducting.
-- Figure 18 of the notebook (cell 26): Sub-gap conductance of the N-S junction for increasing barrier strength: the Blonder-Tinkham-Klapwijk crossover from Andreev doubling to tunnel suppression.
+- Figure 17 of the course (03_Graphene_and_Superconductivity.ipynb, cell 6): Layout of the N-S junction: normal region (orange), tunnel barrier (red) and superconducting region (blue). The left lead is a normal metal, the right one is superconducting.
+- Figure 18 of the course (03_Graphene_and_Superconductivity.ipynb, cell 6): Sub-gap conductance of the N-S junction for increasing barrier strength: the Blonder-Tinkham-Klapwijk crossover from Andreev doubling to tunnel suppression.
 
 **Notes.** The N–S junction figure shows normal region, barrier and superconductor; the conductance panel is BTK for several barrier strengths. The doubling is the key surprise: charge 2e crosses per event. Q: "What is a hole here?" A: the time-reversed electron state at −E; BdG treats it as a second particle type so that pairing becomes a hopping between the two.
 
@@ -248,7 +248,7 @@ for V0 in np.linspace(-1, 1, 41):
 - kwant.operator.Density(fsyst, σ) and kwant.operator.Current(fsyst, σ) — with a matrix σ to resolve spin.
 - The four panels are charge density, spin density, charge current and spin current of one scattering state in the Rashba wire.
 - Current conservation on every site is another identity the notebook asserts.
-- Figure 19 of the notebook (cell 29): Local observables of a scattering state in the Rashba wire: charge density, spin density, charge current and spin current, computed with kwant.operator.
+- Figure 19 of the course (04_Observables_and_Visualisation.ipynb, cell 4): Local observables of a scattering state in the Rashba wire: charge density, spin density, charge current and spin current, computed with kwant.operator.
 
 **Notes.** This is the bridge to experiments that image current (scanning gate, SQUID microscopy). Point at the spin current being non-zero where the charge current is smooth — spin–orbit coupling at work. Q: "Is the current operator unique on a lattice?" A: the bond current is; Kwant computes the current through each bond from the hopping matrix element.
 
@@ -261,14 +261,14 @@ for V0 in np.linspace(-1, 1, 41):
 - Landau gauge A = (−By, 0): horizontal bonds pick up exp(−2πi Φ y/Φ0).
 - The wire bands develop flat pieces: Landau levels in the bulk, dispersive edge states at the boundaries.
 - The dashed lines are the exact continuum Landau levels ħωc(n + ½) — the lattice hits them at low field.
-- Figure 29 of the notebook (cell 43): Wire bands with Peierls phases (solid) against exact continuum Landau levels (dashed): flat bulk Landau levels plus dispersing quantum Hall edge states.
+- Figure 29 of the course (06_Magnetic_Fields.ipynb, cell 3): Wire bands with Peierls phases (solid) against exact continuum Landau levels (dashed): flat bulk Landau levels plus dispersing quantum Hall edge states.
 
 **Notes.** Peierls substitution is the whole story: the phase around a plaquette is 2π times the flux through it in units of the flux quantum. The figure compares the lattice with the continuum — a validation the notebook performs numerically. Q: "Which gauge should I use?" A: any; only the flux per plaquette is physical. But a lead must be translationally invariant, so the gauge must respect its symmetry — the Landau gauge with the lead along x does.
 
 ### Figure 13 · Band structure and closed systems
-- Figure 13 of the notebook (cell 21): Spectrum of a closed disc vs magnetic field: levels condense into degenerate Landau levels (a Fock-Darwin-like fan).
+- Figure 13 of the course (02_Shapes_Spin_and_Bands.ipynb, cell 9): Spectrum of a closed disc vs magnetic field: levels condense into degenerate Landau levels (a Fock-Darwin-like fan).
 
-**Notes.** Figure 13 of the notebook (cell 21). Spectrum of a closed disc vs magnetic field: levels condense into degenerate Landau levels (a Fock-Darwin-like fan).
+**Notes.** Figure 13 of the course (02_Shapes_Spin_and_Bands.ipynb, cell 9). Spectrum of a closed disc vs magnetic field: levels condense into degenerate Landau levels (a Fock-Darwin-like fan).
 
 ### Peierls, Harper, and the flux quantum
 *The phase per bond, the phase per plaquette, and the 1D equation that hides the butterfly.*
@@ -286,22 +286,22 @@ for V0 in np.linspace(-1, 1, 41):
 - Computed with kwant.wraparound at fixed denominator q: q magnetic subbands per flux value.
 - Every gap carries an integer — its Hall conductance (TKNN, 1982) — the colour in the 3D view; the Landau fan of the previous slide is the sliver near Φ = 0.
 - The first experiments to resolve it used moiré superlattices in graphene (2013), where the magnetic unit cell fits in a laboratory field.
-- Figure 30 of the notebook (cell 44): The Hofstadter butterfly: the spectrum of the square lattice vs magnetic flux per plaquette. At rational flux p/q the band splits into q magnetic subbands; the gap structure repeats itself on every scale. The Landau-level fan of the previous figure is the sliver of this picture near phi = 0.
-- Figure 32 of the notebook (cell 44): The coloured Hofstadter butterfly in 3D: the band spectrum lies flat in grey at C = 0, and every spectral gap is lifted to a height equal to its Chern number (colour), obtained from the Diophantine equation r = qs + pt rather than from any Berry-curvature integral. The gaps organise into integer terraces - the two large C = +1 and C = -1 sheets are the elementary quantum Hall phases, and the whole staircase is the 3D version of the Osadchy-Avron coloured butterfly (top view = their diagram). Gaps with |C| > 5 are omitted for clarity.
+- Figure 30 of the course (06_Magnetic_Fields.ipynb, cell 4): The Hofstadter butterfly: the spectrum of the square lattice vs magnetic flux per plaquette. At rational flux p/q the band splits into q magnetic subbands; the gap structure repeats itself on every scale. The Landau-level fan of the previous figure is the sliver of this picture near phi = 0.
+- Figure 32 of the course (06_Magnetic_Fields.ipynb, cell 4): The coloured Hofstadter butterfly in 3D: the band spectrum lies flat in grey at C = 0, and every spectral gap is lifted to a height equal to its Chern number (colour), obtained from the Diophantine equation r = qs + pt rather than from any Berry-curvature integral. The gaps organise into integer terraces - the two large C = +1 and C = -1 sheets are the elementary quantum Hall phases, and the whole staircase is the 3D version of the Osadchy-Avron coloured butterfly (top view = their diagram). Gaps with |C| > 5 are omitted for clarity.
 
 **Notes.** Spend a moment on the beauty; then on the content: every gap is a quantum Hall phase with its own integer, and the integers satisfy a Diophantine equation. The 3D coloured view is the notebook's own figure with Chern numbers from the same code used in section 8 — the deck's first topological invariant, planted early. Q: "Why do we need moiré lattices to see it?" A: one flux quantum per atomic plaquette would need ~10⁴ T; a superlattice of 10 nm needs a few tesla.
 
 ### Figure 31 · Magnetic fields — Peierls substitution and Landau levels
-- Figure 31 of the notebook (cell 44): The Hofstadter butterfly in 3D: the density of states as a landscape over (flux, energy), computed at fixed denominator q = 89. The wings of the butterfly appear as ridges of finite DOS and the nested hierarchy of gaps as canyons of exactly zero DOS; each canyon is a quantum Hall phase labelled by its own Chern number.
+- Figure 31 of the course (06_Magnetic_Fields.ipynb, cell 4): The Hofstadter butterfly in 3D: the density of states as a landscape over (flux, energy), computed at fixed denominator q = 89. The wings of the butterfly appear as ridges of finite DOS and the nested hierarchy of gaps as canyons of exactly zero DOS; each canyon is a quantum Hall phase labelled by its own Chern number.
 
-**Notes.** Figure 31 of the notebook (cell 44). The Hofstadter butterfly in 3D: the density of states as a landscape over (flux, energy), computed at fixed denominator q = 89. The wings of the butterfly appear as ridges of finite DOS and the nested hierarchy of gaps as canyons of exactly zero DOS; each canyon is a quantum Hall phase labelled by its own Chern number.
+**Notes.** Figure 31 of the course (06_Magnetic_Fields.ipynb, cell 4). The Hofstadter butterfly in 3D: the density of states as a landscape over (flux, energy), computed at fixed denominator q = 89. The wings of the butterfly appear as ridges of finite DOS and the nested hierarchy of gaps as canyons of exactly zero DOS; each canyon is a quantum Hall phase labelled by its own Chern number.
 
 ### A field can switch a topological phase off
 *The BHZ quantum spin Hall model in a magnetic field: the Landau fan, and the level crossing where quantum spin Hall becomes quantum Hall.*
 - The BHZ model (section 6 builds it from a continuum Hamiltonian) has helical edge states protected by time reversal.
 - A magnetic field breaks time reversal; the two lowest Landau levels cross at a critical field and the edge states are gone.
 - Same code path: Peierls phases on the BHZ hoppings, spectrum vs B.
-- Figure 33 of the notebook (cell 45): BHZ spectrum vs magnetic field: the Landau fan whose level crossing marks the quantum spin Hall to quantum Hall transition.
+- Figure 33 of the course (06_Magnetic_Fields.ipynb, cell 5): BHZ spectrum vs magnetic field: the Landau fan whose level crossing marks the quantum spin Hall to quantum Hall transition.
 
 **Notes.** This slide is a preview of section 8 and a demonstration that magnetic fields are a probe of topology: the crossing is the transition. Q: "What does the crossing look like in transport?" A: the quantised 2e²/h edge conductance of the QSH phase collapses beyond the crossing.
 
@@ -314,28 +314,28 @@ for V0 in np.linspace(-1, 1, 41):
 - kwant.plot(syst, site_color=f, site_size=g, hop_lw=h) — each argument may be a function of the site (Builder) or of the site index (finalized system).
 - kwant.plotter.map(fsyst, density) interpolates a per-site quantity onto a continuous image.
 - 3D lattices render the same way (the zincblende example in the notebook, fig. 23).
-- Figure 21 of the notebook (cell 32): The same flake with site size proportional to an eigenstate weight.
-- Figure 22 of the notebook (cell 32): kwant.plotter.map interpolates the same eigenstate onto a continuous heat map.
+- Figure 21 of the course (04_Observables_and_Visualisation.ipynb, cell 7): The same flake with site size proportional to an eigenstate weight.
+- Figure 22 of the course (04_Observables_and_Visualisation.ipynb, cell 7): kwant.plotter.map interpolates the same eigenstate onto a continuous heat map.
 
 **Notes.** One trap the notebook documents and reported upstream: a site_color callable receives a Site for a Builder but an integer index for a finalized system. Mention it — it costs everyone an hour once. Q: "Can I plot with something other than matplotlib?" A: Kwant 1.5 has a plotly backend for interactive 3D; the notebook keeps matplotlib so it runs everywhere.
 
 ### Figure 20 · Visualisation
-- Figure 20 of the notebook (cell 32): Styling callables: honeycomb flake with sublattices in black/white and intra-sublattice bonds thinned.
+- Figure 20 of the course (04_Observables_and_Visualisation.ipynb, cell 7): Styling callables: honeycomb flake with sublattices in black/white and intra-sublattice bonds thinned.
 
-**Notes.** Figure 20 of the notebook (cell 32). Styling callables: honeycomb flake with sublattices in black/white and intra-sublattice bonds thinned.
+**Notes.** Figure 20 of the course (04_Observables_and_Visualisation.ipynb, cell 7). Styling callables: honeycomb flake with sublattices in black/white and intra-sublattice bonds thinned.
 
 ### Figure 23 · Visualisation
-- Figure 23 of the notebook (cell 33): The same plotting call renders 3D: a zincblende cuboid with its two sublattices in red and green.
+- Figure 23 of the course (04_Observables_and_Visualisation.ipynb, cell 8): The same plotting call renders 3D: a zincblende cuboid with its two sublattices in red and green.
 
-**Notes.** Figure 23 of the notebook (cell 33). The same plotting call renders 3D: a zincblende cuboid with its two sublattices in red and green.
+**Notes.** Figure 23 of the course (04_Observables_and_Visualisation.ipynb, cell 8). The same plotting call renders 3D: a zincblende cuboid with its two sublattices in red and green.
 
 ### Spectra without diagonalisation: the kernel polynomial method
 *Expand the density of states in Chebyshev polynomials of H; each moment costs one sparse matrix–vector product.*
 - ρ(E) = (1/π√(1−E2)) [g0μ0 + 2Σn≥1 gnμnTn(E)],   μn = Tr Tn(H)
 - The trace is estimated with random vectors; the Jackson kernel gn damps the Gibbs ringing.
 - kwant.kpm.SpectralDensity(fsyst): graphene's van Hove peaks at |E| = t and the linear pseudogap at the Dirac point, for 104–106 sites.
-- Figure 24 of the notebook (cell 35): KPM density of states of a graphene flake: van Hove peaks at |E|=t and the linear pseudogap at the Dirac point.
-- Figure 25 of the notebook (cell 36): Sublattice-resolved local DOS with staggered potential m=0.1: the two sublattices become spectrally inequivalent at the gap edges.
+- Figure 24 of the course (05_KPM_and_Continuum.ipynb, cell 3): KPM density of states of a graphene flake: van Hove peaks at |E|=t and the linear pseudogap at the Dirac point.
+- Figure 25 of the course (05_KPM_and_Continuum.ipynb, cell 4): Sublattice-resolved local DOS with staggered potential m=0.1: the two sublattices become spectrally inequivalent at the gap edges.
 
 **Notes.** KPM is how you get a density of states for a million sites in a minute. The resolution is set by the number of moments; the noise by the number of random vectors. The second figure is the sublattice-resolved local DOS with a staggered potential — the A and B sublattices become spectrally different. Q: "Does KPM give eigenvectors?" A: no — densities, local densities, and (with kwant.kpm.Correlator) conductivities; for eigenvectors you diagonalise.
 
@@ -362,26 +362,26 @@ syst.fill(template, shape, start)
 **Notes.** This is the fastest route from a paper to a simulation: copy the Hamiltonian, discretise, fill a shape. Say what can go wrong: a too-coarse grid changes the physics (fermion doubling for linear terms is handled by the symmetric difference, but the band structure is only right for ka ≪ 1). Q: "What is k_x in the string?" A: a symbol; discretize replaces k_x by −i∂_x and then by its finite-difference stencil, keeping matrices and constants where they are.
 
 ### Figure 26 · kwant.continuum — symbolic Hamiltonians, discretised automatically
-- Figure 26 of the notebook (cell 39): BHZ ribbon band structure: a Kramers pair of helical edge states crossing the inverted bulk gap - the quantum spin Hall effect.
+- Figure 26 of the course (05_KPM_and_Continuum.ipynb, cell 7): BHZ ribbon band structure: a Kramers pair of helical edge states crossing the inverted bulk gap - the quantum spin Hall effect.
 
-**Notes.** Figure 26 of the notebook (cell 39). BHZ ribbon band structure: a Kramers pair of helical edge states crossing the inverted bulk gap - the quantum spin Hall effect.
+**Notes.** Figure 26 of the course (05_KPM_and_Continuum.ipynb, cell 7). BHZ ribbon band structure: a Kramers pair of helical edge states crossing the inverted bulk gap - the quantum spin Hall effect.
 
 ### Figure 27 · kwant.continuum — symbolic Hamiltonians, discretised automatically
-- Figure 27 of the notebook (cell 40): The BHZ edge states are localised at the ribbon edges (left) and spin-polarised (right): opposite spins counter-propagate on the same edge.
+- Figure 27 of the course (05_KPM_and_Continuum.ipynb, cell 8): The BHZ edge states are localised at the ribbon edges (left) and spin-polarised (right): opposite spins counter-propagate on the same edge.
 
-**Notes.** Figure 27 of the notebook (cell 40). The BHZ edge states are localised at the ribbon edges (left) and spin-polarised (right): opposite spins counter-propagate on the same edge.
+**Notes.** Figure 27 of the course (05_KPM_and_Continuum.ipynb, cell 8). The BHZ edge states are localised at the ribbon edges (left) and spin-polarised (right): opposite spins counter-propagate on the same edge.
 
 ### Figure 28 · kwant.continuum — symbolic Hamiltonians, discretised automatically
-- Figure 28 of the notebook (cell 41): Continuum BHZ dispersion evaluated with kwant.continuum.lambdify: the lattice model reproduces it faithfully near k=0.
+- Figure 28 of the course (05_KPM_and_Continuum.ipynb, cell 9): Continuum BHZ dispersion evaluated with kwant.continuum.lambdify: the lattice model reproduces it faithfully near k=0.
 
-**Notes.** Figure 28 of the notebook (cell 41). Continuum BHZ dispersion evaluated with kwant.continuum.lambdify: the lattice model reproduces it faithfully near k=0.
+**Notes.** Figure 28 of the course (05_KPM_and_Continuum.ipynb, cell 9). Continuum BHZ dispersion evaluated with kwant.continuum.lambdify: the lattice model reproduces it faithfully near k=0.
 
 ### What actually costs time
 *One sparse solve per energy; the solver choice matters more than anything else you can tune.*
 - MUMPS (via python-mumps) is the fast default when installed: close to linear scaling with the number of sites for quasi-1D systems.
 - SciPy's SuperLU is the fallback: the same answers, several times slower.
 - Lead self-energies are computed once per energy per lead and cached — many leads are cheap, many energies are not.
-- Figure 34 of the notebook (cell 47): Wall-clock time per scattering solve vs number of sites: close-to-linear scaling of the sparse solver for quasi-1D systems.
+- Figure 34 of the course (07_Solvers_Pitfalls_and_Exercises_I.ipynb, cell 4): Wall-clock time per scattering solve vs number of sites: close-to-linear scaling of the sparse solver for quasi-1D systems.
 
 **Notes.** The figure is the notebook's timing of a scattering solve versus system size. Give the rule of thumb: width matters more than length (bandwidth of the sparse matrix). Q: "Can I parallelise over energies?" A: yes, with processes — and this is exactly where the next slide's pitfall lives.
 
@@ -404,20 +404,20 @@ syst.fill(template, shape, start)
 - For t1 < t2 a doublet is pinned to zero energy for any chain length; for t1 > t2 there is none.
 - The two zero modes live at opposite ends, each on a single sublattice (fig. 37); in-gap transport with weak leads happens only in the topological phase (fig. 38).
 - Nothing local distinguishes the two phases — only a winding number of the bulk does.
-- Figure 35 of the notebook (cell 53): The SSH chain: two sites per cell (A blue, B orange), with intra-cell hopping t1 and inter-cell hopping t2 (bond thickness = strength). The two patterns are indistinguishable deep in the bulk, yet globally distinct: only the lower one leaves weakly bound sites at open ends - the real-space origin of the zero modes.
-- Figure 36 of the notebook (cell 54): Spectrum of an L=40 SSH chain vs dimerisation: a doublet pinned to zero energy exists exactly for t12; the bulk gap closes at t1=t2.
+- Figure 35 of the course (08_Topology_in_One_Dimension.ipynb, cell 4): The SSH chain: two sites per cell (A blue, B orange), with intra-cell hopping t1 and inter-cell hopping t2 (bond thickness = strength). The two patterns are indistinguishable deep in the bulk, yet globally distinct: only the lower one leaves weakly bound sites at open ends - the real-space origin of the zero modes.
+- Figure 36 of the course (08_Topology_in_One_Dimension.ipynb, cell 5): Spectrum of an L=40 SSH chain vs dimerisation: a doublet pinned to zero energy exists exactly for t12; the bulk gap closes at t1=t2.
 
 **Notes.** Start with the bond picture: a chain of dimers; cut it between strong bonds and you leave an unpaired site at each end. That is the whole intuition, and it is exact in the fully dimerised limit. The spectrum figure shows the zero-energy doublet appearing precisely at t1 = t2. Q: "Are the zero modes protected?" A: by chiral (sublattice) symmetry — a perturbation that respects it cannot move them from zero; the maths slide says why.
 
 ### Figure 37 · The SSH chain — the simplest topological insulator
-- Figure 37 of the notebook (cell 54): Probability density of the two zero modes: exponentially localised at the ends, each living on a single sublattice.
+- Figure 37 of the course (08_Topology_in_One_Dimension.ipynb, cell 5): Probability density of the two zero modes: exponentially localised at the ends, each living on a single sublattice.
 
-**Notes.** Figure 37 of the notebook (cell 54). Probability density of the two zero modes: exponentially localised at the ends, each living on a single sublattice.
+**Notes.** Figure 37 of the course (08_Topology_in_One_Dimension.ipynb, cell 5). Probability density of the two zero modes: exponentially localised at the ends, each living on a single sublattice.
 
 ### Figure 38 · The SSH chain — the simplest topological insulator
-- Figure 38 of the notebook (cell 55): Transmission through a short SSH chain with weak leads (log scale): in-gap transport happens only in the topological phase, by resonant tunnelling through the hybridised edge doublet.
+- Figure 38 of the course (08_Topology_in_One_Dimension.ipynb, cell 6): Transmission through a short SSH chain with weak leads (log scale): in-gap transport happens only in the topological phase, by resonant tunnelling through the hybridised edge doublet.
 
-**Notes.** Figure 38 of the notebook (cell 55). Transmission through a short SSH chain with weak leads (log scale): in-gap transport happens only in the topological phase, by resonant tunnelling through the hybridised edge doublet.
+**Notes.** Figure 38 of the course (08_Topology_in_One_Dimension.ipynb, cell 6). Transmission through a short SSH chain with weak leads (log scale): in-gap transport happens only in the topological phase, by resonant tunnelling through the hybridised edge doublet.
 
 ### Winding number and Zak phase
 *The bulk Hamiltonian is a vector in the plane; count how many times it winds around the origin.*
@@ -435,20 +435,20 @@ syst.fill(template, shape, start)
 - Topological for |μ| < 2t with Δ ≠ 0: a zero-energy BdG state spans the whole window (fig. 40), its density split between the ends (fig. 41).
 - The Majorana end mode pins the Andreev conductance at exactly 2e2/h at zero bias, for any barrier (fig. 42).
 - Two Majoranas far apart make one fermion whose occupation costs no energy — the qubit idea.
-- Figure 39 of the notebook (cell 57): The Kitaev chain in Majorana language: each fermionic site (dotted box) splits into two Majorana operators γA (red) and γB (blue). Trivial pairing couples the two Majoranas of the same site; topological pairing couples them across neighbouring sites - and then one Majorana at each end pairs with nothing, at exactly zero energy.
-- Figure 40 of the notebook (cell 58): BdG spectrum of a finite Kitaev chain vs chemical potential: Majorana zero modes span the whole topological window |μ|.
+- Figure 39 of the course (08_Topology_in_One_Dimension.ipynb, cell 8): The Kitaev chain in Majorana language: each fermionic site (dotted box) splits into two Majorana operators γA (red) and γB (blue). Trivial pairing couples the two Majoranas of the same site; topological pairing couples them across neighbouring sites - and then one Majorana at each end pairs with nothing, at exactly zero energy.
+- Figure 40 of the course (08_Topology_in_One_Dimension.ipynb, cell 9): BdG spectrum of a finite Kitaev chain vs chemical potential: Majorana zero modes span the whole topological window |μ|.
 
 **Notes.** The Majorana-language figure is the intuition: write c = (γ1 + iγ2)/2, choose parameters so the Hamiltonian couples γ2 of one site to γ1 of the next, and the first and last operators are left out. The zero-bias peak quantised at 2e²/h is the experimental signature everybody looks for. Q: "How is this different from the SSH zero modes?" A: these are their own antiparticles — a Majorana mode is half a fermion; SSH zero modes are ordinary electron states.
 
 ### Figure 41 · The Kitaev chain — Majorana zero modes
-- Figure 41 of the notebook (cell 58): Density of the near-zero state: one fermion split into two Majorana halves at opposite ends.
+- Figure 41 of the course (08_Topology_in_One_Dimension.ipynb, cell 9): Density of the near-zero state: one fermion split into two Majorana halves at opposite ends.
 
-**Notes.** Figure 41 of the notebook (cell 58). Density of the near-zero state: one fermion split into two Majorana halves at opposite ends.
+**Notes.** Figure 41 of the course (08_Topology_in_One_Dimension.ipynb, cell 9). Density of the near-zero state: one fermion split into two Majorana halves at opposite ends.
 
 ### Figure 42 · The Kitaev chain — Majorana zero modes
-- Figure 42 of the notebook (cell 59): Andreev conductance vs bias: the Majorana end mode pins a zero-bias peak at exactly 2e2/h, for any barrier strength; the trivial phase stays dark below the gap.
+- Figure 42 of the course (08_Topology_in_One_Dimension.ipynb, cell 10): Andreev conductance vs bias: the Majorana end mode pins a zero-bias peak at exactly 2e2/h, for any barrier strength; the trivial phase stays dark below the gap.
 
-**Notes.** Figure 42 of the notebook (cell 59). Andreev conductance vs bias: the Majorana end mode pins a zero-bias peak at exactly 2e2/h, for any barrier strength; the trivial phase stays dark below the gap.
+**Notes.** Figure 42 of the course (08_Topology_in_One_Dimension.ipynb, cell 10). Andreev conductance vs bias: the Majorana end mode pins a zero-bias peak at exactly 2e2/h, for any barrier strength; the trivial phase stays dark below the gap.
 
 ### Majorana operators and the Z2 invariant
 *The invariant of a particle–hole symmetric chain is a sign: the Pfaffian of the Hamiltonian at the two time-reversal-invariant momenta.*
@@ -466,28 +466,28 @@ syst.fill(template, shape, start)
 - The bulk gap closes exactly at Bc = √(Δ2 + μ2) and reopens topological (fig. 44).
 - A tunnelling map G(V, B) shows the zero-bias peak emerging beyond Bc (fig. 45); the Majorana pair is visible in real space (fig. 46).
 - Rashba + Zeeman make the helical gap of section 4; proximity pairing inside it is effectively p-wave.
-- Figure 44 of the notebook (cell 62): Bulk gap of the Oreg-Lutchyn wire vs Zeeman field: it closes exactly at Bc=√(Δ2+μ2) and reopens topologically.
-- Figure 45 of the notebook (cell 62): Simulated tunnelling map G(V,B): the zero-bias peak emerges beyond Bc; the speckle near the transition is real finite-size subgap structure.
+- Figure 44 of the course (08_Topology_in_One_Dimension.ipynb, cell 13): Bulk gap of the Oreg-Lutchyn wire vs Zeeman field: it closes exactly at Bc=√(Δ2+μ2) and reopens topologically.
+- Figure 45 of the course (08_Topology_in_One_Dimension.ipynb, cell 13): Simulated tunnelling map G(V,B): the zero-bias peak emerges beyond Bc; the speckle near the transition is real finite-size subgap structure.
 
 **Notes.** This is the Oreg–Lutchyn / Lutchyn–Sau–Das Sarma proposal of 2010 and the device of the 2012 experiments. Say clearly what the notebook shows: the phase boundary formula reproduced numerically, and the zero-bias peak. Then say what it does not: disorder, soft gaps, Andreev bound states that mimic the peak — the reason the experiments are still debated. Q: "Why do we need the magnetic field?" A: to remove one spin species from the Fermi level so that the induced pairing is effectively spinless — the Kitaev condition.
 
 ### Figure 43 · The Majorana nanowire — Kitaev physics in a real device
-- Figure 43 of the notebook (cell 61): The Majorana nanowire device: a semiconductor wire with Rashba coupling α lies on an s-wave superconductor that proximity-induces Δ; a magnetic field B points along the wire, and a normal lead probes the end through a tunnel barrier. This is exactly the geometry of the simulated conductance map below and of the 2012 Delft experiment.
+- Figure 43 of the course (08_Topology_in_One_Dimension.ipynb, cell 12): The Majorana nanowire device: a semiconductor wire with Rashba coupling α lies on an s-wave superconductor that proximity-induces Δ; a magnetic field B points along the wire, and a normal lead probes the end through a tunnel barrier. This is exactly the geometry of the simulated conductance map below and of the 2012 Delft experiment.
 
-**Notes.** Figure 43 of the notebook (cell 61). The Majorana nanowire device: a semiconductor wire with Rashba coupling α lies on an s-wave superconductor that proximity-induces Δ; a magnetic field B points along the wire, and a normal lead probes the end through a tunnel barrier. This is exactly the geometry of the simulated conductance map below and of the 2012 Delft experiment.
+**Notes.** Figure 43 of the course (08_Topology_in_One_Dimension.ipynb, cell 12). The Majorana nanowire device: a semiconductor wire with Rashba coupling α lies on an s-wave superconductor that proximity-induces Δ; a magnetic field B points along the wire, and a normal lead probes the end through a tunnel barrier. This is exactly the geometry of the simulated conductance map below and of the 2012 Delft experiment.
 
 ### Figure 46 · The Majorana nanowire — Kitaev physics in a real device
-- Figure 46 of the notebook (cell 62): The Majorana pair of the nanowire in real space: the lowest BdG eigenstate of a closed 120-site wire at B = 1.8 B_c is exponentially localized at the two ends and exponentially close to zero energy - the object whose tunnelling signature is the quantized zero-bias peak above.
+- Figure 46 of the course (08_Topology_in_One_Dimension.ipynb, cell 13): The Majorana pair of the nanowire in real space: the lowest BdG eigenstate of a closed 120-site wire at B = 1.8 B_c is exponentially localized at the two ends and exponentially close to zero energy - the object whose tunnelling signature is the quantized zero-bias peak above.
 
-**Notes.** Figure 46 of the notebook (cell 62). The Majorana pair of the nanowire in real space: the lowest BdG eigenstate of a closed 120-site wire at B = 1.8 B_c is exponentially localized at the two ends and exponentially close to zero energy - the object whose tunnelling signature is the quantized zero-bias peak above.
+**Notes.** Figure 46 of the course (08_Topology_in_One_Dimension.ipynb, cell 13). The Majorana pair of the nanowire in real space: the lowest BdG eigenstate of a closed 120-site wire at B = 1.8 B_c is exponentially localized at the two ends and exponentially close to zero energy - the object whose tunnelling signature is the quantized zero-bias peak above.
 
 ### The Thouless pump: a Chern number in (k, t)
 *Cycle the SSH parameters slowly around the gapless point and exactly one electron per cell is transported per cycle.*
 - The Rice–Mele model adds a staggered potential to SSH; the cycle encircles the only gapless point (δ, Δ) = (0, 0).
 - Edge states ladder across the bulk gap while the bulk polarisation winds by one unit cell (fig. 48).
 - The pumped charge is the Chern number of the band over the (k, t) torus — the same integer as in 2D.
-- Figure 47 of the notebook (cell 64): The pump cycle (white) in the Rice-Mele parameter plane, drawn over the bulk gap: the only gapless point is (δ,Δ)=(0,0) (star). A cycle encircling this diabolical point pumps exactly one charge per period; one that does not encircle it pumps none. The Chern number computed next is precisely this winding number.
-- Figure 48 of the notebook (cell 65): Rice-Mele pump over one cycle: edge states ladder across the bulk gap (left) while the bulk polarization winds by exactly one quantum (right) - two faces of the same Chern number.
+- Figure 47 of the course (09_Chern_Numbers.ipynb, cell 3): The pump cycle (white) in the Rice-Mele parameter plane, drawn over the bulk gap: the only gapless point is (δ,Δ)=(0,0) (star). A cycle encircling this diabolical point pumps exactly one charge per period; one that does not encircle it pumps none. The Chern number computed next is precisely this winding number.
+- Figure 48 of the course (09_Chern_Numbers.ipynb, cell 4): Rice-Mele pump over one cycle: edge states ladder across the bulk gap (left) while the bulk polarization winds by exactly one quantum (right) - two faces of the same Chern number.
 
 **Notes.** This is the bridge to section 8: replace time by a second momentum and the pump becomes a Chern insulator. The notebook computes the Chern number with the same function it later uses for Haldane. Q: "Has this been measured?" A: yes — in cold-atom optical superlattices (2016) and in photonic waveguides.
 
@@ -500,15 +500,15 @@ syst.fill(template, shape, start)
 - Phase diagram from the Chern number: lobes with C = ±1 bounded by |M| = 3√3 t2 sin φ (fig. 50).
 - One chiral edge mode per edge crosses the bulk gap of a zigzag ribbon (fig. 52); the two-terminal conductance is e2/h.
 - Realised in cold atoms (2014) and, as the quantum anomalous Hall effect, in magnetic topological insulators (2013).
-- Figure 50 of the notebook (cell 68): Haldane phase diagram from the FHS Chern number: lobes with C=±1 bounded by |M|=3√(3)t2sinφ (dashed); grey cells are gap closings, where C is undefined.
-- Figure 52 of the notebook (cell 70): Haldane zigzag ribbon: one chiral edge mode per edge crosses the bulk gap (shaded band).
+- Figure 50 of the course (09_Chern_Numbers.ipynb, cell 7): Haldane phase diagram from the FHS Chern number: lobes with C=±1 bounded by |M|=3√(3)t2sinφ (dashed); grey cells are gap closings, where C is undefined.
+- Figure 52 of the course (09_Chern_Numbers.ipynb, cell 9): Haldane zigzag ribbon: one chiral edge mode per edge crosses the bulk gap (shaded band).
 
 **Notes.** Haldane's 1988 paper is the origin of everything in this section. The figure of the lattice (fig. 49) shows the second-neighbour bonds with their phases; the phase diagram is computed by the notebook with the Fukui–Hatsugai–Suzuki method on a 30×30 grid. Q: "Why does the net flux have to be zero?" A: it need not — but with zero net flux the model keeps the lattice translation symmetry, which is the point: no Landau levels, still a Chern number.
 
 ### Figure 49 · The Haldane model — a Chern insulator without Landau levels
-- Figure 49 of the notebook (cell 67): The Haldane model on the honeycomb lattice (A blue, B red): real NN hopping plus complex second-neighbour hoppings t2 e± iφ, with the phase acquired along the arrowed (chiral) direction. This mimics a staggered magnetic flux with zero net flux per plaquette - time reversal is broken without any Landau levels. The Kane-Mele model of the next section uses the same lattice, with opposite chirality for opposite spins.
+- Figure 49 of the course (09_Chern_Numbers.ipynb, cell 6): The Haldane model on the honeycomb lattice (A blue, B red): real NN hopping plus complex second-neighbour hoppings t2 e± iφ, with the phase acquired along the arrowed (chiral) direction. This mimics a staggered magnetic flux with zero net flux per plaquette - time reversal is broken without any Landau levels. The Kane-Mele model of the next section uses the same lattice, with opposite chirality for opposite spins.
 
-**Notes.** Figure 49 of the notebook (cell 67). The Haldane model on the honeycomb lattice (A blue, B red): real NN hopping plus complex second-neighbour hoppings t2 e± iφ, with the phase acquired along the arrowed (chiral) direction. This mimics a staggered magnetic flux with zero net flux per plaquette - time reversal is broken without any Landau levels. The Kane-Mele model of the next section uses the same lattice, with opposite chirality for opposite spins.
+**Notes.** Figure 49 of the course (09_Chern_Numbers.ipynb, cell 6). The Haldane model on the honeycomb lattice (A blue, B red): real NN hopping plus complex second-neighbour hoppings t2 e± iφ, with the phase acquired along the arrowed (chiral) direction. This mimics a staggered magnetic flux with zero net flux per plaquette - time reversal is broken without any Landau levels. The Kane-Mele model of the next section uses the same lattice, with opposite chirality for opposite spins.
 
 ### Berry curvature and the Chern number on a lattice
 *The invariant is the integral of the Berry curvature over the Brillouin-zone torus; on a grid it is a sum of plaquette phases.*
@@ -522,17 +522,17 @@ syst.fill(template, shape, start)
 **Notes.** Derive the FHS link variable on the board: it is the discrete version of the Berry phase around one plaquette; the sum of all plaquettes is the Chern number because the phases of interior links cancel. Stress 'from the system': the notebook takes H(k) from the Kwant Builder via wraparound, so any model you build can be tested. Q: "How fine a grid?" A: the notebook's chern_fhs defaults to 40×40 and the result is exactly integer on any grid that resolves the gap; near a phase transition the curvature spikes and you need more.
 
 ### Figure 51 · The Haldane model — a Chern insulator without Landau levels
-- Figure 51 of the notebook (cell 69): Berry curvature of the lower Haldane band over the Brillouin-zone torus (reduced coordinates; the two bumps sit at the Dirac points K and Kprime). In the topological phase (left) both valleys carry curvature of the same sign and the surface integrates to exactly 2pi - Chern number 1. In the trivial phase (right) the staggered mass has re-inverted one valley: a tall negative spike at Kprime (whose gap is small, hence the large curvature) exactly cancels the broad positive lobe at K, and the integral vanishes. The Chern number is nothing but the signed volume under this surface.
+- Figure 51 of the course (09_Chern_Numbers.ipynb, cell 8): Berry curvature of the lower Haldane band over the Brillouin-zone torus (reduced coordinates; the two bumps sit at the Dirac points K and Kprime). In the topological phase (left) both valleys carry curvature of the same sign and the surface integrates to exactly 2pi - Chern number 1. In the trivial phase (right) the staggered mass has re-inverted one valley: a tall negative spike at Kprime (whose gap is small, hence the large curvature) exactly cancels the broad positive lobe at K, and the integral vanishes. The Chern number is nothing but the signed volume under this surface.
 
-**Notes.** Figure 51 of the notebook (cell 69). Berry curvature of the lower Haldane band over the Brillouin-zone torus (reduced coordinates; the two bumps sit at the Dirac points K and Kprime). In the topological phase (left) both valleys carry curvature of the same sign and the surface integrates to exactly 2pi - Chern number 1. In the trivial phase (right) the staggered mass has re-inverted one valley: a tall negative spike at Kprime (whose gap is small, hence the large curvature) exactly cancels the broad positive lobe at K, and the integral vanishes. The Chern number is nothing but the signed volume under this surface.
+**Notes.** Figure 51 of the course (09_Chern_Numbers.ipynb, cell 8). Berry curvature of the lower Haldane band over the Brillouin-zone torus (reduced coordinates; the two bumps sit at the Dirac points K and Kprime). In the topological phase (left) both valleys carry curvature of the same sign and the surface integrates to exactly 2pi - Chern number 1. In the trivial phase (right) the staggered mass has re-inverted one valley: a tall negative spike at Kprime (whose gap is small, hence the large curvature) exactly cancels the broad positive lobe at K, and the integral vanishes. The Chern number is nothing but the signed volume under this surface.
 
 ### Kane–Mele: two copies of Haldane, one Z2
 *Spin-up and spin-down electrons see opposite Haldane phases. Time reversal is restored; the edge carries a helical pair.*
 - The helical crossing survives Rashba coupling because Kramers' theorem forbids the two partners from mixing (fig. 53, right).
 - All current injected inside the gap flows along the edges (fig. 54); the two-terminal conductance is 2e2/h.
 - The invariant is Z2: the spin Chern number mod 2, or the Fu–Kane Pfaffian.
-- Figure 53 of the notebook (cell 72): Kane-Mele ribbon without (left) and with (right) Rashba coupling: the helical crossing survives because it is protected by time reversal, not by spin conservation.
-- Figure 54 of the notebook (cell 72): Total scattering density injected from the left lead at E = 0.1, inside the Kane-Mele gap: all the current flows in two bright stripes along the top and bottom edges while the bulk stays dark - the quantum spin Hall edge channels seen in real space.
+- Figure 53 of the course (10_Z2_and_Chiral_Superconductors.ipynb, cell 5): Kane-Mele ribbon without (left) and with (right) Rashba coupling: the helical crossing survives because it is protected by time reversal, not by spin conservation.
+- Figure 54 of the course (10_Z2_and_Chiral_Superconductors.ipynb, cell 5): Total scattering density injected from the left lead at E = 0.1, inside the Kane-Mele gap: all the current flows in two bright stripes along the top and bottom edges while the bulk stays dark - the quantum spin Hall edge channels seen in real space.
 
 **Notes.** The quantum spin Hall effect: HgTe wells (2007) are the BHZ version of this; Kane–Mele is the graphene version with a spin–orbit gap too small to see. The key protection statement is Kramers: at time-reversal-invariant momenta the two edge states are a Kramers pair and cannot split. Q: "What is a Z2 invariant physically?" A: whether the number of Kramers pairs of edge states is odd (protected) or even (can be gapped out).
 
@@ -541,70 +541,70 @@ syst.fill(template, shape, start)
 - BdG Chern number C = ±1 in the weak-pairing phases, transitions at μ = 0, ±4t (fig. 56).
 - A strip has one chiral Majorana branch crossing the gap in the topological phase (fig. 57); a finite sample's lowest state circulates the whole boundary (fig. 58).
 - A vortex in the pairing binds a Majorana zero mode — the 2D route to non-Abelian statistics.
-- Figure 56 of the notebook (cell 75): BdG Chern number of the p+ip superconductor vs μ: C=±1 in the weak-pairing phases, transitions at μ=-4t,0,+4t.
-- Figure 58 of the notebook (cell 75): Density of the lowest BdG state of a finite p+ip sample: the chiral Majorana mode circulates the whole boundary.
+- Figure 56 of the course (10_Z2_and_Chiral_Superconductors.ipynb, cell 8): BdG Chern number of the p+ip superconductor vs μ: C=±1 in the weak-pairing phases, transitions at μ=-4t,0,+4t.
+- Figure 58 of the course (10_Z2_and_Chiral_Superconductors.ipynb, cell 8): Density of the lowest BdG state of a finite p+ip sample: the chiral Majorana mode circulates the whole boundary.
 
 **Notes.** This is the 2D Kitaev chain and the effective model of the ν = 5/2 quantum Hall state and of Sr₂RuO₄ (disputed). The pairing is real on horizontal bonds and imaginary on vertical ones (fig. 55) — that is the phase winding on the lattice. Q: "Chiral Majorana — half a chiral fermion?" A: yes: it carries half the thermal Hall conductance of an electron edge mode, κ = ½ × (π²k_B²T/3h).
 
 ### Figure 55 · The p+ip superconductor — chiral Majorana edges
-- Figure 55 of the notebook (cell 74): The p+ip pairing on the square lattice: the pair potential is real on horizontal bonds and imaginary on vertical ones, so its phase winds by 2π around the Fermi surface - the lattice version of Δ(k)∝ kx + i ky. This winding is what makes the BdG bands carry a Chern number.
+- Figure 55 of the course (10_Z2_and_Chiral_Superconductors.ipynb, cell 7): The p+ip pairing on the square lattice: the pair potential is real on horizontal bonds and imaginary on vertical ones, so its phase winds by 2π around the Fermi surface - the lattice version of Δ(k)∝ kx + i ky. This winding is what makes the BdG bands carry a Chern number.
 
-**Notes.** Figure 55 of the notebook (cell 74). The p+ip pairing on the square lattice: the pair potential is real on horizontal bonds and imaginary on vertical ones, so its phase winds by 2π around the Fermi surface - the lattice version of Δ(k)∝ kx + i ky. This winding is what makes the BdG bands carry a Chern number.
+**Notes.** Figure 55 of the course (10_Z2_and_Chiral_Superconductors.ipynb, cell 7). The p+ip pairing on the square lattice: the pair potential is real on horizontal bonds and imaginary on vertical ones, so its phase winds by 2π around the Fermi surface - the lattice version of Δ(k)∝ kx + i ky. This winding is what makes the BdG bands carry a Chern number.
 
 ### Figure 57 · The p+ip superconductor — chiral Majorana edges
-- Figure 57 of the notebook (cell 75): Strip spectra: a single chiral Majorana branch crosses the gap in the topological phase (left); the trivial phase is fully gapped (right).
+- Figure 57 of the course (10_Z2_and_Chiral_Superconductors.ipynb, cell 8): Strip spectra: a single chiral Majorana branch crosses the gap in the topological phase (left); the trivial phase is fully gapped (right).
 
-**Notes.** Figure 57 of the notebook (cell 75). Strip spectra: a single chiral Majorana branch crosses the gap in the topological phase (left); the trivial phase is fully gapped (right).
+**Notes.** Figure 57 of the course (10_Z2_and_Chiral_Superconductors.ipynb, cell 8). Strip spectra: a single chiral Majorana branch crosses the gap in the topological phase (left); the trivial phase is fully gapped (right).
 
 ### Higher-order topology: the BBH quadrupole
 *Four sites per cell on a square lattice with π flux. The bulk and the edges are gapped; the corners carry the zero modes.*
 - Wannier bands ν±(kx) are gapped in the topological phase and collapse in the trivial one (fig. 60).
 - A finite flake has four zero-energy states whose density sits on the four corners (fig. 61); each carries charge e/2.
 - The invariant is a nested Wilson loop — a Berry phase of a Berry phase — the quadrupole moment quantised to ½.
-- Figure 60 of the notebook (cell 78): Wannier bands ν±(kx) of the BBH model: gapped in the topological phase (colour), collapsed in the trivial one (dashed) - the input of the nested Wilson loop.
-- Figure 61 of the notebook (cell 78): A finite BBH flake: four zero-energy states inside the gap (left, red) whose density sits on the four corners (right).
+- Figure 60 of the course (11_Higher_Order_and_Weyl.ipynb, cell 5): Wannier bands ν±(kx) of the BBH model: gapped in the topological phase (colour), collapsed in the trivial one (dashed) - the input of the nested Wilson loop.
+- Figure 61 of the course (11_Higher_Order_and_Weyl.ipynb, cell 5): A finite BBH flake: four zero-energy states inside the gap (left, red) whose density sits on the four corners (right).
 
 **Notes.** Benalcazar–Bernevig–Hughes 2017; realised in microwave, acoustic and electrical-circuit metamaterials within a year. The point for the course: the boundary of the boundary carries the state — a second-order insulator. Q: "Why π flux?" A: it makes the model have the mirror and C4 symmetries with the right algebra to quantise the quadrupole; the notebook implements it as a sign on one bond per plaquette.
 
 ### Figure 59 · The BBH quadrupole — higher-order topology
-- Figure 59 of the notebook (cell 77): The BBH lattice: four sites per unit cell with weak intra-cell bonds γ (thin) and strong inter-cell bonds λ (thick). One bond of every square carries a minus sign (red dashed), threading a π flux through each plaquette; this flux gaps the would-be edge bands, so for γ the protected zero modes are pushed all the way to the corners.
+- Figure 59 of the course (11_Higher_Order_and_Weyl.ipynb, cell 4): The BBH lattice: four sites per unit cell with weak intra-cell bonds γ (thin) and strong inter-cell bonds λ (thick). One bond of every square carries a minus sign (red dashed), threading a π flux through each plaquette; this flux gaps the would-be edge bands, so for γ the protected zero modes are pushed all the way to the corners.
 
-**Notes.** Figure 59 of the notebook (cell 77). The BBH lattice: four sites per unit cell with weak intra-cell bonds γ (thin) and strong inter-cell bonds λ (thick). One bond of every square carries a minus sign (red dashed), threading a π flux through each plaquette; this flux gaps the would-be edge bands, so for γ the protected zero modes are pushed all the way to the corners.
+**Notes.** Figure 59 of the course (11_Higher_Order_and_Weyl.ipynb, cell 4). The BBH lattice: four sites per unit cell with weak intra-cell bonds γ (thin) and strong inter-cell bonds λ (thick). One bond of every square carries a minus sign (red dashed), threading a π flux through each plaquette; this flux gaps the would-be edge bands, so for γ the protected zero modes are pushed all the way to the corners.
 
 ### Weyl semimetals: Fermi arcs from sliced Chern numbers
 *A 3D band touching that is a monopole of Berry curvature. Slice the Brillouin zone: the Chern number jumps at each node, and the surface shows an arc.*
 - Chern number of the 2D slices H(kx, ky; kz) jumps by the chirality ±1 at each Weyl node (fig. 62).
 - Between the nodes every slice is a Chern insulator with an edge state — stacked, they form the Fermi arc on the surface (fig. 63).
 - Transport through a Weyl bar (fig. 65) shows the arc contribution; the 3D dispersion (fig. 64) shows the two sheets touching at the nodes.
-- Figure 62 of the notebook (cell 80): Chern number of the 2D slices H(kx,ky;kz): it jumps by the chirality ±1 at each Weyl node - the nodes are monopoles of Berry curvature.
-- Figure 63 of the notebook (cell 80): Zero-energy surface map of a Weyl slab: the Fermi arc connects the surface projections of the two Weyl nodes (stars).
+- Figure 62 of the course (11_Higher_Order_and_Weyl.ipynb, cell 7): Chern number of the 2D slices H(kx,ky;kz): it jumps by the chirality ±1 at each Weyl node - the nodes are monopoles of Berry curvature.
+- Figure 63 of the course (11_Higher_Order_and_Weyl.ipynb, cell 7): Zero-energy surface map of a Weyl slab: the Fermi arc connects the surface projections of the two Weyl nodes (stars).
 
 **Notes.** The slicing argument is the whole physics: a 3D semimetal is a family of 2D insulators parametrised by k_z, and the Chern number can only change where the gap closes — at a Weyl node. Discovered in TaAs in 2015. Q: "Can Weyl nodes be removed?" A: only by annihilating two of opposite chirality — the monopole charge is conserved.
 
 ### Figure 64 · Weyl semimetals — Fermi arcs from sliced Chern numbers
-- Figure 64 of the notebook (cell 80): The Weyl slab dispersion in 3D: the two bands nearest E=0 over the surface Brillouin zone. The sheets touch at the projections of the two Weyl nodes (stars) - the remnants of the bulk cones - and, unlike the point-touching Dirac cone of the 3D TI, they stay glued together along a whole line segment between them (cyan): the Fermi arc. The arc is the stack of chiral edge modes of all the C=1 slices found above.
+- Figure 64 of the course (11_Higher_Order_and_Weyl.ipynb, cell 7): The Weyl slab dispersion in 3D: the two bands nearest E=0 over the surface Brillouin zone. The sheets touch at the projections of the two Weyl nodes (stars) - the remnants of the bulk cones - and, unlike the point-touching Dirac cone of the 3D TI, they stay glued together along a whole line segment between them (cyan): the Fermi arc. The arc is the stack of chiral edge modes of all the C=1 slices found above.
 
-**Notes.** Figure 64 of the notebook (cell 80). The Weyl slab dispersion in 3D: the two bands nearest E=0 over the surface Brillouin zone. The sheets touch at the projections of the two Weyl nodes (stars) - the remnants of the bulk cones - and, unlike the point-touching Dirac cone of the 3D TI, they stay glued together along a whole line segment between them (cyan): the Fermi arc. The arc is the stack of chiral edge modes of all the C=1 slices found above.
+**Notes.** Figure 64 of the course (11_Higher_Order_and_Weyl.ipynb, cell 7). The Weyl slab dispersion in 3D: the two bands nearest E=0 over the surface Brillouin zone. The sheets touch at the projections of the two Weyl nodes (stars) - the remnants of the bulk cones - and, unlike the point-touching Dirac cone of the 3D TI, they stay glued together along a whole line segment between them (cyan): the Fermi arc. The arc is the stack of chiral edge modes of all the C=1 slices found above.
 
 ### Figure 65 · Weyl semimetals — Fermi arcs from sliced Chern numbers
-- Figure 65 of the notebook (cell 80): Geometry of the Weyl transport bar: an 8x8x6 cubic-lattice block (blue) with semi-infinite leads (red) along z, the direction joining the two Weyl nodes.
+- Figure 65 of the course (11_Higher_Order_and_Weyl.ipynb, cell 7): Geometry of the Weyl transport bar: an 8x8x6 cubic-lattice block (blue) with semi-infinite leads (red) along z, the direction joining the two Weyl nodes.
 
-**Notes.** Figure 65 of the notebook (cell 80). Geometry of the Weyl transport bar: an 8x8x6 cubic-lattice block (blue) with semi-infinite leads (red) along z, the direction joining the two Weyl nodes.
+**Notes.** Figure 65 of the course (11_Higher_Order_and_Weyl.ipynb, cell 7). Geometry of the Weyl transport bar: an 8x8x6 cubic-lattice block (blue) with semi-infinite leads (red) along z, the direction joining the two Weyl nodes.
 
 ### The 3D topological insulator: a Dirac cone on every surface
 *A band-inverted 3D insulator with time reversal. Its Z2 index is a product of parities; its surface is a single, unremovable Dirac cone.*
 - Slab spectrum coloured by surface weight: one surface Dirac cone spans the inverted gap (fig. 66); as a 3D dispersion it is a single cone (fig. 67).
 - Fu–Kane: (−1)ν0 = ∏TRIM ξoccupied — the product of parity eigenvalues at the eight time-reversal-invariant momenta.
 - Transport through a TI bar (fig. 68): in the topological phase the surface conducts while the bulk is insulating.
-- Figure 66 of the notebook (cell 82): Slab spectrum of the 3D TI model coloured by surface weight: a single surface Dirac cone spans the inverted gap (left); the trivial phase shows only gapped bulk bands (right).
-- Figure 68 of the notebook (cell 82): Geometry of the 3D TI transport bar: 6x6 cross-section, 8 cells long, leads along z. In the topological phase every facet of this bar carries a piece of the protected surface state, so the bar conducts even though its bulk is insulating.
+- Figure 66 of the course (12_3D_TI_Exercises_II_and_Beyond.ipynb, cell 3): Slab spectrum of the 3D TI model coloured by surface weight: a single surface Dirac cone spans the inverted gap (left); the trivial phase shows only gapped bulk bands (right).
+- Figure 68 of the course (12_3D_TI_Exercises_II_and_Beyond.ipynb, cell 3): Geometry of the 3D TI transport bar: 6x6 cross-section, 8 cells long, leads along z. In the topological phase every facet of this bar carries a piece of the protected surface state, so the bar conducts even though its bulk is insulating.
 
 **Notes.** Bi₂Se₃ is the textbook material; the notebook's model is the four-band k·p lattice model. The single Dirac cone is the odd number that Z2 protects — a normal surface state comes in pairs. Q: "Why can a single Dirac cone not exist in a 2D lattice by itself?" A: fermion doubling — on a 2D lattice cones come in pairs; a single one needs the 3D bulk as its 'other half'. That is why a TI surface is different from graphene.
 
 ### Figure 67 · The 3D topological insulator — a Dirac cone on every surface
-- Figure 67 of the notebook (cell 82): The protected surface state of the strong TI as a 3D dispersion: the two slab bands nearest E=0 form a single Dirac cone centred at the surface Gamma point, with velocity set by the SOC strength. Away from the node the sheets bend over as they merge into the bulk bands. A single cone like this cannot exist in any standalone 2D lattice (fermion doubling) - it lives only on the boundary of a 3D topological bulk.
+- Figure 67 of the course (12_3D_TI_Exercises_II_and_Beyond.ipynb, cell 3): The protected surface state of the strong TI as a 3D dispersion: the two slab bands nearest E=0 form a single Dirac cone centred at the surface Gamma point, with velocity set by the SOC strength. Away from the node the sheets bend over as they merge into the bulk bands. A single cone like this cannot exist in any standalone 2D lattice (fermion doubling) - it lives only on the boundary of a 3D topological bulk.
 
-**Notes.** Figure 67 of the notebook (cell 82). The protected surface state of the strong TI as a 3D dispersion: the two slab bands nearest E=0 form a single Dirac cone centred at the surface Gamma point, with velocity set by the SOC strength. Away from the node the sheets bend over as they merge into the bulk bands. A single cone like this cannot exist in any standalone 2D lattice (fermion doubling) - it lives only on the boundary of a 3D topological bulk.
+**Notes.** Figure 67 of the course (12_3D_TI_Exercises_II_and_Beyond.ipynb, cell 3). The protected surface state of the strong TI as a 3D dispersion: the two slab bands nearest E=0 form a single Dirac cone centred at the surface Gamma point, with velocity set by the SOC strength. Away from the node the sheets bend over as they merge into the bulk bands. A single cone like this cannot exist in any standalone 2D lattice (fermion doubling) - it lives only on the boundary of a 3D topological bulk.
 
 ## 10. Close
 

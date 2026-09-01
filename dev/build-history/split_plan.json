@@ -1,0 +1,193 @@
+{
+ "chapters": [
+  {
+   "num": 1,
+   "file": "01_Foundations.ipynb",
+   "title": "Foundations — from the Schrödinger equation to a first conductance",
+   "part": "I",
+   "sections": [
+    1,
+    2,
+    3,
+    4
+   ],
+   "first_fig": 1,
+   "n_figs": 6,
+   "n_cells": 13,
+   "exercises": ""
+  },
+  {
+   "num": 2,
+   "file": "02_Shapes_Spin_and_Bands.ipynb",
+   "title": "Shapes, spin and band structure",
+   "part": "I",
+   "sections": [
+    5,
+    6,
+    7
+   ],
+   "first_fig": 7,
+   "n_figs": 7,
+   "n_cells": 10,
+   "exercises": ""
+  },
+  {
+   "num": 3,
+   "file": "03_Graphene_and_Superconductivity.ipynb",
+   "title": "Graphene and superconductivity",
+   "part": "I",
+   "sections": [
+    8,
+    9
+   ],
+   "first_fig": 14,
+   "n_figs": 5,
+   "n_cells": 8,
+   "exercises": ""
+  },
+  {
+   "num": 4,
+   "file": "04_Observables_and_Visualisation.ipynb",
+   "title": "Local observables and visualisation",
+   "part": "I",
+   "sections": [
+    10,
+    11
+   ],
+   "first_fig": 19,
+   "n_figs": 5,
+   "n_cells": 9,
+   "exercises": ""
+  },
+  {
+   "num": 5,
+   "file": "05_KPM_and_Continuum.ipynb",
+   "title": "Spectral densities by KPM and symbolic Hamiltonians with `kwant.continuum`",
+   "part": "I",
+   "sections": [
+    12,
+    13
+   ],
+   "first_fig": 24,
+   "n_figs": 5,
+   "n_cells": 10,
+   "exercises": ""
+  },
+  {
+   "num": 6,
+   "file": "06_Magnetic_Fields.ipynb",
+   "title": "Magnetic fields — Peierls substitution, Landau levels, the Hofstadter butterfly",
+   "part": "I",
+   "sections": [
+    14
+   ],
+   "first_fig": 29,
+   "n_figs": 5,
+   "n_cells": 6,
+   "exercises": ""
+  },
+  {
+   "num": 7,
+   "file": "07_Solvers_Pitfalls_and_Exercises_I.ipynb",
+   "title": "Solvers, performance, pitfalls — and the exercises for Part I",
+   "part": "I",
+   "sections": [
+    15,
+    16
+   ],
+   "first_fig": 34,
+   "n_figs": 1,
+   "n_cells": 8,
+   "exercises": "E1.1–E1.11"
+  },
+  {
+   "num": 8,
+   "file": "08_Topology_in_One_Dimension.ipynb",
+   "title": "Topology in one dimension — SSH, Kitaev, the Majorana nanowire",
+   "part": "II",
+   "sections": [
+    17,
+    18,
+    19
+   ],
+   "first_fig": 35,
+   "n_figs": 12,
+   "n_cells": 14,
+   "exercises": ""
+  },
+  {
+   "num": 9,
+   "file": "09_Chern_Numbers.ipynb",
+   "title": "Chern numbers — the Thouless pump and the Haldane model",
+   "part": "II",
+   "sections": [
+    20,
+    21
+   ],
+   "first_fig": 47,
+   "n_figs": 6,
+   "n_cells": 10,
+   "exercises": ""
+  },
+  {
+   "num": 10,
+   "file": "10_Z2_and_Chiral_Superconductors.ipynb",
+   "title": "Z₂ and chiral superconductors — Kane–Mele and p+ip",
+   "part": "II",
+   "sections": [
+    22,
+    23
+   ],
+   "first_fig": 53,
+   "n_figs": 6,
+   "n_cells": 9,
+   "exercises": ""
+  },
+  {
+   "num": 11,
+   "file": "11_Higher_Order_and_Weyl.ipynb",
+   "title": "Higher-order topology and Weyl semimetals",
+   "part": "II",
+   "sections": [
+    24,
+    25
+   ],
+   "first_fig": 59,
+   "n_figs": 7,
+   "n_cells": 8,
+   "exercises": ""
+  },
+  {
+   "num": 12,
+   "file": "12_3D_TI_Exercises_II_and_Beyond.ipynb",
+   "title": "The 3D topological insulator, the exercises for Part II, and where to go next",
+   "part": "II",
+   "sections": [
+    26,
+    27
+   ],
+   "first_fig": 66,
+   "n_figs": 3,
+   "n_cells": 7,
+   "exercises": "E2.1–E2.14"
+  }
+ ],
+ "solutions": [
+  {
+   "slug": "S1_Solutions_Part_I",
+   "title": "Solutions to the exercises of Part I (E1.1–E1.11)",
+   "part": "I",
+   "tags": "E1.1–E1.11",
+   "n_figs": 10,
+   "n_cells": 24
+  },
+  {
+   "slug": "S2_Solutions_Part_II",
+   "title": "Solutions to the exercises of Part II (E2.1–E2.14)",
+   "part": "II",
+   "tags": "E2.1–E2.14",
+   "n_figs": 8,
+   "n_cells": 30
+  }
+ ]
+}

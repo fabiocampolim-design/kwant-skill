@@ -3,6 +3,44 @@
 All notable changes to the Kwant — Theory and Practice notebooks. Dates are
 commit dates; the project has not been released yet.
 
+## 1.3.0 — 2026-09-01 (the course split into chapter notebooks)
+
+- **The two monolithic notebooks are gone.** `Kwant_Theory_and_Practice.ipynb`
+  (7.4 MB, 86 cells) crashed editors on opening; it is now twelve chapter
+  notebooks under `chapters/` (`01_Foundations` … `12_3D_TI_Exercises_II_and_Beyond`,
+  each under 1 MB), plus `00_Contents.ipynb` (chapter map, section table,
+  installation, conventions, environment check). `Kwant_Exercises_Solutions.ipynb`
+  is now `S1_Solutions_Part_I.ipynb` and `S2_Solutions_Part_II.ipynb`.
+- **Every notebook opens with its own table of contents**: a link to every
+  heading of the chapter, previous · contents · next links, the part, sections
+  and figure range, and the SPDX line; then one Setup cell (imports, solver
+  report, muted warnings, `show_fig`).
+- **Figure numbering is continuous across the chapters** (chapter 6 starts at
+  Figure 29): the numbers in the course deck, `course/figures/` and the
+  captions are unchanged from 1.2.0.
+- **Chapters are self-contained.** The four cross-chapter dependencies of the
+  monolith (the §3 wire for the §15 parallel sweep, the §6 Rashba wire for §10,
+  `chern_fhs` for §22–25, `bloch_hamiltonian` for §22–23) are rebuilt by a
+  *carried over* cell whose code is the original definition, verbatim. One
+  behaviour change: the §15 parallel sweep now runs on the §3 quantum wire it
+  describes (in the monolith it silently used whatever `fsyst` was last bound —
+  the §9 N-S junction).
+- All fifteen notebooks re-executed from a cold kernel; 68 + 18 figures, 25
+  exercises, 31 assertions as before. Sections, section numbers and text are
+  unchanged apart from the retargeted cross-references.
+- `tests/test_notebooks.py` rewritten for the chapter layout: exact file set,
+  per-notebook counts, size cap of 1 MB, continuous figure counter, a TOC whose
+  links resolve in every chapter, the contents notebook linking every chapter.
+  `tests/test_execute_notebooks.py` and `tests/test_license.py` cover all
+  fifteen files.
+- `course/build_course.py` reads the chapters (`--chapters DIR` replaces
+  `--notebook FILE`); `figures.json` records the chapter notebook of every
+  figure and the deck, static slides, PDF and lecturer notes cite
+  "chapter notebook, cell" instead of a bare cell index. The handout's stale
+  description of the deck as a 2-D grid is corrected.
+- `dev/build-history/split_chapters.py`: the guarded one-shot that derived the
+  chapters from the 1.2.0 monoliths (the record of how the split was made).
+
 ## 1.2.0 — 2026-08-31 (linear course deck, PDF fallback, full figure coverage)
 
 - `course/`: the deck is now **one linear sequence** (79 slides) — single-level

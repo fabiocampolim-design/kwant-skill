@@ -280,7 +280,7 @@ Write-Host '    python -c "import kwant; print(kwant.__version__)"' -ForegroundC
 Write-Host ''
 Write-Host 'VS Code:' -ForegroundColor White
 Write-Host '    1. Install the "Python" and "Jupyter" extensions (Microsoft).' -ForegroundColor Gray
-Write-Host '    2. Open Kwant_Theory_and_Practice.ipynb' -ForegroundColor Gray
+Write-Host '    2. Open chapters\00_Contents.ipynb, then a chapter' -ForegroundColor Gray
 Write-Host '    3. Click "Select Kernel" (top right) -> Python Environments ->' -ForegroundColor Gray
 Write-Host "       Python ($EnvName)" -ForegroundColor Gray
 Write-Host '    4. Run All.' -ForegroundColor Gray

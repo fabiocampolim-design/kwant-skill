@@ -7,9 +7,9 @@
 [![License: Apache 2.0](https://img.shields.io/badge/license-Apache--2.0-green)](LICENSE)
 
 **A complete, executed course on quantum transport with [Kwant](https://kwant-project.org)
-in one Jupyter notebook — the physics, the numerics and the API side by side —
-with a solutions notebook for its 25 exercises and a one-command Windows
-installer.**
+in twelve Jupyter chapter notebooks — the physics, the numerics and the API side
+by side — with two solutions notebooks for its 25 exercises and a one-command
+Windows installer.**
 
 > **Feedback is highly appreciated.** This is a course, so the most valuable
 > reports are the ones a reader can make: a derivation that skips a step, a
@@ -22,7 +22,7 @@ installer.**
 assumes you already know the scattering theory behind `smatrix`;
 topocondmat.org teaches topology beautifully but treats the code as a black
 box. Learning quantum transport *and* Kwant at the same time meant keeping
-three documents open and reconciling them by hand. This notebook is that
+three documents open and reconciling them by hand. This course is that
 reconciliation, written down once: every section states the theory, then
 builds the system and computes the quantity the theory predicts, and the two
 are compared in the same cell — 68 figures, all generated live, none pasted
@@ -43,18 +43,38 @@ python -m ipykernel install --user --name kwant --display-name "Python (kwant)"
 
 # then, on every platform
 python verify_kwant.py             # proves the installation with physics identities
-jupyter lab Kwant_Theory_and_Practice.ipynb
+jupyter lab chapters/00_Contents.ipynb    # the contents; open any chapter from there
 ```
 
-Run-All takes about 4½ minutes for the main notebook and 2 minutes for the
-solutions on a laptop (with MUMPS). Full reference: [`docs/USER_MANUAL.md`](docs/USER_MANUAL.md)
+The course is twelve chapter notebooks in `chapters/` (`01_…` to `12_…`), each
+opening with its own table of contents and a Setup cell, each self-contained and
+under 1 MB — one 7.4 MB notebook was too heavy for editors to open reliably, so
+it was split (1.3.0). Figures are numbered continuously across the chapters.
+Run-All of all twelve takes about 5 minutes on a laptop (with MUMPS), the two
+solutions notebooks about 2. Full reference: [`docs/USER_MANUAL.md`](docs/USER_MANUAL.md)
 (also as [HTML](docs/USER_MANUAL.html) and [PDF](docs/USER_MANUAL.pdf)) lists every
 section, every feature and every known limitation. Working with an AI agent?
 Hand it [`AGENTS.md`](AGENTS.md). Changes are in [`CHANGELOG.md`](CHANGELOG.md).
 
 ## What is in the course
 
-**Part I — Kwant and transport theory (sections 1–16).** Discretising the
+| Chapter | Notebook | Sections |
+|---|---|---|
+| 1 | `01_Foundations.ipynb` | 1–4: discretisation, the object model, a first wire, scattering theory |
+| 2 | `02_Shapes_Spin_and_Bands.ipynb` | 5–7: shapes and parameters, Rashba spin, bands and closed systems |
+| 3 | `03_Graphene_and_Superconductivity.ipynb` | 8–9: graphene, BdG and Andreev reflection |
+| 4 | `04_Observables_and_Visualisation.ipynb` | 10–11: density and current operators, plotting |
+| 5 | `05_KPM_and_Continuum.ipynb` | 12–13: the kernel polynomial method, `kwant.continuum` |
+| 6 | `06_Magnetic_Fields.ipynb` | 14: Peierls phases, Landau levels, the Hofstadter butterfly |
+| 7 | `07_Solvers_Pitfalls_and_Exercises_I.ipynb` | 15–16 + the Part I exercises |
+| 8 | `08_Topology_in_One_Dimension.ipynb` | 17–19: SSH, Kitaev, the Majorana nanowire |
+| 9 | `09_Chern_Numbers.ipynb` | 20–21: the Thouless pump, the Haldane model |
+| 10 | `10_Z2_and_Chiral_Superconductors.ipynb` | 22–23: Kane–Mele, p+ip |
+| 11 | `11_Higher_Order_and_Weyl.ipynb` | 24–25: the BBH quadrupole, Weyl semimetals |
+| 12 | `12_3D_TI_Exercises_II_and_Beyond.ipynb` | 26–27 + the Part II exercises, the reference shelf, sources and licence |
+| S1, S2 | `S1_Solutions_Part_I.ipynb`, `S2_Solutions_Part_II.ipynb` | every exercise worked and asserted |
+
+**Part I — Kwant and transport theory (sections 1–16, chapters 1–7).** Discretising the
 Schrödinger equation; the object model (`Builder`, sites, symmetries); a first
 quantum wire and the conductance staircase; Landauer–Büttiker and Fisher–Lee
 derived and then checked numerically (unitarity, sum rule); shapes and runtime
@@ -64,7 +84,7 @@ density and current operators; visualisation; the kernel polynomial method;
 `kwant.continuum`; Peierls phases, Landau levels and the Hofstadter butterfly;
 solvers, performance, and how *not* to parallelise; a section of pitfalls.
 
-**Part II — Topological matter (17–26).** Ten models, each with its
+**Part II — Topological matter (17–26, chapters 8–12).** Ten models, each with its
 invariant computed from the Kwant system itself: SSH (winding), Kitaev chain
 (Pfaffian), the Majorana nanowire as a device, the Thouless pump, Haldane
 (Chern number by Fukui–Hatsugai–Suzuki and a 3D Berry-curvature plot),
@@ -74,8 +94,9 @@ numbers), the 3D topological insulator (surface Dirac cone).
 
 **Exercises.** 25, at the end of each part, flagged by origin (Kwant tutorial,
 topocondmat.org, Asbóth *et al.*, original) and difficulty (◦ • ★); two are
-pencil-and-paper. `Kwant_Exercises_Solutions.ipynb` works every one with 31
-`assert`s encoding the expected physics. Physics found while validating them:
+pencil-and-paper. `chapters/S1_Solutions_Part_I.ipynb` and
+`S2_Solutions_Part_II.ipynb` work every one with 31 `assert`s encoding the
+expected physics. Physics found while validating them:
 m₀ = 2 is an exact one-layer-surface sweet spot of the
 3D TI model; the vortex-core–edge Majorana splitting oscillates as
 cos(k_F R)·exp(−R/ξ).
@@ -83,7 +104,7 @@ cos(k_F R)·exp(−R/ξ).
 ## Features
 
 - **Executed, and re-executable** — every figure and printed number in the
-  repository comes from a cold-kernel run; the test suite re-runs both
+  repository comes from a cold-kernel run; the test suite re-runs all fifteen
   notebooks and requires zero errors and the same figure count.
 - **Theory next to the check** — each derivation ends in a cell that computes
   the predicted quantity and compares (S-matrix unitarity to 1e-14, T + R = N,
@@ -94,13 +115,13 @@ cos(k_F R)·exp(−R/ξ).
   from separate analytic formulas.
 - **An undergraduate course** (`course/`): a linear reveal.js deck of 10 sections / 79 slides
   with speaker notes, a landscape PDF of the whole deck as a projector fallback, an A4
-  handout and lecturer notes — all 68 figures of the notebook appear, each under its full
-  caption, extracted by `course/build_course.py`.
+  handout and lecturer notes — all 68 figures of the course appear, each under its full
+  caption with its chapter and cell, extracted by `course/build_course.py`.
 - **25 exercises with asserted solutions** — origin- and difficulty-flagged;
-  the solutions notebook is a second, independent executed document.
+  the solutions notebooks are independent executed documents.
 - **A pitfalls section learned the hard way** — `kwant.smatrix` from several
-  threads segfaults when MUMPS is installed (MUMPS is not re-entrant): the
-  notebook explains it, `test_thread_safety.py` guards it, and a patch was
+  threads segfaults when MUMPS is installed (MUMPS is not re-entrant): chapter
+  7 explains it, `test_thread_safety.py` guards it, and a patch was
   prepared for the Kwant project (`docs/drafts/`).
 - **Windows installer that verifies itself** — conda-forge based, registers
   the kernel the notebooks expect, ends with a real transport calculation.
@@ -108,8 +129,9 @@ cos(k_F R)·exp(−R/ξ).
   writes an audit log and JSON summary.
 - **Standard-library CLIs, logs and a test suite** — both scripts expose every
   input and output on the command line; `tests/` asserts the notebooks'
-  invariants (kernel, error-free, counts, 1:1 exercises↔solutions, no personal
-  data); CI on Linux and Windows.
+  invariants (kernel, error-free, counts, 1:1 exercises↔solutions, a table of
+  contents with resolving links in every chapter, continuous figure numbering,
+  every file under 1 MB, no personal data); CI on Linux, Windows and macOS.
 
 ## How this compares
 
@@ -136,7 +158,8 @@ if you have no leads and want the simplest tight-binding band structure code.
   (the fix is on Kwant's main branch, unreleased); the notebooks do not use
   it, `verify_kwant.py` warns, the installer pins. Drop the pin when Kwant
   releases.
-- **Figure numbers are only sequential under Run-All** (global counter).
+- **Figure numbers are only sequential under Run-All** (each chapter's Setup
+  cell starts the counter where the previous chapter stopped).
 - **Tested on one machine** (Windows 10, Python 3.13, conda-forge Kwant 1.5.0
   + MUMPS, numpy 2.5.1 — above the pin; the pinned configuration is the one CI
   installs, on Linux, Windows and macOS). A clean-machine run of the installer
@@ -152,7 +175,8 @@ In Claude Code, over five working days: August 15 2026 (installer, docs
 study, Part I), August 20–21 (the MUMPS crash and its diagnosis, Part II, the
 presentation pass, exercises and solutions), August 28–29 (upstream
 audit of the Kwant project, pre-publication audit, tests, CI, manuals),
-August 31 (licence protection, guards, upstream watch). Every physics result was checked against the
+August 31 (licence protection, guards, upstream watch, the course deck),
+September 1 (the split into chapter notebooks). Every physics result was checked against the
 literature or an independent calculation before being kept; three Kwant
 findings came out of it and were prepared for the Kwant project. In
 [CRediT](https://credit.niso.org/) terms:
@@ -162,7 +186,7 @@ findings came out of it and were prepared for the Kwant project. In
 | **Conceptualization** | A course that teaches theory and Kwant together; extending it to topology; exercises with executed solutions; contributing findings back to Kwant | The section structure (theory → code → check), the invariant-from-the-system approach, the pitfalls section |
 | **Methodology** | Selection of the models; the publish-with-audit process this repository follows | Numerical methods (FHS Chern numbers, Pfaffians, KPM), the thread-crash diagnosis |
 | **Software** | — | All of it |
-| **Validation** | Running the notebook end-to-end in VS Code, reviewing every figure, deciding on each finding | Assertions, cross-checks against the literature, re-execution tests, Crossref spot-checks of citations |
+| **Validation** | Running the notebooks end-to-end in VS Code, reviewing every figure, deciding on each finding | Assertions, cross-checks against the literature, re-execution tests, Crossref spot-checks of citations |
 | **Investigation** | Curating the topological-matter literature | Kwant documentation and source study; upstream tracker and mailing-list audit |
 | **Writing** | Review and editing | Original draft |
 | **Resources · Supervision · Project administration** | All | — |
@@ -174,8 +198,8 @@ Kwant through its public Python API and contains no Kwant source code, so it
 carries its own licence; Kwant itself is © the Kwant authors, BSD-2, and is
 installed by you from conda-forge. Sources used as models (the Kwant tutorial,
 BSD-2; topocondmat.org, CC BY-SA 4.0 text / BSD-3 code; Asbóth *et al.*'s
-book) are credited in the notebook's final "Sources, attribution and licence"
-cell; nothing from them is reproduced verbatim. You may use, modify and
+book) are credited in the final "Sources, attribution and licence" cell of
+chapter 12; nothing from them is reproduced verbatim. You may use, modify and
 redistribute this project, including commercially, provided the licence and
 notice travel with it; contributions are accepted under the same terms
 (section 5).

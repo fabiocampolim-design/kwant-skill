@@ -340,7 +340,7 @@ def _finish(rep, summary, args, outdir, exit_code):
     rep._emit("=" * 70)
     if not summary["failures"]:
         rep._emit("")
-        rep._emit("  Next:  jupyter lab Kwant_Theory_and_Practice.ipynb")
+        rep._emit("  Next:  jupyter lab chapters/00_Contents.ipynb")
         rep._emit(f"  or open that notebook in VS Code and pick the kernel for THIS Python:\n"
                   f"         {sys.executable}")
     rep.log.write(f"# exit code: {exit_code}\n")

@@ -29,7 +29,7 @@ jobs:
 
   kwant:
     # Real Kwant from conda-forge (with MUMPS), the two support scripts through
-    # their CLIs, and both notebooks executed from a cold kernel.
+    # their CLIs, and every notebook in chapters/ executed from a cold kernel.
     strategy:
       fail-fast: false
       matrix:
@@ -61,7 +61,7 @@ jobs:
         run: python test_thread_safety.py --outdir ci-out --json
       - name: Script CLI contract, docs<->CLI guard, notebook invariants
         run: python -m pytest tests -q
-      - name: Execute both notebooks from a cold kernel
+      - name: Execute all fifteen notebooks from a cold kernel (one after another)
         env:
           KWANT_NB_EXECUTE: "1"
         run: python -m pytest tests/test_execute_notebooks.py -q

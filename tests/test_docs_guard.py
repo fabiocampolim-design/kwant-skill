@@ -12,7 +12,7 @@ from pathlib import Path
 
 import pytest
 
-from test_notebooks import EXPECTED, MAIN, N_EXERCISES, SOL
+from test_notebooks import CHAPTER_FILES, EXPECTED, N_EXERCISES, SOLUTION_FILES
 
 ROOT = Path(__file__).resolve().parents[1]
 SCRIPTS = {"verify_kwant.py": ROOT / "verify_kwant.py",
@@ -71,15 +71,18 @@ def test_manual_option_tables_match_help():
 
 
 def test_counts_in_prose_match_the_asserted_counts():
-    m, s = EXPECTED[MAIN], EXPECTED[SOL]
+    def total(files):
+        return {k: sum(EXPECTED[f][k] for f in files) for k in ("cells", "code", "figures")}
+    m, s = total(CHAPTER_FILES), total(SOLUTION_FILES)
     claims = {
         "README.md": [f"{m['figures']} figures", f"{N_EXERCISES} exercises"],
-        "AGENTS.md": [f"{m['cells']} cells ({m['code']} code), {m['figures']} figures, {N_EXERCISES} exercises",
+        "AGENTS.md": [f"{m['cells']} cells ({m['code']} code), {m['figures']} figures",
                       f"{s['cells']} cells ({s['code']} code), {s['figures']} figures",
-                      f"{m['cells']}/{m['code']}/{m['figures']}", f"{s['cells']}/{s['code']}/{s['figures']}"],
-        "docs/USER_MANUAL.md": [f"{m['cells']} cells ({m['code']} code", f"{m['figures']} figures, {N_EXERCISES} exercises",
-                                f"{s['cells']} cells ({s['code']} code", f"{s['figures']} figures",
-                                f"{m['cells']}/{m['code']}/{m['figures']} and {s['cells']}/{s['code']}/{s['figures']}"],
+                      f"{m['cells']}/{m['code']}/{m['figures']}", f"{s['cells']}/{s['code']}/{s['figures']}",
+                      f"{N_EXERCISES} exercises"],
+        "docs/USER_MANUAL.md": [f"{m['cells']} cells, {m['figures']} figures",
+                                f"{m['cells']}/{m['code']}/{m['figures']}", f"{s['cells']}/{s['code']}/{s['figures']}",
+                                f"{N_EXERCISES} exercises"],
         "CITATION.cff": [f"{N_EXERCISES} exercises"],
     }
     for name, needles in claims.items():

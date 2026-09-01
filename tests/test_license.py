@@ -2,7 +2,7 @@
 # Copyright 2026 Fabio Campolim
 """Publishing playbook rule 17: the warranty disclaimer and limitation of
 liability must survive every rewrite -- in LICENSE, visibly in the README --
-NOTICE must exist, and every source file and both notebooks must carry the
+NOTICE must exist, and every source file and every notebook must carry the
 SPDX identifier."""
 import json
 import subprocess
@@ -51,8 +51,10 @@ def test_every_tracked_script_has_spdx_header():
     assert not missing, missing
 
 
-def test_both_notebooks_carry_the_spdx_identifier():
-    for name in ("Kwant_Theory_and_Practice.ipynb", "Kwant_Exercises_Solutions.ipynb"):
-        nb = json.loads(_read(name))
+def test_every_notebook_carries_the_spdx_identifier():
+    notebooks = sorted((ROOT / "chapters").glob("*.ipynb"))
+    assert len(notebooks) == 15, notebooks
+    for path in notebooks:
+        nb = json.loads(path.read_text(encoding="utf-8"))
         md = "\n".join("".join(c["source"]) for c in nb["cells"] if c["cell_type"] == "markdown")
-        assert SPDX in md, name
+        assert SPDX in md, path.name

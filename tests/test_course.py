@@ -2,8 +2,8 @@
 # Copyright 2026 Fabio Campolim
 """The undergraduate course (publishing playbook rule 22, as amended 2026-08-31):
 the committed deck is one linear sequence with no build animations, every
-notebook figure appears exactly once — full caption, section and cell — in the
-deck AND in the PDF/static fallbacks, every data-t reference resolves, every
+figure of the chapter notebooks appears exactly once — full caption, section,
+chapter notebook and cell — in the deck AND in the PDF/static fallbacks, every data-t reference resolves, every
 slide has notes, and the course builder has a CLI."""
 import json
 import re
@@ -13,7 +13,7 @@ from pathlib import Path
 
 import pytest
 
-from test_notebooks import EXPECTED, MAIN
+from test_notebooks import CHAPTERS as CHAPTER_DIR, N_FIGURES
 
 ROOT = Path(__file__).resolve().parents[1]
 COURSE = ROOT / "course"
@@ -21,7 +21,7 @@ DECK = COURSE / "deck"
 sys.path.insert(0, str(DECK))
 import content_en  # noqa: E402
 
-N_FIGS = EXPECTED[MAIN]["figures"]
+N_FIGS = N_FIGURES
 
 
 def _manifest():
@@ -107,18 +107,22 @@ def test_every_notebook_figure_appears_exactly_once_with_its_caption(doc):
         probe = probe.replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;")
         if len(probe) >= 10:
             assert probe in text, f"{doc}: caption of figure {m['n']} missing ({probe!r})"
-        assert f"cell {m['cell']})" in text, f"{doc}: cell reference of figure {m['n']} missing"
+        assert f"{m['notebook']}, cell {m['cell']})" in text,             f"{doc}: chapter/cell reference of figure {m['n']} missing"
 
 
 def test_figures_are_the_notebooks_figures():
     manifest = _manifest()
     assert len(manifest) == N_FIGS
     assert [m["n"] for m in manifest] == list(range(1, N_FIGS + 1))
+    assert [m["notebook"] for m in manifest] == sorted(m["notebook"] for m in manifest), "course order"
     files = sorted(p.name for p in (COURSE / "figures").glob("fig-*.png"))
     assert files == [f"fig-{n:02d}.png" for n in range(1, N_FIGS + 1)]
-    nb = json.loads(MAIN.read_text(encoding="utf-8"))
+    notebooks = {}
     for m in manifest:
-        cell = nb["cells"][m["cell"]]
+        assert re.match(r"^(0[1-9]|1[0-2])_.+\.ipynb$", m["notebook"]), m
+        if m["notebook"] not in notebooks:
+            notebooks[m["notebook"]] = json.loads((CHAPTER_DIR / m["notebook"]).read_text(encoding="utf-8"))
+        cell = notebooks[m["notebook"]]["cells"][m["cell"]]
         assert cell["cell_type"] == "code"
         assert any("image/png" in o.get("data", {}) for o in cell.get("outputs", [])), m
         assert len(m["caption"]) >= 40, f"figure {m['n']}: caption too thin to stand alone"
@@ -195,7 +199,7 @@ def test_builder_cli():
     r = subprocess.run([sys.executable, str(COURSE / "build_course.py"), "--help"], capture_output=True, text=True,
                        cwd=ROOT, timeout=120)
     assert r.returncode == 0
-    for opt in ("--outdir", "--notebook", "--log-dir", "--skip-handout", "--verbose", "--quiet", "--version"):
+    for opt in ("--outdir", "--chapters", "--log-dir", "--skip-handout", "--verbose", "--quiet", "--version"):
         assert opt in r.stdout, opt
     version = (ROOT / "VERSION").read_text(encoding="utf-8").strip()
     r = subprocess.run([sys.executable, str(COURSE / "build_course.py"), "--version"], capture_output=True,

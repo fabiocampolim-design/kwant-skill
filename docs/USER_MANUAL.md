@@ -4,17 +4,36 @@ title: "Kwant — Theory and Practice · User Manual"
 
 # 1. What it is
 
-*Kwant — Theory and Practice* is a course on quantum transport in one
-executed Jupyter notebook, built against [Kwant](https://kwant-project.org)
-1.5. Each of its 26 sections states a piece of theory, builds the
-corresponding tight-binding system with Kwant, computes what the theory
-predicts, and compares the two in the same cell. A companion notebook works
-every one of the 25 exercises with assertions.
+*Kwant — Theory and Practice* is a course on quantum transport in twelve
+executed Jupyter chapter notebooks, built against
+[Kwant](https://kwant-project.org) 1.5. Each of its 26 sections states a piece
+of theory, builds the corresponding tight-binding system with Kwant, computes
+what the theory predicts, and compares the two in the same cell. Two companion
+notebooks work every one of the 25 exercises with assertions.
+
+Until 1.2.0 the course was one 7.4 MB notebook, which editors could not open
+reliably; 1.3.0 split it into chapters, each under 1 MB, each opening with its
+own table of contents and a Setup cell. Figure numbers run continuously across
+the chapters (chapter 6 starts at Figure 29), so a figure number means the same
+thing in every chapter, in the course deck and in `course/figures/`.
 
 | File | Content |
 |---|---|
-| `Kwant_Theory_and_Practice.ipynb` | 86 cells (53 code, 33 markdown), 68 figures, 25 exercises |
-| `Kwant_Exercises_Solutions.ipynb` | 51 cells (24 code, 27 markdown), 18 figures, 31 assertions |
+| `chapters/00_Contents.ipynb` | chapter map, section table, installation, conventions, environment check |
+| `chapters/01_Foundations.ipynb` | §1–4 — 13 cells, figures 1–6 |
+| `chapters/02_Shapes_Spin_and_Bands.ipynb` | §5–7 — 10 cells, figures 7–13 |
+| `chapters/03_Graphene_and_Superconductivity.ipynb` | §8–9 — 8 cells, figures 14–18 |
+| `chapters/04_Observables_and_Visualisation.ipynb` | §10–11 — 9 cells, figures 19–23 (carries over the §6 Rashba wire) |
+| `chapters/05_KPM_and_Continuum.ipynb` | §12–13 — 10 cells, figures 24–28 |
+| `chapters/06_Magnetic_Fields.ipynb` | §14 — 6 cells, figures 29–33 |
+| `chapters/07_Solvers_Pitfalls_and_Exercises_I.ipynb` | §15–16 + exercises E1.1–E1.11 — 8 cells, figure 34 (carries over the §3 wire) |
+| `chapters/08_Topology_in_One_Dimension.ipynb` | Part II opening, §17–19 — 14 cells, figures 35–46 |
+| `chapters/09_Chern_Numbers.ipynb` | §20–21 — 10 cells, figures 47–52 |
+| `chapters/10_Z2_and_Chiral_Superconductors.ipynb` | §22–23 — 9 cells, figures 53–58 (carries over `chern_fhs`, `bloch_hamiltonian`) |
+| `chapters/11_Higher_Order_and_Weyl.ipynb` | §24–25 — 8 cells, figures 59–65 (carries over `chern_fhs`) |
+| `chapters/12_3D_TI_Exercises_II_and_Beyond.ipynb` | §26 + exercises E2.1–E2.14, §27, sources and licence — 7 cells, figures 66–68 |
+| `chapters/S1_Solutions_Part_I.ipynb` | E1.1–E1.11 worked — 24 cells (11 code), 10 figures |
+| `chapters/S2_Solutions_Part_II.ipynb` | E2.1–E2.14 worked — 30 cells (14 code), 8 figures, 31 assertions in total with S1 |
 | `install_kwant_windows.ps1`, `.bat` | Windows installer |
 | `verify_kwant.py` | installation check with physics identities |
 | `test_thread_safety.py` | regression test for the MUMPS thread crash |
@@ -48,7 +67,7 @@ Miniforge3 from GitHub); creates the environment from conda-forge with
 installs the optional extras best-effort (`python-mumps`, `sympy`, `qsymm`,
 `plotly`, `ipympl`) so one unavailable package cannot fail the install;
 registers a Jupyter kernel named **`kwant`** ("Python (kwant)"), which is the
-name both notebooks are pinned to; runs `conda init`; runs a real transport
+name every notebook is pinned to; runs `conda init`; runs a real transport
 calculation to verify. It needs network access and about 2 GB of disk; it
 does not touch any other environment.
 
@@ -93,17 +112,27 @@ one-line result and the interpreter path to select in your editor.
 
 # 3. Running the notebooks
 
-- Open `Kwant_Theory_and_Practice.ipynb` in JupyterLab or VS Code and choose
-  the kernel **Python (kwant)**. If your kernel has another name, select it
-  once; Jupyter remembers the choice per notebook.
-- Use **Run All** (or *Restart kernel and run all cells*). Figure numbers
-  come from a global counter defined in cell 2, so they are only sequential
-  under a full run; re-running a single cell advances the counter (harmless).
-- Timings on a laptop with MUMPS: main notebook about 4½ minutes (280 s),
-  solutions about 2 minutes (132 s), measured 2026-08-31 on the shipped
-  86- and 51-cell notebooks. Without MUMPS (SciPy's SuperLU) expect 3–5× longer.
-- Cell 1 prints the versions in use and which sparse solver is active, and
-  mutes three library warnings (see 14.2).
+- Start from `chapters/00_Contents.ipynb` (the chapter map with links) or open
+  any chapter directly in JupyterLab or VS Code and choose the kernel
+  **Python (kwant)**. If your kernel has another name, select it once; Jupyter
+  remembers the choice per notebook.
+- Every chapter opens with its table of contents (links to every heading of
+  the chapter, and to the previous chapter, the contents and the next chapter)
+  followed by a **Setup** cell. Run the Setup cell first; then **Run All** (or
+  *Restart kernel and run all cells*). Figure numbers come from the chapter's
+  Setup cell, which starts the counter where the previous chapter stopped, so
+  they are only sequential under a full run of the chapter; re-running a single
+  cell advances the counter (harmless).
+- Four chapters carry a *carried over* cell right after Setup: it rebuilds,
+  verbatim, an object an earlier chapter defined (the §3 wire in chapter 7, the
+  §6 Rashba wire in chapter 4, `chern_fhs` in chapters 10–11,
+  `bloch_hamiltonian` in chapter 10). Chapters can therefore be run in any order.
+- Timings on a laptop with MUMPS: all twelve chapters about 5 minutes in total
+  (chapter 7's scaling cell is the slowest single cell), the two solutions
+  notebooks about 2 minutes together. Without MUMPS (SciPy's SuperLU) expect
+  3–5× longer.
+- The Setup cell prints the versions in use and which sparse solver is active,
+  and mutes three library warnings (see 14.2).
 - The notebooks are self-contained: no data files, no downloads, no imports
   between them.
 
@@ -146,18 +175,21 @@ one-line result and the interpreter path to select in your editor.
 | 26 | 3D topological insulator | surface Dirac cone; layer-resolved spectrum |
 
 
-Section 27 is a reference shelf; the final cell states sources, attribution
-and the licence.
+Section 27 (chapter 12) is a reference shelf; the final cell of chapter 12
+states sources, attribution and the licence. Which chapter holds which section
+is the table in section 1 of this manual.
 
 # 5. Exercises and solutions
 
-Exercises are collected at the end of each part (E1.1–E1.11, E2.1–E2.14). Each carries a difficulty mark — ◦ direct, • requires thought,
+Exercises are collected at the end of each part — E1.1–E1.11 close chapter 7,
+E2.1–E2.14 close chapter 12. Each carries a difficulty mark — ◦ direct, • requires thought,
 ★ mini-project — and an origin flag: *from the Kwant tutorial*, *after
 topocondmat.org*, *after Asbóth*, or *original*. E1.11 and E2.14 are
 pencil-and-paper.
 
-`Kwant_Exercises_Solutions.ipynb` has one section per exercise with the same
-tag, a worked solution, and at least one `assert` stating the expected
+`chapters/S1_Solutions_Part_I.ipynb` and `S2_Solutions_Part_II.ipynb` have one
+section per exercise with the same tag (listed in the notebook's opening table
+of contents), a worked solution, and at least one `assert` stating the expected
 physics (a quantised value, a decay law, a sign). The test suite checks that
 the two sets of tags match one to one.
 
@@ -212,28 +244,40 @@ python -m pytest tests -q                                     # ~10 s
 KWANT_NB_EXECUTE=1 python -m pytest tests/test_execute_notebooks.py -q   # ~6 min
 ```
 
-`tests/test_notebooks.py` asserts, without a kernel: both notebooks pinned
-to kernel `kwant`; every code cell executed with no error output; cell,
-code-cell and figure counts (86/53/68 and 51/24/18); 25 exercises matched
-one-to-one to solution sections; no personal paths or e-mail addresses in
-any cell or output; the attribution cell present. `tests/test_scripts.py`
+`tests/test_notebooks.py` asserts, without a kernel: the fifteen notebooks
+are exactly the shipped ones and each is under 1 MB; every notebook pinned to
+kernel `kwant`; every code cell executed with no error output; per-notebook
+cell, code-cell and figure counts (the `EXPECTED` table: 112/68/68 over the
+chapters, 54/25/18 over the solutions); the figure counter of each chapter
+continues the previous one; every chapter's header links every heading of the
+chapter and its neighbours, and the contents notebook links every chapter;
+25 exercises matched one-to-one to solution sections; no personal paths or
+e-mail addresses in any cell or output; the attribution cell present in
+chapter 12. `tests/test_scripts.py`
 asserts the CLI contract of both scripts (every option in `--help` with its
 default, log and JSON written, `--log-dir`, `--quiet`).
-`tests/test_execute_notebooks.py` executes both notebooks from a cold kernel
-into a temporary directory and requires zero errors and the committed figure
-count; it runs only with `KWANT_NB_EXECUTE=1`. CI runs all three on Linux and
-Windows with conda-forge Kwant + MUMPS.
+`tests/test_execute_notebooks.py` executes all fifteen notebooks, one after
+another, from a cold kernel into a temporary directory and requires zero
+errors and the committed figure count; it runs only with `KWANT_NB_EXECUTE=1`.
+CI runs all three on Linux, Windows and macOS with conda-forge Kwant + MUMPS.
 
 # 9. Editing and re-executing
 
-Change source cells, never outputs. Then re-execute in place:
+Change source cells, never outputs. Then re-execute the chapter in place,
+from the `chapters/` directory:
 
 ```
-python -m jupyter nbconvert --to notebook --execute --inplace --ExecutePreprocessor.kernel_name=kwant Kwant_Theory_and_Practice.ipynb
+cd chapters
+python -m jupyter nbconvert --to notebook --execute --inplace --ExecutePreprocessor.kernel_name=kwant 06_Magnetic_Fields.ipynb
 ```
 
 and run the tests. If a count changed, update `tests/test_notebooks.py`,
-`README.md`, `CITATION.cff` and section 1 of this manual together.
+`README.md`, `CITATION.cff` and section 1 of this manual together. If a
+figure was added or removed, the `_FIG_NO = [start]` line of every later
+chapter's Setup cell must move by the same amount (the test
+`test_figure_numbering_is_continuous_across_the_chapters` says which), those
+chapters must be re-executed, and the course rebuilt (12.1). Added a heading?
+Add its line to the chapter's table of contents in cell 0.
 
 # 10. The `dev/` directory
 
@@ -242,16 +286,18 @@ runnable per-model reference: `dev18_ssh.py` … `dev27_ti3d.py` (Part II),
 `dev_butterfly3d.py`,
 the cell sources `cells_a–c.py` and `sol_part1-2.py`, and the thread-crash
 reproductions (`thread_repro.py`, `thread_scipy.py`, `thread_variants.py`,
-`proc_test.py`, `bench.py`). `dev/build-history/` holds the four one-shot
-scripts that wrote or patched the notebooks; they exit unless
-`KWANT_NB_REBUILD=1` is set, because re-running them would duplicate cells.
+`proc_test.py`, `bench.py`). `dev/build-history/` holds the five one-shot
+scripts that wrote, patched or split the notebooks (`split_chapters.py` is the
+record of how the chapters were derived from the 1.2.0 monoliths); they exit
+unless `KWANT_NB_REBUILD=1` is set, because re-running them would duplicate
+cells or needs files no longer in the tree.
 
 # 11. Parallelism — read before you parallelise
 
 `kwant.smatrix` releases the GIL, so a `ThreadPoolExecutor` looks like the
 obvious way to speed up an energy sweep. **With MUMPS installed this
 segfaults the process**: MUMPS is not re-entrant, and giving each thread its
-own solver instance does not help. Section 15 of the notebook demonstrates
+own solver instance does not help. Section 15 (chapter 7) demonstrates
 the two safe options — `kwant.solvers.sparse` (SuperLU) in threads, or one
 process per worker — and `test_thread_safety.py` guards the notebook against
 regressing. A patch that makes `kwant.solvers.mumps` thread-safe was prepared
@@ -275,24 +321,26 @@ patches are in `docs/drafts/`.
 slides in **one linear sequence** — previous/next only, no build animations;
 inside each section the slides go from plain language to Kwant code to the
 mathematics, and a generated opener with a level-coloured agenda starts each
-section. `S` shows the speaker notes. All 68 figures of the main notebook
-appear, each under its full caption with its section and cell
+section. `S` shows the speaker notes. All 68 figures of the course appear,
+each under its full caption with its section, chapter notebook and cell
 (`course/figures/figures.json` maps them). Fallbacks for any projector:
 `course/deck/slides.pdf` (landscape, one slide per page) and
 `course/deck/slides.html` (the same slides as one static page, no JavaScript).
 `course/handout/handout.pdf` is the A4 companion (reference card, key
 equations, the models table, pitfalls); `course/lecturer_notes.md` has every
-slide's text and notes in order. Rebuild after changing the notebook or
+slide's text and notes in order. Rebuild after changing a chapter or
 `course/deck/content_en.py` with `python course/build_course.py`;
 `tests/test_course.py` reads the committed files back.
 
 # 13. Workflows
 
-- **Study**: Run All, then read top to bottom; each section is
-  self-contained except that Part II reuses two helpers: `chern_fhs`
-  (defined in section 20) and `bloch_hamiltonian` (section 21).
-- **Teach**: the exercises at the end of each part are the assignment; the
-  solutions notebook is the marking key (its assertions are the rubric).
+- **Study**: open `00_Contents.ipynb`, then the chapters in order — Run All,
+  read top to bottom. Each chapter is self-contained given its Setup cell (and
+  its *carried over* cell where present), so a chapter can also be read on its
+  own.
+- **Teach**: the exercises at the end of each part (chapters 7 and 12) are the
+  assignment; the solutions notebooks are the marking key (their assertions
+  are the rubric). One chapter is roughly one session.
 - **Check a new Kwant or numpy release**: `python verify_kwant.py`, then
   `KWANT_NB_EXECUTE=1 python -m pytest tests -q`.
 
@@ -300,18 +348,21 @@ slide's text and notes in order. Rebuild after changing the notebook or
 
 ## 14.1 Features
 
-- Executed, re-executable course: 86 cells, 68 figures, all from a cold run;
-  the test suite re-executes and requires zero errors and the same figures.
+- Executed, re-executable course: twelve chapter notebooks,
+  112 cells, 68 figures, all from a cold run; the test suite re-executes every notebook and
+  requires zero errors and the same figures.
+- Every notebook under 1 MB, with its own table of contents, chapter
+  navigation links and a Setup cell; figure numbers continuous across chapters.
 - Theory derived next to the numerical check in every section of Part I.
 - Ten topological models with their invariants computed from the Kwant
   system (winding, Pfaffian, FHS Chern, Z₂, sliced Chern, quadrupole).
-- 25 origin- and difficulty-flagged exercises; solutions notebook with 31
+- 25 origin- and difficulty-flagged exercises; two solutions notebooks with 31
   assertions; tags matched one-to-one by the tests.
 - ~126 literature citations with years; 10 spot-checked against Crossref.
 - Windows installer with self-verification; conda one-liner elsewhere.
 - `verify_kwant.py`: physics-identity installation check, CLI, log, JSON.
 - `test_thread_safety.py`: MUMPS thread-crash regression test, CLI, log, JSON.
-- Test suite and CI (Linux, Windows) covering notebook invariants, CLI
+- Test suite and CI (Linux, Windows, macOS) covering notebook invariants, CLI
   contract and cold-kernel execution.
 - Apache-2.0 licence; attribution cell for the three sources used as models;
   `CITATION.cff`; `AGENTS.md` for AI agents.
@@ -322,8 +373,10 @@ slide's text and notes in order. Rebuild after changing the notebook or
   API changes in a future Kwant release may require edits. `verify_kwant.py`
   is the first thing to run after upgrading.
 - **Installer is Windows-only**; other platforms use the conda lines in 2.2.
-- **Figure numbering is a global counter**: sequential only under Run All.
-- **Three library warnings are muted** in cell 1 (kwant 1.5.0's 3D plotter
+- **Figure numbering is a per-chapter counter that continues the course-wide
+  sequence**: sequential only under Run All of the chapter; adding a figure to
+  one chapter renumbers the later ones (section 9).
+- **Three library warnings are muted** in every Setup cell (kwant 1.5.0's 3D plotter
   calling a matplotlib function deprecated in 3.10 — fixed upstream but
   unreleased; mpmath's deprecated `bitcount` via sympy; kwant's
   `plotter.map` overflow note for delta-like densities). They are muted by
@@ -339,9 +392,10 @@ slide's text and notes in order. Rebuild after changing the notebook or
   macOS, not the author's laptop.
 - **MUMPS threads**: never call `kwant.smatrix` from threads with MUMPS
   installed (section 11 of this manual).
-- **Part II cross-cell dependency**: sections 21–26 reuse `chern_fhs` from
-  section 20 and sections 22–26 reuse `bloch_hamiltonian` from section 21; run
-  Part II in order.
+- **Within a chapter, run in order**: later cells reuse objects of earlier
+  cells of the same chapter (`fsyst` of §3 in §4, `chern_fhs` of §20 in §21).
+  Across chapters there is no dependency: the four objects a chapter needs from
+  an earlier one are rebuilt by its *carried over* cell.
 - **No plotly/interactive figures**; 3D plots are static matplotlib.
 
 # 15. Licence and attribution
@@ -350,5 +404,5 @@ Apache License 2.0 (see `LICENSE`). The Kwant tutorial (BSD-2), topocondmat.org 
 4.0 text, BSD-3 code) and Asbóth, Oroszlány & Pályi's *A Short Course on
 Topological Insulators* served as models for some exercises and for the
 pedagogical route through Part II; each such exercise is flagged, nothing is
-reproduced verbatim, and the notebook's final cell states this. Kwant is ©
+reproduced verbatim, and the final cell of chapter 12 states this. Kwant is ©
 the Kwant authors, BSD-2. Cite with `CITATION.cff`.

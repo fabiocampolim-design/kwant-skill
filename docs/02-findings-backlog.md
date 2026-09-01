@@ -26,7 +26,7 @@ holds the three commits, exported to `drafts/patches/`.
 |---|---|---|
 | B1 | Offer the **thread-safety regression test** to upstream `kwant/solvers/tests` (skips cleanly when MUMPS is absent, rule 5) | K2 — **done, part of patch 0001** (`test_mumps_threaded_smatrix`) |
 | B2 | Offer `install_kwant_windows.ps1` for the website's Windows install page (upstream `README_WINDOWS.txt` is thin) | S9 "start small" — **drafted** inside `drafts/B3-kwant-discuss-intro.md` item 2 |
-| B3 | `Kwant_Theory_and_Practice.ipynb` as a community tutorial; the kwant-discuss thread "Your input for a Kwant AI system" (2025-08-31) is a natural place to introduce the work | S9 — **drafted** `drafts/B3-kwant-discuss-intro.md` (send after K1/K2 are filed) |
+| B3 | the *Kwant — Theory and Practice* course (the chapter notebooks) as a community tutorial; the kwant-discuss thread "Your input for a Kwant AI system" (2025-08-31) is a natural place to introduce the work | S9 — **drafted** `drafts/B3-kwant-discuss-intro.md` (send after K1/K2 are filed) |
 
 ## N. Our own notebooks
 

@@ -12,7 +12,7 @@ Rescued on 2026-08-28 from the Claude Code scratchpad
 | `dev_butterfly3d.py` | Hofstadter butterfly / 3D Chern terrace |
 | `cells_a.py` … `cells_c.py` | Cell sources (assembled by `build-history/gen.py`) |
 | `build-history/` | One-shot build scripts, already applied, guarded against re-running (see its README) |
-| `sol_part1.py`, `sol_part2.py` | Worked solutions → `Kwant_Exercises_Solutions.ipynb` |
+| `sol_part1.py`, `sol_part2.py` | Worked solutions → `chapters/S1_Solutions_Part_I.ipynb`, `S2_Solutions_Part_II.ipynb` |
 
 The scripts assume the `kwant` environment the installer creates (see
 `../README.md`, Installation) and resolve the notebooks relative to the

@@ -20,8 +20,8 @@ you from conda-forge or PyPI. The patches under docs/drafts/patches/ are
 proposed changes to Kwant, offered to the Kwant project under Kwant's own
 BSD 2-clause licence.
 
-Sources used as models, credited in the notebook's "Sources, attribution and
-licence" cell and nowhere reproduced verbatim: the Kwant documentation and
+Sources used as models, credited in the "Sources, attribution and licence"
+cell that closes the last chapter notebook and nowhere reproduced verbatim: the Kwant documentation and
 tutorial (BSD 2-clause); topocondmat.org, "Topology in Condensed Matter: Tying
 Quantum Knots", TU Delft (text CC BY-SA 4.0, code BSD 3-clause); J. K. Asboth,
 L. Oroszlany, A. Palyi, "A Short Course on Topological Insulators" (Springer
