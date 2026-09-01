@@ -3,6 +3,14 @@
 All notable changes to the Kwant — Theory and Practice notebooks. Dates are
 commit dates; the project has not been released yet.
 
+## 1.3.1 — 2026-09-01 (repository renamed `kwant-skill`)
+
+- The GitHub repository is now `fabiocampolim-design/kwant-skill`, in line with
+  the sibling `pythtb-skill`; GitHub redirects the former name. Badge, issue
+  link, `CITATION.cff`, the deck's closing slide, the upstream-watch user agent
+  and the scheduled task name (`kwant-skill upstream watch`) follow. No change
+  to the notebooks.
+
 ## 1.3.0 — 2026-09-01 (the course split into chapter notebooks)
 
 - **The two monolithic notebooks are gone.** `Kwant_Theory_and_Practice.ipynb`

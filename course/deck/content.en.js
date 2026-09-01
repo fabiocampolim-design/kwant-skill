@@ -670,7 +670,7 @@ window.DECK_CONTENT = {
   "thanks": {
    "kicker": "Quantum Transport with Kwant",
    "title": "Thank you",
-   "sub": "Slides, handout, lecturer notes and the notebook that made every figure: kwant-theory-and-practice · Apache-2.0",
+   "sub": "Slides, handout, lecturer notes and the notebook that made every figure: kwant-skill · Apache-2.0",
    "notes": "Close by returning to the object on the table: the steps in the current are e²/h, the Majorana peak is 2e²/h, the Chern number is an integer — and the notebook checks all three. The handout has the reference card, the key equations and the models table. Q: \"Where do I report a problem?\" A: the repository's issue tracker; the notebook's counts and figures are tested, so a failing test is a real finding."
   }
  }

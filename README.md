@@ -1,6 +1,6 @@
 # Kwant — Theory and Practice
 
-[![Tests](https://github.com/fabiocampolim-design/kwant-theory-and-practice/actions/workflows/tests.yml/badge.svg)](https://github.com/fabiocampolim-design/kwant-theory-and-practice/actions/workflows/tests.yml)
+[![Tests](https://github.com/fabiocampolim-design/kwant-skill/actions/workflows/tests.yml/badge.svg)](https://github.com/fabiocampolim-design/kwant-skill/actions/workflows/tests.yml)
 [![Kwant 1.5](https://img.shields.io/badge/Kwant-1.5-blue)](https://kwant-project.org)
 [![Python 3.11+](https://img.shields.io/badge/python-3.11%2B-blue)](https://www.python.org/)
 [![Platform: Windows | Linux | macOS](https://img.shields.io/badge/platform-Windows%20%7C%20Linux%20%7C%20macOS-lightgrey)](#installation)
@@ -15,7 +15,7 @@ Windows installer.**
 > reports are the ones a reader can make: a derivation that skips a step, a
 > figure whose caption does not match what you see, an exercise whose solution
 > you disagree with, a cell that fails on your installation. Please
-> [open an issue](https://github.com/fabiocampolim-design/kwant-theory-and-practice/issues)
+> [open an issue](https://github.com/fabiocampolim-design/kwant-skill/issues)
 > with the section number.
 
 **Why this exists.** Kwant's own tutorial teaches the API on toy systems and

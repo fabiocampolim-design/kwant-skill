@@ -22,9 +22,9 @@ param(
 )
 $ErrorActionPreference = "Stop"
 $here = Split-Path -Parent $MyInvocation.MyCommand.Path
-if ($Version) { Write-Output ("kwant-theory-and-practice " + (Get-Content (Join-Path $here "..\VERSION") -Raw).Trim()); exit 0 }
+if ($Version) { Write-Output ("kwant-skill " + (Get-Content (Join-Path $here "..\VERSION") -Raw).Trim()); exit 0 }
 $script = Join-Path $here "watch_upstream.py"
-$name = "kwant-theory-and-practice upstream watch"
+$name = "kwant-skill upstream watch"
 $argument = "`"$script`" --weekly --fetch -q"
 if ($DryRun) {
     Write-Output "DRY-RUN: Register-ScheduledTask '$name' weekly $Day $At -> `"$Python`" $argument"

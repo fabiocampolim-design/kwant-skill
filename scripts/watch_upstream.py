@@ -55,7 +55,7 @@ def fetch_all(url, max_pages=200, pause=1.0):
     while page <= max_pages:
         sep = "&" if "?" in url else "?"
         req = urllib.request.Request(f"{url}{sep}per_page=100&page={page}",
-                                     headers={"User-Agent": "kwant-theory-and-practice watch (study project)"})
+                                     headers={"User-Agent": "kwant-skill watch (study project)"})
         with urllib.request.urlopen(req, timeout=60) as r:
             batch = json.loads(r.read().decode("utf-8"))
             nxt = r.headers.get("X-Next-Page", "")
