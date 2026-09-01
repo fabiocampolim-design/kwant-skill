@@ -3,6 +3,15 @@
 All notable changes to the Kwant — Theory and Practice notebooks. Dates are
 commit dates; the project has not been released yet.
 
+## 1.3.2 — 2026-09-01 (README gallery)
+
+- README: a six-figure gallery under the tagline — the Hofstadter butterfly and
+  its Chern-coloured version (ch. 6), the Haldane ribbon (ch. 9), the chiral
+  Majorana mode of a p+ip sample (ch. 10), the Weyl slab with its Fermi arc
+  (ch. 11) and the surface Dirac cone of the 3D TI (ch. 12); each tile links to
+  its chapter. The images are the already-shipped `course/figures/fig-NN.png`;
+  no new files.
+
 ## 1.3.1 — 2026-09-01 (repository renamed `kwant-skill`)
 
 - The GitHub repository is now `fabiocampolim-design/kwant-skill`, in line with

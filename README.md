@@ -11,6 +11,31 @@ in twelve Jupyter chapter notebooks — the physics, the numerics and the API si
 by side — with two solutions notebooks for its 25 exercises and a one-command
 Windows installer.**
 
+<table align="center">
+  <tr>
+    <td align="center" width="33%"><a href="chapters/06_Magnetic_Fields.ipynb"><img src="course/figures/fig-30.png" alt="The Hofstadter butterfly: spectrum of the square lattice versus magnetic flux per plaquette" width="100%"></a></td>
+    <td align="center" width="33%"><a href="chapters/06_Magnetic_Fields.ipynb"><img src="course/figures/fig-32.png" alt="The coloured Hofstadter butterfly in 3D: every gap lifted to the height of its Chern number" width="100%"></a></td>
+    <td align="center" width="33%"><a href="chapters/09_Chern_Numbers.ipynb"><img src="course/figures/fig-52.png" alt="Haldane zigzag ribbon: one chiral edge mode per edge crosses the bulk gap" width="100%"></a></td>
+  </tr>
+  <tr>
+    <td align="center"><sub>Fig. 30 — the Hofstadter butterfly (<a href="chapters/06_Magnetic_Fields.ipynb">ch. 6</a>)</sub></td>
+    <td align="center"><sub>Fig. 32 — the same butterfly, each gap at the height of its Chern number (<a href="chapters/06_Magnetic_Fields.ipynb">ch. 6</a>)</sub></td>
+    <td align="center"><sub>Fig. 52 — Haldane ribbon: one chiral edge mode per edge (<a href="chapters/09_Chern_Numbers.ipynb">ch. 9</a>)</sub></td>
+  </tr>
+  <tr>
+    <td align="center" width="33%"><a href="chapters/10_Z2_and_Chiral_Superconductors.ipynb"><img src="course/figures/fig-58.png" alt="Density of the lowest BdG state of a finite p+ip sample: the chiral Majorana mode circulates the whole boundary" width="100%"></a></td>
+    <td align="center" width="33%"><a href="chapters/11_Higher_Order_and_Weyl.ipynb"><img src="course/figures/fig-64.png" alt="Weyl slab dispersion in 3D: the two bands nearest E=0 touch at the Weyl-node projections and are joined by the Fermi arc" width="100%"></a></td>
+    <td align="center" width="33%"><a href="chapters/12_3D_TI_Exercises_II_and_Beyond.ipynb"><img src="course/figures/fig-67.png" alt="The surface Dirac cone of the strong 3D topological insulator as a 3D dispersion" width="100%"></a></td>
+  </tr>
+  <tr>
+    <td align="center"><sub>Fig. 58 — a chiral Majorana mode circling a p+ip sample (<a href="chapters/10_Z2_and_Chiral_Superconductors.ipynb">ch. 10</a>)</sub></td>
+    <td align="center"><sub>Fig. 64 — Weyl slab: cones joined by the Fermi arc (<a href="chapters/11_Higher_Order_and_Weyl.ipynb">ch. 11</a>)</sub></td>
+    <td align="center"><sub>Fig. 67 — the surface Dirac cone of a strong 3D TI (<a href="chapters/12_3D_TI_Exercises_II_and_Beyond.ipynb">ch. 12</a>)</sub></td>
+  </tr>
+</table>
+
+<p align="center"><sub>Six of the 68 figures — every one generated live by a notebook cell, none pasted in.</sub></p>
+
 > **Feedback is highly appreciated.** This is a course, so the most valuable
 > reports are the ones a reader can make: a derivation that skips a step, a
 > figure whose caption does not match what you see, an exercise whose solution
