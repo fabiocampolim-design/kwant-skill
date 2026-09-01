@@ -134,7 +134,7 @@ warnings.showwarning = _quiet_showwarning
 # Every figure ends with show_fig("..."), which stamps an auto-numbered italic
 # caption under the figure and then shows it.  Figures are numbered
 # continuously across the chapters of the course: this chapter's figures are
-# {first}–{last}, so the counter starts at {start}.  (Re-running a single cell out of
+# {figrange}, so the counter starts at {start}.  (Re-running a single cell out of
 # order advances it -- harmless, but numbers shift.)
 _FIG_NO = [{start}]
 
@@ -296,6 +296,11 @@ def build_chapters(nb, outdir):
                           "The chapter notebooks of this course and their two solutions notebooks are released")
             s = s.replace("*Sources: this notebook was written against",
                           "*Sources: these notebooks were written against")
+            # The parallel sweep now runs on the carried-over section-3 wire, whose first
+            # energies lie below the lowest subband: print the top of the sweep instead.
+            s = s.replace('print("first five:", np.round(data_par[:5], 6))',
+                          'print("T at the last five energies:", np.round(data_par[-5:], 6))'
+                          '   # the first few lie below the lowest subband')
             c["source"] = s
         first_fig = fig_before[lo] + 1
         n_figs = fig_before[hi + 1] - fig_before[lo]
@@ -307,8 +312,10 @@ def build_chapters(nb, outdir):
         prev_ch = CHAPTERS[i - 1] if i else None
         next_ch = CHAPTERS[i + 1] if i + 1 < len(CHAPTERS) else None
         header = md_cell(chapter_header(ch, body, first_fig, n_figs, prev_ch, next_ch, exercises))
+        last_fig = first_fig + n_figs - 1
         setup = code_cell((SETUP if n_figs else SETUP_NOFIG).format(
-            first=first_fig, last=first_fig + n_figs - 1, start=first_fig - 1))
+            figrange=f"{first_fig}–{last_fig}" if n_figs > 1 else f"figure {first_fig} only",
+            start=first_fig - 1))
         carry = [code_cell(carry_source(nb, k)) for k in ch["carry"]]
         out = {"cells": [header, setup] + carry + body,
                "metadata": {**nb["metadata"], "title": f"Kwant - Theory and Practice - Chapter {ch['num']}: "

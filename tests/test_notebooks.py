@@ -128,8 +128,8 @@ def test_figure_numbering_is_continuous_across_the_chapters():
         if n:
             m = re.search(r"^_FIG_NO = \[(\d+)\]", setup, re.M)
             assert m and int(m.group(1)) == start, f"{name}: counter starts at {m and m.group(1)}, expected {start}"
-            assert f"this chapter's figures are\n# {start + 1}–{start + n}" in setup or \
-                f"figures are\n# {start + 1}–{start + n}" in setup, name
+            expected = f"# {start + 1}–{start + n}" if n > 1 else f"# figure {start + 1} only"
+            assert f"this chapter's figures are\n{expected}" in setup, name
         start += n
     assert start == N_FIGURES
 

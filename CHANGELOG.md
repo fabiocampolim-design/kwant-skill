@@ -3,6 +3,15 @@
 All notable changes to the Kwant — Theory and Practice notebooks. Dates are
 commit dates; the project has not been released yet.
 
+## 1.3.3 — 2026-09-01 (code-review follow-ups)
+
+- `dev/build-history/split_chapters.py` reproduces the shipped chapters exactly
+  again: the chapter-7 parallel-sweep printout retarget is part of the script,
+  and a single-figure chapter's Setup comment reads "figure 34 only" instead of
+  "34–34" (chapter 7 re-executed; the test accepts the singular form).
+- `tests/test_execute_notebooks.py`: the fifteen-notebooks assertion is its own
+  test instead of being repeated in every execution test.
+
 ## 1.3.2 — 2026-09-01 (README gallery)
 
 - README: a six-figure gallery under the tagline — the Hofstadter butterfly and

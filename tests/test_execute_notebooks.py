@@ -23,9 +23,12 @@ pytestmark = pytest.mark.skipif(os.environ.get("KWANT_NB_EXECUTE") != "1",
                                 reason="set KWANT_NB_EXECUTE=1 to run the notebooks (slow)")
 
 
+def test_all_fifteen_notebooks_are_collected():
+    assert len(NOTEBOOKS) == 15, [p.name for p in NOTEBOOKS]
+
+
 @pytest.mark.parametrize("nb", NOTEBOOKS, ids=lambda p: p.stem)
 def test_notebook_executes_clean(nb, tmp_path):
-    assert len(NOTEBOOKS) == 15
     out = tmp_path / nb.name
     cmd = [sys.executable, "-m", "jupyter", "nbconvert", "--to", "notebook", "--execute",
            "--ExecutePreprocessor.kernel_name=kwant",
