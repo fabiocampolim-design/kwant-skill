@@ -3,6 +3,15 @@
 All notable changes to the Kwant — Theory and Practice notebooks. Dates are
 commit dates; the project has not been released yet.
 
+## 1.3.4 — 2026-09-02 (community pathways)
+
+- `CONTRIBUTING.md`, `CODE_OF_CONDUCT.md` (Contributor Covenant 2.1) and `docs/DESIGN.md`
+  (the design decisions and their trade-offs) -- the community pathways a JOSS/JOSE
+  review asks for; GITHUBIFY rule 26.
+- Vendored conformance checker 1.5.0: rule 25 notebook-size (1 MB warn / 1.5 MB fail),
+  rule 26 community-files, large-PDF and LF-pin checks, base64 image payloads no longer
+  scanned by the scrub, UTF-8 report output.
+
 ## 1.3.3 — 2026-09-01 (code-review follow-ups)
 
 - `dev/build-history/split_chapters.py` reproduces the shipped chapters exactly
