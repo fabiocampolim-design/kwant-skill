@@ -213,7 +213,10 @@ def main(argv=None):
             data = snapshot(args.state_dir)
             extra["snapshot"] = args.state_dir
             extra["counts"] = {n: len(data[n]) for n in ENDPOINTS}
-    except (urllib.error.URLError, OSError, subprocess.SubprocessError) as e:
+    except (urllib.error.URLError, OSError, subprocess.SubprocessError,
+            json.JSONDecodeError) as e:
+        # JSONDecodeError: a maintenance page served with status 200 is
+        # upstream being unreachable too (1.3.5)
         extra["error"] = f"{type(e).__name__}: {e}"
         rc = 1
     log_dir = args.log_dir or os.path.join(args.state_dir, "logs")

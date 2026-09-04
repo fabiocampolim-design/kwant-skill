@@ -105,6 +105,27 @@ def test_unreachable_upstream_exits_1_and_still_logs(tmp_path, monkeypatch):
     assert "URLError" in log
 
 
+def test_non_json_reply_from_upstream_exits_1_and_still_logs(tmp_path, monkeypatch):
+    """1.3.5: a GitLab maintenance page (HTML, status 200) is upstream being
+    unreachable, not a traceback."""
+    class _Reply:
+        headers = {}
+
+        def read(self):
+            return b"<html>maintenance</html>"
+
+        def __enter__(self):
+            return self
+
+        def __exit__(self, *a):
+            return False
+    monkeypatch.setattr(w.urllib.request, "urlopen", lambda req, timeout=60: _Reply())
+    state = tmp_path / "state"
+    assert w.main(["--snapshot", "--state-dir", str(state), "-q"]) == 1
+    log = next((state / "logs").glob("watch_upstream_*.log")).read_text(encoding="utf-8")
+    assert "JSONDecodeError" in log
+
+
 @pytest.mark.skipif(sys.platform != "win32", reason="Windows Task Scheduler wrapper")
 def test_register_task_dry_run_and_version():
     ps1 = ROOT / "scripts" / "register_watch_task.ps1"

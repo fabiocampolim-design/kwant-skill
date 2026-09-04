@@ -3,6 +3,25 @@
 All notable changes to the Kwant — Theory and Practice notebooks. Dates are
 commit dates; the project has not been released yet.
 
+## 1.3.5 — 2026-09-04 (the review of the public repository)
+
+From a line-by-line read of every shipped script; each fix has a test that
+failed first (`tests/test_script_failure_paths.py`, one more in
+`tests/test_watch_script.py`).
+
+- `test_thread_safety.py`: a canary child that **hangs** until
+  `--canary-timeout` kills it is recorded as `canary: "hung (timeout)"`
+  (`canary_exit_code: null`), exit code 0 like a crash — a deadlock is as
+  plausible an outcome of a re-entrancy bug as a segfault, and it used to
+  escape as a `TimeoutExpired` traceback with no summary JSON and an open log.
+- `verify_kwant.py`: a check that raises still leaves a **closed audit log**
+  ending in `# aborted: <error>`; the error propagates as before.
+- `scripts/watch_upstream.py`: a non-JSON reply from GitLab (a maintenance
+  page served with status 200) is "upstream unreachable" — exit 1, logged —
+  instead of a traceback.
+- Vendored conformance checker 1.6.1 (study repository only; not part of the
+  public tree). Manual: the canary's outcomes.
+
 ## 1.3.4 — 2026-09-02 (community pathways)
 
 - `CONTRIBUTING.md`, `CODE_OF_CONDUCT.md` (Contributor Covenant 2.1) and `docs/DESIGN.md`

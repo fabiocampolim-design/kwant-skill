@@ -298,6 +298,18 @@ def main(argv=None):
                   f"# started: {_dt.datetime.now().isoformat(timespec='seconds')}\n"
                   f"# python {platform.python_version()} on {platform.platform()}\n")
 
+    try:
+        return _run_checks(rep, args, outdir, stamp, log_path)
+    except BaseException as exc:
+        # A check that raises must not leave the audit log open and unmarked
+        # (1.3.5): say how the run ended, close, and let the error propagate.
+        if not rep.log.closed:
+            rep.log.write(f"# aborted: {type(exc).__name__}: {exc}\n")
+            rep.close()
+        raise
+
+
+def _run_checks(rep, args, outdir, stamp, log_path):
     kwant = check_imports(rep)
     summary = {"tool": "verify_kwant", "version": __version__, "started": stamp,
                "python": platform.python_version(), "platform": platform.platform(),

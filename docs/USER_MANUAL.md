@@ -224,10 +224,13 @@ python test_thread_safety.py [--workers 4] [--energies 64] [--tol 1e-12] [--no-c
 Check 1 runs an energy sweep with `kwant.solvers.sparse` in a thread pool
 and requires it to equal the serial sweep to `--tol`. Check 2 (the canary)
 runs the *crashing* pattern — `kwant.smatrix` with MUMPS in threads — in a
-child process and reports whether it crashed (expected) or survived (a
-future Kwant/python-mumps may make it safe). `--no-canary` skips check 2.
-Exit code 0 means check 1 passed. The summary JSON has `safe_path_maxdiff`
-and `canary` (`crashed`, `survived`, `skipped`, or `skipped: MUMPS not installed`).
+child process and reports whether it crashed (expected), hung until
+`--canary-timeout` killed it (a deadlock, recorded as a result since 1.3.5)
+or survived (a future Kwant/python-mumps may make it safe). `--no-canary`
+skips check 2. Exit code 0 means check 1 passed. The summary JSON has
+`safe_path_maxdiff` and `canary` (`crashed`, `hung (timeout)`, `survived`,
+`skipped`, or `skipped: MUMPS not installed`); `canary_exit_code` is `null`
+for a hung child.
 
 # 7. Logs and audit
 
