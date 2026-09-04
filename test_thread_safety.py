@@ -110,10 +110,16 @@ def run_mumps_canary(workers, n_energies, timeout):
     try:
         proc = subprocess.run([sys.executable, "-c", child],
                               capture_output=True, text=True, timeout=timeout)
-    except subprocess.TimeoutExpired:
+    except subprocess.TimeoutExpired as exc:
         # A deadlock is as plausible an outcome of a re-entrancy bug as a
-        # segfault; it is a result to record, not a traceback (1.3.5).
-        return None, False, f"timed out after {timeout} s (child killed)"
+        # segfault; it is a result to record, not a traceback (1.3.5). The
+        # killed child's partial output is evidence: a child that printed the
+        # marker and hung only at interpreter shutdown survived the sweep (1.3.6).
+        out = exc.stdout.decode(errors="replace") if isinstance(exc.stdout, bytes) else (exc.stdout or "")
+        err = exc.stderr.decode(errors="replace") if isinstance(exc.stderr, bytes) else (exc.stderr or "")
+        survived = "CANARY-SURVIVED" in out
+        note = f"timed out after {timeout} s (child killed)"
+        return None, survived, (note + "; stderr: " + err.strip()) if err.strip() else note
     survived = "CANARY-SURVIVED" in proc.stdout
     return proc.returncode, survived, proc.stderr.strip()
 
@@ -191,7 +197,12 @@ def main(argv=None):
             rc, survived, err = run_mumps_canary(args.workers, args.energies,
                                                 args.canary_timeout)
             summary["canary_exit_code"] = rc
-            if rc is None:
+            if rc is None and survived:
+                summary["canary"] = "survived (hung at exit)"
+                say(f"   [note] threaded MUMPS finished the sweep, then hung at exit ({err})")
+                say("          -> the sweep itself survived; treat as 'survived' and re-run a")
+                say("             few times -- one run proves little.")
+            elif rc is None:
                 summary["canary"] = "hung (timeout)"
                 say(f"   [ ok ] child hung and was killed ({err})")
                 say("          -> a deadlock, not a crash; keep using kwant.solvers.sparse")

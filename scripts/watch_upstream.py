@@ -59,6 +59,9 @@ def fetch_all(url, max_pages=200, pause=1.0):
         with urllib.request.urlopen(req, timeout=60) as r:
             batch = json.loads(r.read().decode("utf-8"))
             nxt = r.headers.get("X-Next-Page", "")
+        if not isinstance(batch, list):
+            # a JSON error object served with status 200 (1.3.6)
+            raise ValueError(f"upstream reply is not a list: {str(batch)[:120]}")
         items.extend(batch)
         if not batch or not nxt:
             break
@@ -140,11 +143,15 @@ def load_previous(state_dir):
     prev = {}
     for name in ENDPOINTS:
         p = os.path.join(state_dir, f"{name}.json")
+        prev[name] = None
         if os.path.exists(p):
-            with open(p, encoding="utf-8") as f:
-                prev[name] = json.load(f)
-        else:
-            prev[name] = None
+            try:
+                with open(p, encoding="utf-8") as f:
+                    prev[name] = json.load(f)
+            except ValueError:
+                # a snapshot truncated by a killed run: start over from a
+                # first snapshot rather than fail every later week (1.3.6)
+                prev[name] = None
     return prev
 
 
@@ -213,10 +220,10 @@ def main(argv=None):
             data = snapshot(args.state_dir)
             extra["snapshot"] = args.state_dir
             extra["counts"] = {n: len(data[n]) for n in ENDPOINTS}
-    except (urllib.error.URLError, OSError, subprocess.SubprocessError,
-            json.JSONDecodeError) as e:
-        # JSONDecodeError: a maintenance page served with status 200 is
-        # upstream being unreachable too (1.3.5)
+    except (urllib.error.URLError, OSError, subprocess.SubprocessError, ValueError) as e:
+        # ValueError covers JSONDecodeError (a maintenance page served with
+        # status 200, 1.3.5), UnicodeDecodeError (a non-UTF-8 page) and the
+        # not-a-list reply (1.3.6): all "upstream unreachable"
         extra["error"] = f"{type(e).__name__}: {e}"
         rc = 1
     log_dir = args.log_dir or os.path.join(args.state_dir, "logs")

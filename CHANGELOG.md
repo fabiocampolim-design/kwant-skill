@@ -3,6 +3,23 @@
 All notable changes to the Kwant — Theory and Practice notebooks. Dates are
 commit dates; the project has not been released yet.
 
+## 1.3.6 — 2026-09-04 (the review of 1.3.5)
+
+Four findings of the independent review of 1.3.5, each with a test that
+failed first.
+
+- `test_thread_safety.py`: the killed canary child's **partial output is
+  evidence** — a child that printed the marker and hung only at interpreter
+  shutdown is `canary: "survived (hung at exit)"`, not a deadlock; its stderr
+  travels with the note. 1.3.5 discarded both.
+- `scripts/watch_upstream.py`: a **corrupt local snapshot** (a file truncated
+  by a killed run) is treated as a first snapshot and rewritten; 1.3.5 reported
+  it as "upstream unreachable" every week and never healed it.
+- `scripts/watch_upstream.py`: the two siblings of the non-JSON reply — a
+  **non-UTF-8 page** and a **JSON error object** served with status 200 — are
+  "upstream unreachable" too (exit 1, logged) instead of tracebacks.
+- Tests: a tautological assert removed from `tests/test_script_failure_paths.py`.
+
 ## 1.3.5 — 2026-09-04 (the review of the public repository)
 
 From a line-by-line read of every shipped script; each fix has a test that

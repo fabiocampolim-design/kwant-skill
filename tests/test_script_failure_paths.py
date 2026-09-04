@@ -8,7 +8,6 @@ inside verify_kwant.py still leaves a closed, marked audit log.
 import importlib.util
 import json
 import subprocess
-import sys
 from pathlib import Path
 
 import pytest
@@ -34,6 +33,21 @@ def test_canary_timeout_is_a_result_not_a_traceback(monkeypatch):
     assert "timed out" in err
 
 
+def test_canary_that_finished_the_sweep_before_hanging_counts_as_survived(monkeypatch):
+    """1.3.6 (post-review): the killed child's partial output is evidence. A
+    child that printed CANARY-SURVIVED and hung only at interpreter shutdown
+    survived the threaded sweep; its stderr travels with the result."""
+    tts = _load("test_thread_safety")
+
+    def hang(*a, **k):
+        raise subprocess.TimeoutExpired(cmd="child", timeout=1, output="CANARY-SURVIVED\n",
+                                        stderr="teardown stalled")
+    monkeypatch.setattr(tts.subprocess, "run", hang)
+    rc, survived, err = tts.run_mumps_canary(2, 4, 1)
+    assert rc is None and survived is True
+    assert "timed out" in err and "teardown stalled" in err
+
+
 def test_main_records_a_hung_canary_and_still_writes_the_summary(tmp_path, monkeypatch):
     tts = _load("test_thread_safety")
     monkeypatch.setattr(tts, "check_safe_path", lambda *a: 0.0)
@@ -57,6 +71,18 @@ def test_verify_log_is_closed_and_marked_when_a_check_raises(tmp_path, monkeypat
     monkeypatch.setattr(vk, "check_transport", boom)
     with pytest.raises(RuntimeError):
         vk.main(["--outdir", str(tmp_path), "--quiet"])
+    # reading the file back is the evidence: on Windows an open handle would
+    # still be held by the aborted run
     log = next((tmp_path / "logs").glob("verify_kwant_*.log")).read_text(encoding="utf-8")
     assert log.rstrip().endswith("# aborted: RuntimeError: boom")
-    assert sys.platform != "win32" or True  # the read above proves the handle was released
+
+
+def test_main_records_a_hung_child_that_survived_the_sweep(tmp_path, monkeypatch):
+    tts = _load("test_thread_safety")
+    monkeypatch.setattr(tts, "check_safe_path", lambda *a: 0.0)
+    monkeypatch.setattr(tts, "run_mumps_canary", lambda *a: (None, True, "timed out after 1 s"))
+    pytest.importorskip("kwant.solvers.mumps")
+    rc = tts.main(["--outdir", str(tmp_path), "--quiet"])
+    assert rc == 0
+    summary = json.loads((tmp_path / "test_thread_safety_summary.json").read_text(encoding="utf-8"))
+    assert summary["canary"] == "survived (hung at exit)"

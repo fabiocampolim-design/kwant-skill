@@ -229,8 +229,9 @@ child process and reports whether it crashed (expected), hung until
 or survived (a future Kwant/python-mumps may make it safe). `--no-canary`
 skips check 2. Exit code 0 means check 1 passed. The summary JSON has
 `safe_path_maxdiff` and `canary` (`crashed`, `hung (timeout)`, `survived`,
-`skipped`, or `skipped: MUMPS not installed`); `canary_exit_code` is `null`
-for a hung child.
+`survived (hung at exit)` — the child printed its marker and stalled only at
+interpreter shutdown, 1.3.6 — `skipped`, or `skipped: MUMPS not installed`);
+`canary_exit_code` is `null` for a hung child.
 
 # 7. Logs and audit
 

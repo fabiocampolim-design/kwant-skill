@@ -126,6 +126,51 @@ def test_non_json_reply_from_upstream_exits_1_and_still_logs(tmp_path, monkeypat
     assert "JSONDecodeError" in log
 
 
+def _reply_with(body):
+    class _Reply:
+        headers = {}
+
+        def read(self):
+            return body
+
+        def __enter__(self):
+            return self
+
+        def __exit__(self, *a):
+            return False
+    return lambda req, timeout=60: _Reply()
+
+
+@pytest.mark.parametrize("body, marker", [
+    (b'{"message": "503 Service Unavailable"}', "not a list"),   # a JSON error object with status 200
+    (b"\xff\xfe<html>", "UnicodeDecodeError"),                    # a non-UTF-8 maintenance page
+], ids=["json-object", "bad-encoding"])
+def test_other_odd_200_replies_are_unreachable_too(tmp_path, monkeypatch, body, marker):
+    """1.3.6 (post-review): the two siblings of the non-JSON reply."""
+    monkeypatch.setattr(w.urllib.request, "urlopen", _reply_with(body))
+    state = tmp_path / "state"
+    assert w.main(["--snapshot", "--state-dir", str(state), "-q"]) == 1
+    log = next((state / "logs").glob("watch_upstream_*.log")).read_text(encoding="utf-8")
+    assert marker in log
+
+
+def test_corrupt_local_snapshot_is_a_first_snapshot_not_an_outage(tmp_path, monkeypatch):
+    """1.3.6 (post-review): a snapshot file truncated by a killed run must not
+    make every later --weekly fail as 'upstream unreachable'."""
+    fake = {"tags": [], "issues": [], "merge_requests": []}
+    monkeypatch.setattr(w, "fetch_all", lambda url, **k: fake[[n for n, ep in w.ENDPOINTS.items() if ep in url][0]])
+    state, out = tmp_path / "state", tmp_path / "watch"
+    state.mkdir()
+    (state / "tags.json").write_text('[{"name": "v1.5', encoding="utf-8")
+    assert w.load_previous(str(state))["tags"] is None
+    rc = w.main(["--weekly", "--state-dir", str(state), "--outdir", str(out), "-q",
+                 "--upstream-dir", str(tmp_path / "nowhere")])
+    assert rc == 0
+    text = next(out.glob("*-W*.md")).read_text(encoding="utf-8")
+    assert "first snapshot" in text
+    assert (state / "tags.json").read_text(encoding="utf-8") == "[]"
+
+
 @pytest.mark.skipif(sys.platform != "win32", reason="Windows Task Scheduler wrapper")
 def test_register_task_dry_run_and_version():
     ps1 = ROOT / "scripts" / "register_watch_task.ps1"
