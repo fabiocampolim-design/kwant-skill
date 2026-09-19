@@ -6,6 +6,7 @@ The course is twelve chapter notebooks plus a contents notebook and two
 solutions notebooks under chapters/.  These are the claims the README makes;
 if a number here changes, the README, the manual and CITATION.cff change with it.
 """
+import ast
 import json
 import re
 from pathlib import Path
@@ -209,3 +210,42 @@ def test_no_notebook_names_the_retired_monoliths():
         text = "\n".join(text_of(c) for c in load(name)["cells"])
         assert "Kwant_Theory_and_Practice.ipynb" not in text, name
         assert "Kwant_Exercises_Solutions.ipynb" not in text, name
+
+
+# The split (dev/build-history/split_chapters.py) duplicated a handful of
+# objects verbatim into a later chapter instead of importing across notebooks
+# (see the manual, "Four chapters carry a *carried over* cell"). Nothing
+# enforced that the copies stay identical to their origin -- this does.
+CARRIED_OVER_FUNCTIONS = [
+    ("01_Foundations.ipynb", "07_Solvers_Pitfalls_and_Exercises_I.ipynb", "make_wire"),
+    ("02_Shapes_Spin_and_Bands.ipynb", "04_Observables_and_Visualisation.ipynb", "make_rashba"),
+    ("09_Chern_Numbers.ipynb", "10_Z2_and_Chiral_Superconductors.ipynb", "chern_fhs"),
+    ("09_Chern_Numbers.ipynb", "11_Higher_Order_and_Weyl.ipynb", "chern_fhs"),
+    ("09_Chern_Numbers.ipynb", "10_Z2_and_Chiral_Superconductors.ipynb", "bloch_hamiltonian"),
+]
+
+
+def _function_ast(name, func_name):
+    for cell in load(name)["cells"]:
+        if cell["cell_type"] != "code":
+            continue
+        src = "".join(cell["source"])
+        if f"def {func_name}(" not in src:
+            continue
+        for node in ast.walk(ast.parse(src)):
+            if isinstance(node, ast.FunctionDef) and node.name == func_name:
+                return ast.dump(node)
+    return None
+
+
+@pytest.mark.parametrize("origin,carried,func_name", CARRIED_OVER_FUNCTIONS)
+def test_carried_over_cell_matches_its_origin(origin, carried, func_name):
+    origin_ast = _function_ast(origin, func_name)
+    carried_ast = _function_ast(carried, func_name)
+    assert origin_ast is not None, f"{func_name} not found in {origin}"
+    assert carried_ast is not None, f"{func_name} not found in {carried}"
+    assert origin_ast == carried_ast, (
+        f"{func_name} in {carried} has drifted from its definition in {origin} "
+        "(compared as parsed syntax trees, so formatting differences don't count -- "
+        "a fix in one place needs the same fix in the other)"
+    )

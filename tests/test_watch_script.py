@@ -126,6 +126,43 @@ def test_non_json_reply_from_upstream_exits_1_and_still_logs(tmp_path, monkeypat
     assert "JSONDecodeError" in log
 
 
+def test_fetch_clone_reports_a_failed_fetch_instead_of_unchanged(tmp_path, monkeypatch):
+    """An offline or auth-failed `git fetch` must not read as 'unchanged' --
+    before == after by construction if the fetch never ran, which would hide
+    a broken watch indefinitely (kwant-review-2026-09-19)."""
+    repo = tmp_path / "kwant"
+    (repo / ".git").mkdir(parents=True)
+
+    class _FakeCompleted:
+        def __init__(self, returncode=0, stdout="", stderr=""):
+            self.returncode = returncode
+            self.stdout = stdout
+            self.stderr = stderr
+
+    def fake_run(cmd, **kw):
+        if cmd[:2] == ["git", "fetch"]:
+            return _FakeCompleted(returncode=1, stderr="fatal: could not resolve host")
+        return _FakeCompleted(stdout="abc1234")
+    monkeypatch.setattr(w.subprocess, "run", fake_run)
+
+    result = w.fetch_clone(str(tmp_path))
+    assert isinstance(result, str)
+    assert "fetch failed" in result
+    assert "could not resolve host" in result
+
+
+def test_main_exits_1_and_logs_when_the_clone_fetch_fails(tmp_path, monkeypatch):
+    repo = tmp_path / "up" / "kwant"
+    (repo / ".git").mkdir(parents=True)
+    monkeypatch.setattr(w, "fetch_clone", lambda upstream_dir: "fetch failed: fatal: could not resolve host")
+    monkeypatch.setattr(w, "snapshot", lambda state_dir: {n: [] for n in w.ENDPOINTS})
+    state = tmp_path / "state"
+    assert w.main(["--snapshot", "--fetch", "--state-dir", str(state),
+                  "--upstream-dir", str(tmp_path / "up"), "-q"]) == 1
+    log = next((state / "logs").glob("watch_upstream_*.log")).read_text(encoding="utf-8")
+    assert "fetch failed" in log
+
+
 def _reply_with(body):
     class _Reply:
         headers = {}

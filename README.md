@@ -196,12 +196,15 @@ if you have no leads and want the simplest tight-binding band structure code.
 
 ## How it was built
 
-In Claude Code, over five working days: August 15 2026 (installer, docs
+In Claude Code, starting August 15 2026 (installer, docs
 study, Part I), August 20–21 (the MUMPS crash and its diagnosis, Part II, the
 presentation pass, exercises and solutions), August 28–29 (upstream
 audit of the Kwant project, pre-publication audit, tests, CI, manuals),
 August 31 (licence protection, guards, upstream watch, the course deck),
-September 1 (the split into chapter notebooks). Every physics result was checked against the
+September 1 (the split into chapter notebooks, first public release as
+1.3.0), then a series of point releases through September (renamed to
+kwant-skill; a README gallery; community files; independent code review
+after every release; the weekly upstream watch still running). Every physics result was checked against the
 literature or an independent calculation before being kept; three Kwant
 findings came out of it and were prepared for the Kwant project. In
 [CRediT](https://credit.niso.org/) terms:

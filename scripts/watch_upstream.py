@@ -115,8 +115,11 @@ def render_weekly(deltas, week, counts, clone=None, first=False):
         lines.append("")
     if clone is not None:
         lines.append("## local clone")
-        lines.append(f"- upstream/kwant origin/main: {clone[0]} → {clone[1]}"
-                     + (" (unchanged)" if clone[0] == clone[1] else f" ({clone[2]} new commit(s))"))
+        if isinstance(clone, str):
+            lines.append(f"- upstream/kwant origin/main: {clone}")
+        else:
+            lines.append(f"- upstream/kwant origin/main: {clone[0]} → {clone[1]}"
+                         + (" (unchanged)" if clone[0] == clone[1] else f" ({clone[2]} new commit(s))"))
         lines.append("")
     lines.append("## kwant-discuss")
     lines.append(f"- no anonymous API; look at {LIST_ARCHIVE} (latest threads) by hand.")
@@ -156,7 +159,8 @@ def load_previous(state_dir):
 
 
 def fetch_clone(upstream_dir):
-    """git fetch in the clone; return (before, after, n_new) for origin/main or None."""
+    """git fetch in the clone; return (before, after, n_new) for origin/main,
+    a string describing why the fetch failed, or None if there is no clone."""
     p = os.path.join(upstream_dir, "kwant")
     if not os.path.isdir(os.path.join(p, ".git")):
         return None
@@ -165,7 +169,14 @@ def fetch_clone(upstream_dir):
         return subprocess.run(["git", "rev-parse", "--short", "origin/main"], cwd=p,
                               capture_output=True, text=True).stdout.strip()
     before = rev()
-    subprocess.run(["git", "fetch", "-q", "origin"], cwd=p, capture_output=True, text=True, timeout=600)
+    fetch = subprocess.run(["git", "fetch", "-q", "origin"], cwd=p,
+                           capture_output=True, text=True, timeout=600)
+    if fetch.returncode != 0:
+        # An offline or auth-failed fetch must not be reported as "unchanged"
+        # (before == after by construction if the fetch never ran) -- that
+        # silently hides a broken watch for weeks (1.6, kwant-review-2026-09-19).
+        detail = (fetch.stderr or fetch.stdout or "").strip() or f"exit {fetch.returncode}"
+        return f"fetch failed: {detail}"
     after = rev()
     n = subprocess.run(["git", "rev-list", "--count", f"{before}..{after}"], cwd=p,
                        capture_output=True, text=True).stdout.strip() if before and after else "?"
@@ -203,6 +214,9 @@ def main(argv=None):
         clone = fetch_clone(args.upstream_dir) if args.fetch else None
         if clone is not None:
             extra["clone"] = clone
+        if isinstance(clone, str):
+            extra["error"] = clone
+            rc = 1
         if args.weekly:
             prev = load_previous(args.state_dir)
             first = any(v is None for v in prev.values())

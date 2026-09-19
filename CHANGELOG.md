@@ -1,7 +1,61 @@
 # Changelog
 
 All notable changes to the Kwant — Theory and Practice notebooks. Dates are
-commit dates; the project has not been released yet.
+commit dates. Released publicly since 1.3.0 (2026-09-01) as
+[kwant-skill](https://github.com/fabiocampolim-design/kwant-skill).
+
+## 1.3.7 — 2026-09-19 (a hostile review of the whole course)
+
+An independent, adversarial review of completeness and correctness (not just
+the diffed release), each fix with a test that failed first.
+
+- `03_Graphene_and_Superconductivity.ipynb` §9: the PHS verification cell
+  computed the wrong relation (`s_hh = conj(s_ee)` instead of `s_hh = J
+  conj(s_ee) J`, `J` the mode-order reversal between the electron and hole
+  blocks) and printed a 0.34 "deviation" with no assert -- silently implying
+  Kwant violates particle-hole symmetry. Fixed and asserted to 1e-9,
+  verified against 2-40 channel leads with and without a barrier.
+- `S1_Solutions_Part_I.ipynb` E1.4: the "well" had no confining barriers, so
+  it produced at most one smooth threshold rise, not the claimed
+  width-dependent resonances -- no assert would have passed. Rebuilt as an
+  actual double-barrier resonant-tunnelling structure; asserts a strictly
+  increasing resonance count with well width (2 < 3 < 5, verified).
+- `S1_Solutions_Part_I.ipynb` E1.10: added an assert on the Diophantine gap
+  labelling (>1000 gap segments; exactly the Chern numbers -6..-1, 1..6).
+- New `tests/test_carried_over_cell_matches_its_origin`: the four
+  "carried over" cells the chapter split duplicated verbatim (§3 wire →
+  chapter 7, §6 Rashba wire → chapter 4, `chern_fhs` → chapters 10-11,
+  `bloch_hamiltonian` → chapter 10) had no guard keeping the copies in sync
+  with their origin; compares parsed syntax trees so formatting doesn't
+  cause false positives.
+- `scripts/watch_upstream.py`: an offline or auth-failed `git fetch` read as
+  "unchanged" (before == after because the fetch never ran), which could
+  hide a broken upstream watch indefinitely; now reported as "fetch failed"
+  and exits 1, with a regression test.
+- Re-vendored `tests/conformance.py` to the canonical 1.6.7 (was 1.6.2,
+  silently red on `main` since the checker's own release); added
+  `* text=auto eol=lf` to `.gitattributes` (checker rule 30).
+- `00_Contents.ipynb`'s manual install line was missing the `numpy<2.5` pin
+  every other install recipe in the repo carries; the chapter 7 pitfalls
+  section recommended `magnetic_gauge` without the caveat that it is broken
+  on Kwant 1.5.0 with numpy >=2.5.
+- Chapter 7 §15's scaling measurement included a MUMPS warm-up call in its
+  first (smallest) data point, making it slower than the second and
+  contradicting its own "close-to-linear scaling" caption; added a discarded
+  warm-up call before timing.
+- Manual and `00_Contents.ipynb` claimed chapter 7's scaling cell was "the
+  slowest single cell" and the course took "about 5 minutes"; measured
+  end-to-end (all 15 notebooks, one machine, one run) puts chapters 8-9
+  (topological phase-diagram sweeps) as consistently the heaviest and
+  chapter 7's own cell under a second.
+- CHANGELOG said "the project has not been released yet" through five public
+  releases; README's "How it was built" stopped at September 1.
+- Chapter 12's closing cell pointed readers at a local-only `mirror/doc/`
+  path that does not exist in the published tree; now points at
+  kwant-project.org.
+- CI's pyflakes step (both OS matrix jobs) and `CLAUDE.md`'s documented
+  command did not cover `scripts/` or `course/`; both are clean and now
+  included.
 
 ## 1.3.6 — 2026-09-04 (the review of 1.3.5)
 

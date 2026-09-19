@@ -127,10 +127,12 @@ one-line result and the interpreter path to select in your editor.
   verbatim, an object an earlier chapter defined (the §3 wire in chapter 7, the
   §6 Rashba wire in chapter 4, `chern_fhs` in chapters 10–11,
   `bloch_hamiltonian` in chapter 10). Chapters can therefore be run in any order.
-- Timings on a laptop with MUMPS: all twelve chapters about 5 minutes in total
-  (chapter 7's scaling cell is the slowest single cell), the two solutions
-  notebooks about 2 minutes together. Without MUMPS (SciPy's SuperLU) expect
-  3–5× longer.
+- Timings with MUMPS vary with machine load; a single-run reference on the
+  author's machine put all fifteen notebooks together at roughly 12 minutes.
+  Chapters 8–9 (topological-invariant phase-diagram sweeps: many `smatrix`/
+  diagonalisation calls per parameter point) are consistently the heaviest;
+  chapter 7's own scaling cell (§15) is under a second. Without MUMPS (SciPy's
+  SuperLU) expect 3–5× longer.
 - The Setup cell prints the versions in use and which sparse solver is active,
   and mutes three library warnings (see 14.2).
 - The notebooks are self-contained: no data files, no downloads, no imports

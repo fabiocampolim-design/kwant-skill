@@ -318,10 +318,12 @@ it rebuilds, verbatim, an object an earlier chapter defined (the §3 wire
 in chapter 7, the §6 Rashba wire in chapter 4, <code>chern_fhs</code> in
 chapters 10–11, <code>bloch_hamiltonian</code> in chapter 10). Chapters
 can therefore be run in any order.</li>
-<li>Timings on a laptop with MUMPS: all twelve chapters about 5 minutes
-in total (chapter 7’s scaling cell is the slowest single cell), the two
-solutions notebooks about 2 minutes together. Without MUMPS (SciPy’s
-SuperLU) expect 3–5× longer.</li>
+<li>Timings with MUMPS vary with machine load; a single-run reference on
+the author’s machine put all fifteen notebooks together at roughly 12
+minutes. Chapters 8–9 (topological-invariant phase-diagram sweeps: many
+<code>smatrix</code>/ diagonalisation calls per parameter point) are
+consistently the heaviest; chapter 7’s own scaling cell (§15) is under a
+second. Without MUMPS (SciPy’s SuperLU) expect 3–5× longer.</li>
 <li>The Setup cell prints the versions in use and which sparse solver is
 active, and mutes three library warnings (see 14.2).</li>
 <li>The notebooks are self-contained: no data files, no downloads, no

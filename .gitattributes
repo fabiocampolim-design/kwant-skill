@@ -1,2 +1,4 @@
+* text=auto eol=lf
+
 # Keep the vendored conformance checker byte-identical to the playbook copy on every checkout
 tests/conformance.py text eol=lf

@@ -23,7 +23,7 @@ of contents, and figure numbering runs continuously across chapters (guarded by
   scipy, matplotlib, sympy, qsymm, plotly, ipympl, nbconvert, pytest, pyflakes.
 - Health check: `python verify_kwant.py` (ends "physically correct").
 - Regression guard: `python test_thread_safety.py`.
-- Full suite: `python -m pyflakes verify_kwant.py test_thread_safety.py tests dev docs`
+- Full suite: `python -m pyflakes verify_kwant.py test_thread_safety.py tests dev docs scripts course`
   then `python -m pytest tests -q`; notebooks end to end with `KWANT_NB_EXECUTE=1`.
 
 ## Hard rules
