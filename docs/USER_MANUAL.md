@@ -253,7 +253,7 @@ KWANT_NB_EXECUTE=1 python -m pytest tests/test_execute_notebooks.py -q   # ~6 mi
 `tests/test_notebooks.py` asserts, without a kernel: the fifteen notebooks
 are exactly the shipped ones and each is under 1 MB; every notebook pinned to
 kernel `kwant`; every code cell executed with no error output; per-notebook
-cell, code-cell and figure counts (the `EXPECTED` table: 112/68/68 over the
+cell, code-cell and figure counts (the `EXPECTED` table: 115/71/68 over the
 chapters, 54/25/18 over the solutions); the figure counter of each chapter
 continues the previous one; every chapter's header links every heading of the
 chapter and its neighbours, and the contents notebook links every chapter;
@@ -355,7 +355,7 @@ slide's text and notes in order. Rebuild after changing a chapter or
 ## 14.1 Features
 
 - Executed, re-executable course: twelve chapter notebooks,
-  112 cells, 68 figures, all from a cold run; the test suite re-executes every notebook and
+  115 cells, 68 figures, all from a cold run; the test suite re-executes every notebook and
   requires zero errors and the same figures.
 - Every notebook under 1 MB, with its own table of contents, chapter
   navigation links and a Setup cell; figure numbers continuous across chapters.

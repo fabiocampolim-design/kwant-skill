@@ -4,6 +4,46 @@ All notable changes to the Kwant — Theory and Practice notebooks. Dates are
 commit dates. Released publicly since 1.3.0 (2026-09-01) as
 [kwant-skill](https://github.com/fabiocampolim-design/kwant-skill).
 
+## 1.3.8 — 2026-09-19 (the deferred coverage additions)
+
+Follow-up to 1.3.7's hostile review: the two items flagged as "deferred, not
+attempted" (new content deserves its own verification pass, not a rush) are
+now added, each verified numerically before being written into a notebook.
+
+- `03_Graphene_and_Superconductivity.ipynb`: a `SelfEnergyLead` built from
+  `kwant.physics.selfenergy` of the normal lead, verified to agree with the
+  equivalent `Builder` lead to better than 1e-9 at three energies above the
+  gap (checked first against 2-40 channel leads and barrier variations
+  outside the notebook).
+- `04_Observables_and_Visualisation.ipynb`: `kwant.ldos` checked against a
+  manual sum of `|wave_function|^2` over every propagating mode (agrees to
+  machine precision), and `kwant.greens_function(...).transmission()`
+  checked against `kwant.smatrix(...).transmission()` on the Rashba wire
+  (agrees to 1e-9) — two API routes to transport that the course never
+  demonstrated before.
+- `07_Solvers_Pitfalls_and_Exercises_I.ipynb`: disorder averaging with
+  `kwant.digest.uniform` over 50 realisations at five disorder strengths on
+  the §3 wire, asserting mean transmission falls monotonically as disorder
+  grows (verified: 1.90 > 1.66 > 1.30 > 0.83 > 0.46). `kwant.digest` was
+  installed and used elsewhere but never demonstrated end-to-end.
+- Chapter 12 §27's "the rest of the API" now says which of its own entries
+  are demonstrated where, and adds `ModesLead` and multi-terminal transport
+  to an honest "genuinely not covered" list instead of leaving the reader to
+  infer completeness from silence.
+- MUMPS root-cause investigation: the "library-global state" claim in the
+  K2 upstream draft is replaced with a source-traced mechanism (read
+  directly from python-mumps' `_mumps.pyx.in` and `mumps.py`) — a
+  per-instance lock that doesn't cover module-global state, and unlocked
+  `__cinit__`/`__dealloc__` calls that can race an unrelated instance's
+  locked operation. Not independently reproduced with controlled timing;
+  recorded as a refined, evidence-based hypothesis in
+  `docs/01-upstream-audit.md` and the K2 draft, not claimed as solved.
+- All three new notebook cells add zero figures and zero new numbered
+  sections by design, to avoid a figure/section renumbering cascade through
+  every later chapter for what is API-breadth content, not new physics
+  results. Totals: 115 cells (71 code) over the twelve chapters, 68 figures
+  (unchanged).
+
 ## 1.3.7 — 2026-09-19 (a hostile review of the whole course)
 
 An independent, adversarial review of completeness and correctness (not just

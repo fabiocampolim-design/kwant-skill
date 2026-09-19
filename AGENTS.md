@@ -14,7 +14,7 @@ Fifteen fully executed Jupyter notebooks under `chapters/` and their support fil
 | File | What |
 |---|---|
 | `chapters/00_Contents.ipynb` | the contents: chapter map, section table, installation, conventions, the environment check |
-| `chapters/01_*.ipynb` … `12_*.ipynb` | the course: twelve chapter notebooks, 112 cells (68 code), 68 figures numbered continuously across the chapters, 25 exercises (posed at the end of chapters 7 and 12), sections 1–27 in two parts (core Kwant API and transport theory; ten topological models) plus a reference shelf. Each chapter opens with a table of contents + prev/contents/next links, then a Setup cell; four chapters carry a "carried over" cell that rebuilds an object defined in an earlier chapter. Every notebook is under 1 MB (the 7.4 MB monolith it replaced crashed editors) |
+| `chapters/01_*.ipynb` … `12_*.ipynb` | the course: twelve chapter notebooks, 115 cells (71 code), 68 figures numbered continuously across the chapters, 25 exercises (posed at the end of chapters 7 and 12), sections 1–27 in two parts (core Kwant API and transport theory; ten topological models) plus a reference shelf. Each chapter opens with a table of contents + prev/contents/next links, then a Setup cell; four chapters carry a "carried over" cell that rebuilds an object defined in an earlier chapter. Every notebook is under 1 MB (the 7.4 MB monolith it replaced crashed editors) |
 | `chapters/S1_Solutions_Part_I.ipynb`, `S2_Solutions_Part_II.ipynb` | 54 cells (25 code), 18 figures, one section per exercise, 31 `assert`s that encode the expected physics |
 | `install_kwant_windows.ps1` / `.bat` | Windows installer: Miniforge + conda-forge `kwant`, `python-mumps`, `numpy<2.5`, Jupyter kernel named `kwant` |
 | `verify_kwant.py` | proves an installation works with physics identities (quantised conductance, unitarity, sum rule, …) |
@@ -85,7 +85,7 @@ command line, versions, every message, exit code) and
 - **Do not run anything in `dev/build-history/`.** Those scripts already
   rewrote the notebooks once; they exit unless `KWANT_NB_REBUILD=1` is set.
 - **Counts are claims.** Per-notebook cells/code/figures are the `EXPECTED`
-  table of `tests/test_notebooks.py` (112/68/68 over the twelve chapters,
+  table of `tests/test_notebooks.py` (115/71/68 over the twelve chapters,
   54/25/18 over the two solutions notebooks), 25 exercises, every notebook
   under 1 MB. If you add a cell or figure, update the test, `README.md`,
   `CITATION.cff` and the manual together.

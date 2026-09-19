@@ -23,11 +23,11 @@ EXPECTED = {
     "00_Contents.ipynb": dict(cells=2, code=1, figures=0),
     "01_Foundations.ipynb": dict(cells=13, code=7, figures=6),
     "02_Shapes_Spin_and_Bands.ipynb": dict(cells=10, code=6, figures=7),
-    "03_Graphene_and_Superconductivity.ipynb": dict(cells=8, code=5, figures=5),
-    "04_Observables_and_Visualisation.ipynb": dict(cells=9, code=6, figures=5),
+    "03_Graphene_and_Superconductivity.ipynb": dict(cells=9, code=6, figures=5),
+    "04_Observables_and_Visualisation.ipynb": dict(cells=10, code=7, figures=5),
     "05_KPM_and_Continuum.ipynb": dict(cells=10, code=7, figures=5),
     "06_Magnetic_Fields.ipynb": dict(cells=6, code=4, figures=5),
-    "07_Solvers_Pitfalls_and_Exercises_I.ipynb": dict(cells=8, code=4, figures=1),
+    "07_Solvers_Pitfalls_and_Exercises_I.ipynb": dict(cells=9, code=5, figures=1),
     "08_Topology_in_One_Dimension.ipynb": dict(cells=14, code=9, figures=12),
     "09_Chern_Numbers.ipynb": dict(cells=10, code=7, figures=6),
     "10_Z2_and_Chiral_Superconductors.ipynb": dict(cells=9, code=6, figures=6),
@@ -107,8 +107,8 @@ def test_cell_and_figure_counts(name):
 def test_totals_are_the_documented_ones():
     assert sum(EXPECTED[f]["figures"] for f in CHAPTER_FILES) == N_FIGURES
     assert sum(EXPECTED[f]["figures"] for f in SOLUTION_FILES) == 18
-    assert sum(EXPECTED[f]["cells"] for f in CHAPTER_FILES) == 112
-    assert sum(EXPECTED[f]["code"] for f in CHAPTER_FILES) == 68
+    assert sum(EXPECTED[f]["cells"] for f in CHAPTER_FILES) == 115
+    assert sum(EXPECTED[f]["code"] for f in CHAPTER_FILES) == 71
     assert sum(EXPECTED[f]["cells"] for f in SOLUTION_FILES) == 54
     assert sum(EXPECTED[f]["code"] for f in SOLUTION_FILES) == 25
 

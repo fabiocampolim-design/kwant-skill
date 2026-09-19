@@ -80,3 +80,67 @@ whatsnew entry.
 
 kwant 1.5.0 (conda-forge, win-64), python-mumps 0.0.6, numpy 2.5.1,
 scipy 1.18.0, Python 3.13.11, Windows 10. Reproducible on every run.
+
+## Root-cause mechanism (added 2026-09-19, from reading python-mumps' actual source)
+
+"MUMPS keeps library-global state" above was an inference, not a traced
+mechanism. Reading `src/mumps/_mumps.pyx.in` and `src/mumps/mumps.py` at
+python-mumps main (gitlab.kwant-project.org/kwant/python-mumps) narrows it:
+
+- Each `<p>mumps` Cython object (`zmumps`/`dmumps`/...) owns a **per-instance**
+  `PyThread_type_lock` (`self.lock`, allocated in `__cinit__`). `call()`
+  acquires it around every `job`-dispatching call into the Fortran routine
+  (`mumps.<p>mumps_c(&self.params)`). This only serializes calls **on the
+  same instance** — it does nothing for two different instances (e.g. one
+  per thread) calling into the library at once, which is exactly why
+  "give each thread its own `Solver()`" does not help: the lock the library
+  itself provides is the wrong granularity for the actual shared state
+  (inside the Fortran/C library, not the Python object).
+- **`__cinit__` (job=-1, instance creation) and `__dealloc__` (job=-2,
+  instance teardown) do not acquire even that per-instance lock** — only
+  `call()` (used for job=1/2/3/4/6, i.e. analyze/factor/solve) does.
+- `mumps.py`'s `Context.set_matrix` creates a **new** `<p>mumps` Cython
+  instance every time the dtype changes from the Context's previous state
+  (`if self.dtype != dtype: self.mumps_instance = getattr(_mumps, dtype +
+  "mumps")(...)`), and Kwant's `_factorized` (patch 0001) creates a **new**
+  `MUMPSContext()` on every `kwant.smatrix` call — so every call constructs
+  a fresh Cython instance (`__cinit__`, job=-1) and, when the caller's
+  reference to the previous call's `Context` is dropped, destroys the old
+  one (`__dealloc__`, job=-2).
+- Kwant's patch 0001 lock (`_mumps_lock`) wraps `_factorized` (so the job=-1
+  construction happens to be covered, since it occurs synchronously inside
+  `MUMPSContext().factor(...)`) and wraps the `solve()` call inside
+  `_solve_linear_sys`. **It does not, and structurally cannot from pure
+  Python, wrap `__dealloc__`**: that call fires wherever CPython's reference
+  counting happens to drop the `Context`'s last reference to zero — in
+  `kwant.solvers.common.SparseSolver`, that is typically in the *caller's*
+  frame, after `_solve_linear_sys` has already returned and released
+  `_mumps_lock`. So an unlocked `job=-2` teardown in one thread can run
+  concurrently with another thread's lock-protected but simultaneously
+  in-flight `job=1/2/3` call in a different `<p>mumps` instance — both touch
+  the same underlying Fortran-global MUMPS state, and only one side of that
+  race holds any lock at all.
+
+This is a plausible, source-traced explanation for the canary's "hung at
+exit" outcomes (1.3.5/1.3.6 of the KWANT course project): a destructor race
+at interpreter or thread-pool shutdown, not (only) a factor/solve race,
+which the existing lock already prevents.
+
+**Not verified**: whether this specific race is what actually produces the
+observed segfault/hang (would need a targeted repro — e.g. forcing a
+`Context.__exit__`/garbage-collection in one thread while another holds
+`_mumps_lock` in a tight loop — which was not attempted; a false GC trigger
+is hard to force deterministically and the existing canary already accepts
+segfault/hang as evidence without needing to control timing precisely).
+
+**Refined proposed fix**: extend patch 0001 so `kwant.solvers.mumps` never
+lets a `Context` go out of scope without deterministically finalizing it
+*inside* `_mumps_lock` first — e.g. `_factorized` returns a wrapper whose
+`__del__`/explicit close calls `with _mumps_lock: inst.__exit__(None, None,
+None)` before dropping the last reference — rather than relying on GC timing
+to run `__dealloc__` at all, locked or not. The real fix (a module-level
+lock inside python-mumps' own `__cinit__`/`__dealloc__`, or a documented
+"do not let a Context die on a thread other than the one holding your own
+lock" contract) belongs upstream in python-mumps, not in Kwant's wrapper;
+worth a second, separate issue against `kwant/python-mumps` rather than
+folding it into this one.
